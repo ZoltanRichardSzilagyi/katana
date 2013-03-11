@@ -15,7 +15,8 @@ $input;
 		<label for="<?php echo $input->getId()?>"><?php echo $input->getLabel() ?></label>	
 			<input 
 				type="<?php echo $input->getType()?>" 
-				name="<?php echo $input->getName()?>" 
+				name="<?php echo $input->getName()?>"
+				class="number" 
 				id="<?php echo $input->getId()?>"
 				value="<?php echo $input->getValue()?>" 
 				placeholder="<?php echo $input->getPlaceHolder()?>" 
@@ -27,7 +28,7 @@ $input;
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function() {
-    jQuery("#<?php echo $input->getId()?>").keydown(function(event) {
+    jQuery("input.number").keydown(function(event) {
         // Allow: backspace, delete, tab, escape, and enter
         if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 || 
              // Allow: Ctrl+A
