@@ -5,7 +5,8 @@ class TemplateUtils{
 		if(TemplateUtils::$instance == null){			
 			$this->templatesPath = $basePath . "/templates/";
 			TemplateUtils::$instance = $this;
-			TemplateUtils::$styleBaseUrl =  plugins_url(Katana::ID) . "/css/";			
+			TemplateUtils::$styleBaseUrl =  plugins_url(Katana::ID) . "/css/";
+			TemplateUtils::$scriptBaseUrl =  plugins_url(Katana::ID) . "/js/";			
 		}else{
 			throw new Exception("TemplateUtils already instantiated", 1);
 		}
@@ -39,8 +40,9 @@ class TemplateUtils{
 			wp_enqueue_style($styleHandler, $cssUrl);
 	}
 	
-	public static function attachScript(){
-		// TODO 
+	public static function attachScript($jsHandler, $jsName, $dependencies = array()){
+			$jsUrl = TemplateUtils::$scriptBaseUrl .  $jsName . ".js";
+			wp_enqueue_style($jsHandler, $jsUrl); 
 	}
 	
 	

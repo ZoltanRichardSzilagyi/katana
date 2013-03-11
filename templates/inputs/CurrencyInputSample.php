@@ -1,16 +1,16 @@
 <div class="sampleInputElement">
 	<div class="title">
-		<?php echo LanguageUtils::translate("Number input") ?>
+		<?php echo LanguageUtils::translate("Currency input") ?>
 	</div>	
 	<div class="inputDescription">
-		<?php echo LanguageUtils::translate("Number input description") ?>
+		<?php echo LanguageUtils::translate("Currency input description") ?>
 	</div>
-	<div class="numericInputElement">
+	<div class="currencyInputElement">
 		<label for="<?php echo $input->getId()?>"><?php echo $input->getLabel() ?></label>	
 			<input 
 				type="<?php echo $input->getType()?>" 
 				name="<?php echo $input->getName()?>"
-				class="number" 
+				class="number currency" 
 				id="<?php echo $input->getId()?>"
 				value="<?php echo $input->getValue()?>" 
 				placeholder="<?php echo $input->getPlaceHolder()?>" 
@@ -39,5 +39,7 @@ jQuery(document).ready(function() {
             }   
         }
     });
+    // TODO after load accounting
+    jQuery("<?php echo $input->getId()?>").val(accounting.formatMoney(<?php echo $input->getValue() ?>, "<?php echo $input->getSymbol() ?>", <?php echo $input->getDecimalPlaces()?>, "<?php echo $input->getDecimal() ?>", "<?php echo $input->getGrouping() ?>"));
 });
 </script>
