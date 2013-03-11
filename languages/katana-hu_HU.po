@@ -15,5 +15,5 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 
 msgid "Katana forms"
-msgstr "Katana formsr"
+msgstr "Katana forms"
 
