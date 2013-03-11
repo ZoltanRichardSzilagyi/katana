@@ -23,6 +23,21 @@ class TextInput extends AbstractInput{
 	
 	protected $classes = array();
 	
+	public function __construct($inputProperties = null){	
+		$this->setProperties($inputProperties);		
+	}
+	
+	public static function className(){
+		return get_class();
+	}
+	
+	public function validate(){
+		
+	}
+	
+	public function preRender(){
+	}	
+		
 	public function getId(){
 		return $this->id;
 	}
@@ -30,23 +45,11 @@ class TextInput extends AbstractInput{
 	public function getType(){
 		return "text";
 	}
-	
-	public function isReadOnly(){
-		return $this->readOnly;
-	}
-	
-	public function isDisabled(){
-		return $this->disabled;
-	}
 		
 	public function getName(){
 		return $this->name;
 	}
-	
-	public function getTemplate(){
-		return $this->template;
-	}
-	
+		
 	public function getValue(){
 		return $this->value;
 	}
@@ -61,18 +64,5 @@ class TextInput extends AbstractInput{
 	
 	public function getMaxLength(){
 		return $this->maxLength;
-	}
-		
-	public function __construct($inputProperties = null){	
-		$this->setProperties($inputProperties);		
-	}
-	
-	public function preRender(){
-	}	
-	
-	public static function className(){
-		return get_class();
-	}
-					
-	
+	}				
 }

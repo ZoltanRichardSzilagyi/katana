@@ -1,0 +1,19 @@
+#formEditorBody{
+}
+
+#formEditor{
+	width: 500px;
+	height:300px;
+	background:red;
+	float:left;	
+}
+
+#formEditorToolbox{
+	min-width:300px;
+	padding-left:20px;
+	float:left;
+}
+
+.postbox .inside{
+	overflow:hidden;
+}

@@ -4,7 +4,7 @@
  */
 $input;
 ?>
-<div id="sampleInputElement">
+<div class="sampleInputElement">
 	<div class="title">
 		<?php echo LanguageUtils::translate("Text input") ?>
 	</div>	

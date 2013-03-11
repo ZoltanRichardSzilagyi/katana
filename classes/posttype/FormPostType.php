@@ -64,7 +64,9 @@ class FormPostType extends CustomPostType{
 		
 		$inputFactory = ClassLoader::getUtilsInstance("InputFactory");
 		$sampleInputs = $inputFactory->getSampleInputs();
-		$this->templateValues->add("sampleInputs", $sampleInputs);		
+		$this->templateValues->add("sampleInputs", $sampleInputs);
+		
+		TemplateUtils::attachStyle("formEditorAdmin", "formEditorAdmin");		
 		
 		TemplateUtils::fetchTemplate("formEditor", $this->templateValues);
 					

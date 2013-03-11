@@ -4,17 +4,26 @@ abstract class AbstractInput{
 		
 	public abstract static function className();
 	
-	public abstract function getTemplate();
-	
 	public abstract function getType();
 	
 	public abstract function getId();
 	
-	public abstract function isReadOnly();
-	
-	public abstract function isDisabled();
-	
 	public abstract function preRender();
+	
+	public abstract function validate();		
+	
+	public function getTemplate(){
+		return $this->template;
+	}
+
+	public function isReadOnly(){
+		return $this->readOnly;
+	}
+	
+	public function isDisabled(){
+		return $this->disabled;
+	}
+	
 	
 	protected function setProperties($inputProperties){
 		if($inputProperties == null){
