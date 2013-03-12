@@ -1,5 +1,7 @@
 <?php
-class NumberInput extends TextInput{
+class DateInput extends TextInput{
+	
+	protected $locale;
 		
 	public static function className(){
 		return get_class();
@@ -10,6 +12,10 @@ class NumberInput extends TextInput{
 	
 	public function validate(){
 	
-	}		
+	}
 	
+	public function getLocale(){
+		return $this->locale;
+	}		
+
 }

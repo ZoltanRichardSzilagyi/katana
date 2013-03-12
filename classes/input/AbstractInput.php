@@ -10,7 +10,12 @@ abstract class AbstractInput{
 	
 	public abstract function preRender();
 	
-	public abstract function validate();		
+	public abstract function validate();
+	
+	public function __construct($inputProperties = null){	
+		$this->setProperties($inputProperties);		
+	}
+			
 	
 	public function getTemplate(){
 		return $this->template;

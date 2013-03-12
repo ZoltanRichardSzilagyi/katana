@@ -1,9 +1,9 @@
 <div class="sampleInputElement">
 	<div class="title">
-		<?php echo LanguageUtils::translate("Number input") ?>
+		<?php echo LanguageUtils::translate("Number field") ?>
 	</div>	
 	<div class="inputDescription">
-		<?php echo LanguageUtils::translate("Number input description") ?>
+		<?php echo LanguageUtils::translate("Number field description") ?>
 	</div>
 	<div class="numericInputElement">
 		<label for="<?php echo $input->getId()?>"><?php echo $input->getLabel() ?></label>	

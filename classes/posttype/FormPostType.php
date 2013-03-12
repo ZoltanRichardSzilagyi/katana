@@ -67,10 +67,9 @@ class FormPostType extends CustomPostType{
 		$this->templateValues->add("sampleInputs", $sampleInputs);
 		
 		TemplateUtils::attachStyle("formEditorAdmin", "formEditorAdmin");
-		TemplateUtils::attachScript("accounting", "accounting/accounting");		
+		TemplateUtils::attachScript("accounting", "accounting/accounting", array('jquery'));		
 		
-		TemplateUtils::fetchTemplate("formEditor", $this->templateValues);
-					
+		TemplateUtils::fetchTemplate("formEditor", $this->templateValues);				
 
 	}
 	

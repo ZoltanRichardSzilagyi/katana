@@ -36,7 +36,7 @@ class InputFactory{
 	}
 	
 	
-	public static function getSampleInputs(){
+	public static function getSampleInputs(){  
 		ClassLoader::requireAllInput();	
 		$sampleInputs = new ArrayObject();
 		$sampleInputs[TextInput::className()] = InputFactory::getSampleTextInput();
@@ -76,19 +76,20 @@ class InputFactory{
 	private static function getSampleCurrencyInput(){
 		$properties = array();
 		$properties['className'] = CurrencyInput::className();
-		$properties['id'] = "age";		
-		$properties['name'] = "age";
+		$properties['id'] = "price";		
+		$properties['name'] = "price";
 		$properties['template'] = CurrencyInput::className() . "Sample";
-		$properties['value'] = "10";
+		$properties['value'] = "1054333";
 		$properties['label'] = "Price";
-		$properties['maxLength'] = "2";
-		$properties['placeHolder'] = "Your age";
+		$properties['maxLength'] = "15";
+		$properties['placeHolder'] = "Item price";
 		$properties['readOnly'] = true;
 		$properties['locale'] = "Magyar forint";
 		$properties['symbol'] = "HUF";
 		$properties['decimal'] = ".";
-		$properties['decimalPlaces'] = "2";
-		$properties['grouping'] = ",";
+		$properties['precision'] = "0";
+		$properties['thousand'] = ",";
+		$properties['format'] = "%v %s";
 		return InputFactory::getByType($properties);
 	}	
 	

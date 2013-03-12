@@ -42,7 +42,7 @@ class TemplateUtils{
 	
 	public static function attachScript($jsHandler, $jsName, $dependencies = array()){
 			$jsUrl = TemplateUtils::$scriptBaseUrl .  $jsName . ".js";
-			wp_enqueue_style($jsHandler, $jsUrl); 
+			wp_enqueue_script($jsHandler, $jsUrl, $dependencies); 
 	}
 	
 	

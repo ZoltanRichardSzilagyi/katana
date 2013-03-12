@@ -22,11 +22,7 @@ class TextInput extends AbstractInput{
 	protected $maxLength;
 	
 	protected $classes = array();
-	
-	public function __construct($inputProperties = null){	
-		$this->setProperties($inputProperties);		
-	}
-	
+		
 	public static function className(){
 		return get_class();
 	}

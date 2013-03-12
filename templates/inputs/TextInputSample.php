@@ -1,15 +1,9 @@
-<?php
-/**
- * @var TextInput
- */
-$input;
-?>
 <div class="sampleInputElement">
 	<div class="title">
-		<?php echo LanguageUtils::translate("Text input") ?>
+		<?php echo LanguageUtils::translate("Text field") ?>
 	</div>	
 	<div class="inputDescription">
-		<?php echo LanguageUtils::translate("Text input description") ?>
+		<?php echo LanguageUtils::translate("Text field description") ?>
 	</div>
 	<div class="inputElement">
 		<label for="<?php echo $input->getId()?>"><?php echo $input->getLabel() ?></label>	

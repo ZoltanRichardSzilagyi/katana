@@ -7,14 +7,13 @@ class CurrencyInput extends TextInput{
 	
 	protected $decimal;
 	
-	protected $decimalPlaces;
+	protected $precision;
 	
-	protected $grouping;
+	protected $thousand;
+	
+	protected $format;
 	
 	
-	public function __construct($inputProperties = null){	
-		$this->setProperties($inputProperties);		
-	}
 	
 	public static function className(){
 		return get_class();
@@ -39,12 +38,16 @@ class CurrencyInput extends TextInput{
 		return $this->decimal;
 	}
 	
-	public function getDecimalPlaces(){
-		return $this->decimalPlaces;
+	public function getPrecision(){
+		return $this->precision;
 	}
 	
-	public function getGrouping(){
-		return $this->grouping;
+	public function getThousand(){
+		return $this->thousand;
+	}
+	
+	public function getFormat(){
+		return $this->format;
 	}
 	
 }

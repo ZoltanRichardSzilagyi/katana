@@ -1,9 +1,9 @@
 <div class="sampleInputElement">
 	<div class="title">
-		<?php echo LanguageUtils::translate("Currency input") ?>
+		<?php echo LanguageUtils::translate("Currency field") ?>
 	</div>	
 	<div class="inputDescription">
-		<?php echo LanguageUtils::translate("Currency input description") ?>
+		<?php echo LanguageUtils::translate("Currency field description") ?>
 	</div>
 	<div class="currencyInputElement">
 		<label for="<?php echo $input->getId()?>"><?php echo $input->getLabel() ?></label>	
@@ -22,7 +22,22 @@
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function() {
-    jQuery("input.number").keydown(function(event) {
+
+	function formatMoney(numberValue){
+		return accounting.formatMoney(
+	    	numberValue, 
+	    		{symbol : currencySymbol, 
+	    			thousand : "<?php echo $input->getThousand()?>", 
+	    			decimal : "<?php echo $input->getDecimal() ?>", 
+	    			precision : "<?php echo $input->getPrecision() ?>",
+	    			format: "<?php echo $input->getFormat() ?>"
+	    		}
+		 );		
+	}
+	
+	// TODO refactor number, currency javascript events
+	var elementId = "#<?php echo $input->getId()?>";
+    jQuery(elementId).keydown(function(event) {
         // Allow: backspace, delete, tab, escape, and enter
         if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 || 
              // Allow: Ctrl+A
@@ -39,7 +54,25 @@ jQuery(document).ready(function() {
             }   
         }
     });
-    // TODO after load accounting
-    jQuery("<?php echo $input->getId()?>").val(accounting.formatMoney(<?php echo $input->getValue() ?>, "<?php echo $input->getSymbol() ?>", <?php echo $input->getDecimalPlaces()?>, "<?php echo $input->getDecimal() ?>", "<?php echo $input->getGrouping() ?>"));
+    
+    var currencySymbol = "<?php echo $input->getSymbol() ?>";
+        
+    var inputValue = jQuery(elementId).val();
+    var formattedValue = formatMoney(inputValue);
+    jQuery(elementId).val(formattedValue);
+    
+    // TODO format safe replace
+    jQuery(elementId).click(function(){    	
+    	var elementValue = jQuery(this).val();
+    	var numberValue = elementValue.replace(" " + currencySymbol, "");
+    	jQuery(this).val(numberValue);
+    });
+    
+    jQuery(elementId).blur(function(){
+    	var numberValue = jQuery(this).val() + " " + currencySymbol;
+		var formattedValue = formatMoney(numberValue);    	
+    	jQuery(this).val(formattedValue);
+    });    
+    
 });
 </script>
