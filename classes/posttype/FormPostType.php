@@ -73,8 +73,10 @@ class FormPostType extends CustomPostType{
 	}
 	
 	private function attachScripts(){
-		TemplateUtils::attachScript("formEditor", "formEditor/formEditor", array('jquery'));		
-		TemplateUtils::attachScript("accounting", "accounting/accounting", array('jquery', 'formEditor'));				
+		TemplateUtils::attachScript("jquery-ui", "jquery-ui/js/jquery-ui-1.10.0.custom", array('jquery'));	
+		TemplateUtils::attachScript("formEditor", "formEditor/formEditor", array('jquery', 'jquery-ui'));			
+		TemplateUtils::attachScript("accounting", "accounting/accounting", array('jquery', 'formEditor'));
+						
 	}
 	
 }

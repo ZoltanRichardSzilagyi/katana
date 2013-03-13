@@ -7,6 +7,7 @@ var FormEditor = function(){
 	
 	this.init = function(){
 		setSampleInputsDescriptionButtonEvents();
+		setFormInputEvents();
 	}
 	
 	setSampleInputsDescriptionButtonEvents = function(){
@@ -23,6 +24,10 @@ var FormEditor = function(){
 				
 			});
 		});
+	};
+	
+	setFormInputEvents = function(){
+		$( ".sampleInputElement" ).draggable({ revert: "valid" });
 	}
 	
 	
