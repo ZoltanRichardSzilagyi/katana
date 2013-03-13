@@ -2,10 +2,16 @@
 	<h4><?php echo LanguageUtils::translate("Form editor") ?></h4>
 	<div id="formEditorBody">
 		<div id="formEditor">
-		
+			<div id="formProperties">				
+			Ajax form, Pages num: 1
+			< >
+			</div>
+			<div id="formInputElements">
+				
+			</div>
 		</div>
 		<div id="formEditorToolbox">
-			<div><?php echo LanguageUtils::translate("Input types");?></div>
+			<div class="boxTitle"><?php echo LanguageUtils::translate("Fields");?></div>
 			<ul>
 				<?php $sampleInputsIterator = $sampleInputs->getIterator(); ?>			
 				<?php while($sampleInputsIterator->valid()){?>
