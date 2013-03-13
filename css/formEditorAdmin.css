@@ -59,6 +59,11 @@ div.sampleInputElement .title{
 	background-image:url('icons/help.png');
 	background-repeat:no-repeat;
 	float:right;
+	opacity:0.5;
+}
+
+.sampleInputElement .descriptionBoxButton:hover{
+	opacity:1;
 }
 
 div.sampleInputElement div.descriptionBox{
