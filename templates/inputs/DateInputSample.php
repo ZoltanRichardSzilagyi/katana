@@ -2,7 +2,7 @@
 	<div class="title">
 		<?php echo LanguageUtils::translate("Date field") ?>
 	</div>
-	<div class="descriptionBoxButton">show Description</div>
+	<div class="descriptionBoxButton"></div>
 	<div class="descriptionBox">	
 		<div class="inputDescription">
 			<?php echo LanguageUtils::translate("Date input description") ?>

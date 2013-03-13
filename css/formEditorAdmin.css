@@ -13,7 +13,6 @@
 	float:right;
 	border: 1px solid #eee;
 	border-radius: 5px;
-	/*background-color: #CAD966;*/
 	background: -moz-linear-gradient(#fff, #ddd);
 	box-shadow: 2px 1px 0px 3px #ccc;
 }
@@ -42,13 +41,28 @@ div.sampleInputElement{
 	background: -moz-linear-gradient(#fff, #ddd);
 	background: -o-linear-gradient(#252525, #0a0a0a);
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#252525), to(#0a0a0a));
-	background: -webkit-linear-gradient(#252525, #0a0a0a);	
+	background: -webkit-linear-gradient(#252525, #0a0a0a);
+	
+	overflow: hidden;	
 }
 
 div.sampleInputElement .title{
-	font-weight: bold;
+    float: left;
+    font-weight: bold;
+    padding-top: 10px;
+    width: 200px;
+}
+
+.sampleInputElement .descriptionBoxButton{ 
+	width:32px;
+	height:32px;
+	background-image:url('icons/help.png');
+	background-repeat:no-repeat;
+	float:right;
 }
 
 div.sampleInputElement div.descriptionBox{
 	display:none;
+    float: left;
+    width: 100%;	
 }
