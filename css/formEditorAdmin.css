@@ -71,3 +71,7 @@ div.sampleInputElement div.descriptionBox{
     float: left;
     width: 100%;	
 }
+
+.dropEvent{
+	background-color:red;	
+}

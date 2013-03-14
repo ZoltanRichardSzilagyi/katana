@@ -25,7 +25,8 @@ class Katana{
 		$basePath = dirname(__FILE__);
 		$this->initUtilClasses($basePath);
 		
-		add_action("init", array($this, "registerPostTypes"));
+		add_action("init", array($this, "registerPostTypes"));		
+		$this->registerAdminAjaxControllers();
 	}
 	
 	private function initUtilClasses($basePath){
@@ -40,6 +41,19 @@ class Katana{
 	public function registerPostTypes(){
 		ClassLoader::getCustomPostTypeInstance("FormPostType");
 	}
+	
+	private function registerAjaxControllers(){
+		
+	}
+	
+	private function registerAdminAjaxControllers(){
+		if(!is_admin()){
+			return;
+		}
+		$controller = ClassLoader::getAjaxControllerInstance("FormEditorController");
+		$controller->registerAjaxEvents();
+	}
+	
 	
 }
 new Katana();

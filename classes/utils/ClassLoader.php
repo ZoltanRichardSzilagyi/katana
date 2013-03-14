@@ -59,6 +59,12 @@ class ClassLoader{
 		$utilClass = ClassLoader::createInstance($className);
 		return $utilClass;
 	}
+	
+	public static function getAjaxControllerInstance($className){
+		ClassLoader::requireClass("ajaxcontroller/AjaxController");	
+		ClassLoader::requireClass("ajaxcontroller/" . $className);
+		return ClassLoader::createInstance($className);
+	}	
 			
 	public static function getDaoInstance($daoClassName){
 		global $wpdb;
