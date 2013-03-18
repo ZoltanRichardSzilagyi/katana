@@ -80,9 +80,13 @@ class ClassLoader{
 		return ClassLoader::createInstance("ValueHolder");
 	}
 		
-	public static function getInputInstance($inputType, $inputPropertiesHolder){
-		ClassLoader::requireClass("input/AbstractInput");	
+	public static function requireInputType($inputType){
 		ClassLoader::requireClass("input/type/" . $inputType);
+	}
+	
+	public static function getInputInstance($inputType, $inputPropertiesHolder){
+		ClassLoader::requireClass("input/AbstractInput");			
+		ClassLoader::requireInputType($inputType);
 		return ClassLoader::createInstance($inputType, array($inputPropertiesHolder));
 	}
 	

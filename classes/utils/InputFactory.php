@@ -1,6 +1,6 @@
 <?php
 class InputFactory{
-		
+	// TODO delete, not used		
 	public static function getInputs($inputPropertiesHolderList){
 		$inputs = new ArrayObject();
 		$inputPropetiesIterator = $inputPropertiesHolderList->getIterator();
@@ -12,9 +12,12 @@ class InputFactory{
 	
 	public static function getByType($inputPropertiesHolder){
 		$inputType = $inputPropertiesHolder['className'];
+		ClassLoader::requireAllInput();
+		// TODO remove switch, secure check $className value and getInputInstance
 		switch ($inputType) {
 			case TextInput::className():
-				return InputFactory::getTextInput($inputPropertiesHolder);	
+				return InputFactory::getTextInput($inputPropertiesHolder);
+				return ClassLoader::getInputInstance(TextInput::className(), $inputPropertiesHolder);	
 			break;
 			
 			case NumberInput::className():
@@ -38,6 +41,7 @@ class InputFactory{
 	
 	public static function getSampleInputs(){  
 		ClassLoader::requireAllInput();	
+		
 		$sampleInputs = new ArrayObject();
 		$sampleInputs[TextInput::className()] = InputFactory::getSampleTextInput();
 		$sampleInputs[NumberInput::className()] = InputFactory::getSampleNumberInput();
@@ -91,9 +95,6 @@ class InputFactory{
 		$properties['thousand'] = ",";
 		$properties['format'] = "%v %s";
 		return InputFactory::getByType($properties);
-	}	
-	
-		
-	
+	}
 	
 }

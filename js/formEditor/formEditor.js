@@ -3,7 +3,15 @@
 	var FormEditor = function() {				
 		var self = this;
 		
-		var inputElements = {};
+		var InputElements = function(){
+			
+			this.add = function(name, properties){
+				this.name = properties;
+			}
+			
+		};
+		
+		inputElements = new InputElements();
 
 		var inputDescriptionButtonSelector = "div.sampleInputElement div.descriptionBoxButton";
 		
@@ -15,6 +23,7 @@
 			setSampleInputsDescriptionButtonEvents();
 			setFormAddEvent();
 		}
+
 		setSampleInputsDescriptionButtonEvents = function() {
 			var buttons = $(inputDescriptionButtonSelector);
 			$(buttons).each(function() {
@@ -29,38 +38,63 @@
 				});
 			});
 		};
-		
+		// TODO ugly name, find a better one		
 		setFormAddEvent = function(){
 			$(sampleInputListSelector).sortable({
-				connectWith : "ul"				
+				connectWith : "ul",
+				receive : function(event, ui){
+					$(ui.item).remove();
+				}
 			});
 			$(generatedInputListSelector).sortable({
 				connectWith : "ul",
 				receive : function(event, ui){
 					$(ui.item).after('<li></li>');
-					var newInput = $(ui.item).next(); 
-					console.log(newInput);
+					var newInput = $(ui.item).next(); 					
 					generateInput(ui.item, newInput);
 					$(sampleInputListSelector).sortable("cancel");
 				},
+				beforeStop : function(event, ui){
+					type = $(ui.item).attr("input-type");
+					if(type == undefined){
+						if(confirm("Delete input item?")){
+							$(ui.item).remove();	
+						}
+						
+					}
+				}
 				
-			});			
+			});
 			$(sampleInputListSelector).disableSelection();
 			
 		}
 				
 		generateInput = function(inputElement, newInput){			
-			var inputElementType = inputElement.attr("input-type");			
+			var inputElementType = inputElement.attr("input-type");
+			// FIXME hardcoded url			
 			$.ajax({
-			  type: 'GET',
+			  type: 'POST',
 			  url: '/wp-admin/admin-ajax.php?action=FormEditorController_generateInput&inputElementType=' + inputElementType,
-			  //dataType : 'json',
+			  dataType : 'json',
+			  data : {
+			  	inputElementProperties : {
+			  		className : inputElementType,
+			  		name : 'newInput',
+			  		template : inputElementType
+			  	}
+			  },
 			  success: function(result){
-			  	console.log(newInput);
-			  	newInput.html(result);				
+				attachNewInput(newInput, result);
 			  }
-			});			
-			
+			});
+		}
+		
+		attachNewInput = function(newInput, result){
+			  	newInput.html(result.content);
+			  	var properties = result.properties;
+			  	var name = properties.name;
+			  	inputElements.add(name, properties);
+ 				console.log(inputElements);
 		}
 	};
 

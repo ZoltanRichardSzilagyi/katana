@@ -1,4 +1,5 @@
 <?php
+ClassLoader::requireInputType("TextInput");
 class DateInput extends TextInput{
 	
 	protected $locale;

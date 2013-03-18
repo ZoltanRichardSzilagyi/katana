@@ -1,4 +1,5 @@
 <?php
+ClassLoader::requireInputType("TextInput");
 class CurrencyInput extends TextInput{
 	
 	protected $locale;

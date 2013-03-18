@@ -1,6 +1,10 @@
 <?php
 class FormEditorController extends AjaxController{
-	// TODO szétszedni a controllereket, és regisztrálásnál példányosítani, szabv. metódust hívni
+	
+	private $inputFactory;
+	
+	private $inputElementProperties;
+				
 	public function getClassName(){
 		return get_class();
 	}
@@ -10,17 +14,29 @@ class FormEditorController extends AjaxController{
 	}
 	
 	public function generateInput(){
-		$inputElementType = $this->getInputElementType();
-		if($inputElementType == null){
-			exit;
-		}
-		
-		echo '<input type="text" value="in progress ... :)" name="sample'.rand(0, 16384).'" />';
+		$this->setInputProperties();	
+		$this->getInputFactoryInstance();
+
+		$inputElement = InputFactory::getByType($this->inputElementProperties);
+				
+		$properties = $inputElement->getPropertiesList();
+		$inputContent = $inputElement->toString();
+		$retVal = array(
+			'properties' => $properties,
+			'content' => $inputContent
+		);
+		echo json_encode($retVal);
 		exit;
 	}
+		
+	private function setInputProperties(){		
+		if(isset($_POST['inputElementProperties'])){
+			$this->inputElementProperties = $_POST['inputElementProperties'];
+		}
+	}	
 	
-	private function getInputElementType(){
-		return isset($_GET['inputElementType']) ? $_GET['inputElementType'] : null; 
+	private function getInputFactoryInstance(){
+		$this->inputFactory = ClassLoader::getUtilsInstance("InputFactory");		
 	}
 	
 }

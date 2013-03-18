@@ -1,6 +1,5 @@
 <?php
 abstract class AbstractInput{
-// TODO rename to DomElement
 		
 	public abstract static function className();
 	
@@ -45,6 +44,22 @@ abstract class AbstractInput{
 		$this->templateValues = ClassLoader::getValueHolderInstance();
 		$this->templateValues->add("input", $this);
 		TemplateUtils::fetchTemplate("inputs/" . $this->getTemplate(), $this->templateValues);
+	}
+	
+	public function toString(){
+		ob_start();
+		$this->render();
+		return ob_get_clean();
+	}
+	
+	public function getPropertiesList(){
+		$reflectionObject = new ReflectionObject($this);
+		$properties = $reflectionObject->getProperties();
+		$propertiesList = array();
+		foreach($properties as  $property){
+			$propertiesList[] = $property->name;	
+		}
+		return $propertiesList;
 	}
 
 }

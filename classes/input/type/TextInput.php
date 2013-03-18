@@ -1,4 +1,5 @@
 <?php
+ClassLoader::requireClass("input/AbstractInput");
 class TextInput extends AbstractInput{
 		
 	protected $id;
