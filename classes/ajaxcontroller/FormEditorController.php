@@ -14,7 +14,8 @@ class FormEditorController extends AjaxController{
 		if($inputElementType == null){
 			exit;
 		}
-
+		
+		echo '<input type="text" value="in progress ... :)" name="sample'.rand(0, 16384).'" />';
 		exit;
 	}
 	

@@ -75,3 +75,10 @@ div.sampleInputElement div.descriptionBox{
 .dropEvent{
 	background-color:red;	
 }
+
+
+#generatedInputList{
+    background: none repeat scroll 0 0 red;
+    height: 200px;
+    width: 200px;	 
+}

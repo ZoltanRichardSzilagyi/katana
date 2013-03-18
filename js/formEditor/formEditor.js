@@ -6,10 +6,14 @@
 		var inputElements = {};
 
 		var inputDescriptionButtonSelector = "div.sampleInputElement div.descriptionBoxButton";
+		
+		var sampleInputListSelector = "#sampleInputsList";
+		
+		var generatedInputListSelector = "#generatedInputList";
 
 		this.init = function() {
 			setSampleInputsDescriptionButtonEvents();
-			setFormInputDragAndDropEvents();
+			setFormAddEvent();
 		}
 		setSampleInputsDescriptionButtonEvents = function() {
 			var buttons = $(inputDescriptionButtonSelector);
@@ -25,42 +29,36 @@
 				});
 			});
 		};
-
-		setFormInputDragAndDropEvents = function() {
-			$(".sampleInputElement").draggable({
-				revert : true
-			});
-			// TODO "hover effect"
-			$("#formEditor").droppable({
-				drop : function(event, ui) {
-					console.log(event);
-					console.log(ui);
-					var formEditor = $(this);
-					formEditor.addClass('dropEvent');
-					setTimeout(function(){
-						formEditor.removeClass('dropEvent');
-					}, 300);
-					
-					if(ui.draggable.length == 0){
-						return;
-					}
-					var inputElement = $(ui.draggable[0]);
-					var inputElementType = inputElement.attr("input-type");
-					if(inputElementType == undefined){
-						return;
-					}
-					generateInput(inputElementType);		
-				}
-			});
-		}
 		
-		generateInput = function(inputElementType){
+		setFormAddEvent = function(){
+			$(sampleInputListSelector).sortable({
+				connectWith : "ul"				
+			});
+			$(generatedInputListSelector).sortable({
+				connectWith : "ul",
+				receive : function(event, ui){
+					$(ui.item).after('<li></li>');
+					var newInput = $(ui.item).next(); 
+					console.log(newInput);
+					generateInput(ui.item, newInput);
+					$(sampleInputListSelector).sortable("cancel");
+				},
+				
+			});			
+			$(sampleInputListSelector).disableSelection();
+			$(generatedInputListSelector).disableSelection();
+			
+		}
+				
+		generateInput = function(inputElement, newInput){			
+			var inputElementType = inputElement.attr("input-type");			
 			$.ajax({
 			  type: 'GET',
 			  url: '/wp-admin/admin-ajax.php?action=FormEditorController_generateInput&inputElementType=' + inputElementType,
 			  //dataType : 'json',
-			  success: function(result){				
-				console.log(result);
+			  success: function(result){
+			  	console.log(newInput);
+			  	newInput.html(result);				
 			  }
 			});			
 			

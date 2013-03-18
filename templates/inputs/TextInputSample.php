@@ -1,4 +1,4 @@
-<div class="sampleInputElement" input-type="<?php echo $input::className() ?>">
+<div class="sampleInputElement">
 	<div class="title">
 		<?php echo LanguageUtils::translate("Text field") ?>
 	</div>	
