@@ -7,13 +7,14 @@
 			< >
 			</div>
 			<div id="formInputElements">
-				<ul id="generatedInputList" class="droptrue">
-				</ul>	
+				<form>
+					<ul id="generatedInputList" class="droptrue">
+					</ul>
+				</form>	
 			</div>
 		</div>
 		<div id="formEditorToolbox">
 			<div class="boxTitle"><?php echo LanguageUtils::translate("Fields");?></div>
-			<form>
 				<ul id="sampleInputsList" class="droptrue ui-sortable">
 					<?php $sampleInputsIterator = $sampleInputs->getIterator(); ?>			
 					<?php while($sampleInputsIterator->valid()){?>
@@ -24,7 +25,6 @@
 					<?php $sampleInputsIterator->next(); ?>
 					<?php } ?>
 				</ul>
-			</form>	
 		</div>	
 	</div>	
 </div>

@@ -46,7 +46,6 @@
 				
 			});			
 			$(sampleInputListSelector).disableSelection();
-			$(generatedInputListSelector).disableSelection();
 			
 		}
 				
