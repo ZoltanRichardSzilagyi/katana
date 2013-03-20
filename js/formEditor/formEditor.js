@@ -5,8 +5,12 @@
 		
 		var InputElements = function(){
 			
-			this.add = function(name, properties){
-				this.name = properties;
+				var inputs =  new Array();
+							
+			this.add = function(position, properties){
+				inputs.push(properties);
+				var lastElementIndex = inputElements.length--;
+				//this.name = properties;				
 			}
 			
 		};
@@ -54,6 +58,8 @@
 					generateInput(ui.item, newInput);
 					$(sampleInputListSelector).sortable("cancel");
 				},
+				// nem megfelelő, mozgatáskor is meghívódik
+				/*
 				beforeStop : function(event, ui){
 					type = $(ui.item).attr("input-type");
 					if(type == undefined){
@@ -62,8 +68,15 @@
 						}
 						
 					}
-				}
-				
+				},*/
+				update : function(event, ui){
+					if(ui.sender != null){
+						console.log('new item');
+					}
+					console.log(event);
+					console.log(ui);
+					console.log(ui.item.index());
+				}				
 			});
 			$(sampleInputListSelector).disableSelection();
 			
@@ -79,22 +92,26 @@
 			  data : {
 			  	inputElementProperties : {
 			  		className : inputElementType,
-			  		name : 'newInput',
 			  		template : inputElementType
 			  	}
 			  },
 			  success: function(result){
-				attachNewInput(newInput, result);
+				attachNewInput(newInput, result);				
 			  }
 			});
+		}
+		
+		generateInputName = function(inputElementType){
+			return "name" + Math.random * 1000;
 		}
 		
 		attachNewInput = function(newInput, result){
 			  	newInput.html(result.content);
 			  	var properties = result.properties;
-			  	var name = properties.name;
-			  	inputElements.add(name, properties);
- 				console.log(inputElements);
+			  	properties.name = generateInput();
+			  	var itemPosition = newInput.index();
+			  	inputElements.add(itemPosition, properties);
+			  	
 		}
 	};
 
