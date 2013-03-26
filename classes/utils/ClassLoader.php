@@ -23,20 +23,34 @@ class ClassLoader{
 		require_once(ClassLoader::$instance->classPath . $className . ".php");
 	}
 	
-	private static function createInstance($className, $constructorArgs = null){		
+	private static function createInstance($className, $constructorArgs = null, $dependencies = array()){
+		$object = null;			
+		
 		$class = new ReflectionClass($className);		
 		$constructor = $class->getConstructor();		
 		if($constructor != null && $constructorArgs != null){			
 			if(!is_array($constructorArgs)){
 				$constructorArgs = array($constructorArgs);
 			}			
-			return $class->newInstanceArgs($constructorArgs);
+			$object = $class->newInstanceArgs($constructorArgs);
 		}else{
-			return $class->newInstance();
-		}			
+			$object = $class->newInstance();
+		}
 		
+		if(!empty($dependencies)){
+			ClassLoader::setObjectDepencies($object, $dependencies);
+		}
+		return $object;
 	}
 	
+	private static function setObjectDepencies($object, $depencies){
+		// TODO with reflection
+		foreach($depencies as $propertyName => $propertyValue){
+			$setterName = "set" . $propertyName;
+			$object->$setterName = $propertyValue;
+		}
+	}
+		
 	public static function getClassInstance($className, $constructorArgs = null){
 		ClassLoader::requireClass($className);
 		if(strpos($className, "/") !== false){

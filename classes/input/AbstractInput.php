@@ -1,5 +1,9 @@
 <?php
 abstract class AbstractInput{
+	
+	protected $validator;
+	
+	protected $page;
 		
 	public abstract static function className();
 	
@@ -9,7 +13,21 @@ abstract class AbstractInput{
 	
 	public abstract function preRender();
 	
-	public abstract function validate();
+	public function validate(){
+		$this->vaidator->validate();
+	}
+	
+	public function setValidator($validator){
+		$this->validator = $validator;
+	}
+	
+	public function getPage($page){
+		return $this->page;
+	}
+	
+	public function setPage($page){
+		$this->page = $page;
+	}
 	
 	public function __construct($inputProperties = null){	
 		$this->setProperties($inputProperties);		

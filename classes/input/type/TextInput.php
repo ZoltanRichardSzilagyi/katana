@@ -23,15 +23,11 @@ class TextInput extends AbstractInput{
 	protected $maxLength;
 	
 	protected $classes = array();
-		
+			
 	public static function className(){
 		return get_class();
 	}
-	
-	public function validate(){
 		
-	}
-	
 	public function preRender(){
 	}	
 		

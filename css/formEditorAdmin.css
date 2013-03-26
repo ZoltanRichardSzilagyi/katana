@@ -73,12 +73,37 @@ div.sampleInputElement div.descriptionBox{
 }
 
 .dropEvent{
-	background-color:red;	
+	background-color:red;
 }
 
 
 #generatedInputList{
-    background: none repeat scroll 0 0 red;
+    /*background: none repeat scroll 0 0 red;*/
     height: 200px;
-    width: 200px;	 
+    width: 500px;	 
+}
+
+#formInputElements ul li{
+	display: block;
+	width: 100%;
+	float: left;
+}
+
+#formInputElements div.inputElement{
+	width:200px;
+	height:32px;
+	float:left;
+	padding:5px 0px 5px 0px;
+}
+
+#formInputElements div.options{
+	width:32px;
+	height:32px;
+	background-image:url('icons/tools.png');
+	background-repeat:no-repeat;
+	cursor: pointer;
+	float:right;
+}
+#windowWrapper{
+	display: none;
 }

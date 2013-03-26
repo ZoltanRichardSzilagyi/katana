@@ -5,12 +5,14 @@
 		
 		var InputElements = function(){
 			
-				var inputs =  new Array();
-							
-			this.add = function(position, properties){
-				inputs.push(properties);
-				var lastElementIndex = inputElements.length--;
-				//this.name = properties;				
+			this.actualPage = 1;
+										
+			this.add = function(name, properties){
+				this[name] = properties;				
+			}
+			
+			this.remove = function(name){
+				this[name] = null;
 			}
 			
 		};
@@ -54,13 +56,13 @@
 				connectWith : "ul",
 				receive : function(event, ui){
 					$(ui.item).after('<li></li>');
-					var newInput = $(ui.item).next(); 					
-					generateInput(ui.item, newInput);
+					var newInput = $(ui.item).next();
+					var generatorInput = ui.item;
+					generateInput(generatorInput, newInput);
 					$(sampleInputListSelector).sortable("cancel");
 				},
-				// nem megfelelő, mozgatáskor is meghívódik
-				/*
-				beforeStop : function(event, ui){
+				// TODO fixme (remove via drag out)
+				remove : function(event, ui){
 					type = $(ui.item).attr("input-type");
 					if(type == undefined){
 						if(confirm("Delete input item?")){
@@ -68,51 +70,95 @@
 						}
 						
 					}
-				},*/
-				update : function(event, ui){
-					if(ui.sender != null){
-						console.log('new item');
-					}
-					console.log(event);
-					console.log(ui);
-					console.log(ui.item.index());
 				}				
 			});
 			$(sampleInputListSelector).disableSelection();
 			
 		}
 				
-		generateInput = function(inputElement, newInput){			
+		generateInput = function(inputElement, newInput){
+			console.log(inputElement);			
 			var inputElementType = inputElement.attr("input-type");
-			// FIXME hardcoded url			
-			$.ajax({
-			  type: 'POST',
-			  url: '/wp-admin/admin-ajax.php?action=FormEditorController_generateInput&inputElementType=' + inputElementType,
-			  dataType : 'json',
-			  data : {
-			  	inputElementProperties : {
-			  		className : inputElementType,
-			  		template : inputElementType
-			  	}
-			  },
-			  success: function(result){
-				attachNewInput(newInput, result);				
-			  }
+			var inputName = generateInputName(inputElementType);
+			var inputElementProperties = {
+				name : inputName,
+				className : inputElementType,
+				template : inputElementType,
+				label : inputElementType
+			}
+			sendInputElement(inputElementProperties, function(result){
+				attachNewInput(newInput, result, inputElementProperties);
 			});
 		}
 		
-		generateInputName = function(inputElementType){
-			return "name" + Math.random * 1000;
+		sendInputElement = function(inputElementProperties, successCallback){
+			// FIXME hardcoded url			
+			$.ajax({
+			  type: 'POST',
+			  url: '/wp-admin/admin-ajax.php?action=FormEditorController_generateInput',
+			  dataType : 'json',
+			  data : {
+			  	inputElementProperties : inputElementProperties
+			  },
+			  success: successCallback
+			});			
 		}
 		
-		attachNewInput = function(newInput, result){
-			  	newInput.html(result.content);
-			  	var properties = result.properties;
-			  	properties.name = generateInput();
-			  	var itemPosition = newInput.index();
-			  	inputElements.add(itemPosition, properties);
-			  	
+		generateInputName = function(inputElementType){
+			if(inputElements[inputElementType] == null){
+				return inputElementType;
+			}else{
+				return "name";	
+			}			
 		}
+		
+		attachNewInput = function(newInput, result, inputElementProperties){				
+			  	newInput.html(result.content);
+			  	// TODO bind editor open event
+			  	newInput.append('<div class="options"></div>');
+			  	var optionsButton = newInput.find('div.options');
+			  	// XXX not used
+			  	//var properties = result.properties;
+			  	var itemPosition = newInput.index();
+			  	inputElements.add(inputElementProperties.name, inputElementProperties);
+				bindInputEditorHandler(optionsButton, inputElementProperties.name);  	
+		}
+		
+		bindInputEditorHandler = function(optionsButton, inputName){
+			optionsButton.click(function(){
+				$("#windowWrapper").dialog({
+					draggable : true,
+					//modal : true,
+					resizable: true,
+					minWidth: 300,
+					minHeight: 300,
+					// TODO multilinguale
+					title: inputName + " editor",
+					zIndex: 85000,
+					show: true,
+					hide: true,
+					buttons : {
+						"Cancel": function(ev, ui){
+							$(this).dialog("destroy");
+						},
+						"Save": function(){
+							saveInputProperties();
+						}
+						
+					}
+				});
+				// TODO generate editor content
+			});
+		}
+		
+		saveInputProperties = function(){
+			// TODO
+		}
+		
+		unbindInputEditorHandler = function(){
+			// TODO
+		}
+		
 	};
 
 	formEditor = new FormEditor();

@@ -8,9 +8,5 @@ class NumberInput extends TextInput{
 	
 	public function preRender(){
 	}
-	
-	public function validate(){
-	
-	}		
-	
+		
 }

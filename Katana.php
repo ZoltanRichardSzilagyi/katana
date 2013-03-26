@@ -56,4 +56,5 @@ class Katana{
 	
 	
 }
+
 new Katana();

@@ -22,11 +22,7 @@ class CurrencyInput extends TextInput{
 	
 	public function preRender(){
 	}
-	
-	public function validate(){
-	
-	}
-	
+		
 	public function getLocale(){
 		return $this->locale;
 	}
