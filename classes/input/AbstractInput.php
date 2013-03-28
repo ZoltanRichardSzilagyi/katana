@@ -98,7 +98,8 @@ abstract class AbstractInput{
 		$properties = $reflectionObject->getProperties();
 		$propertiesList = array();
 		foreach($properties as  $property){
-			$propertiesList[$property->name] = $property->name;	
+			$property->setAccessible(true);
+			$propertiesList[$property->name] = $property->getValue($this);				
 		}
 		return $propertiesList;
 	}
