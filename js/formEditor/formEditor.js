@@ -2,18 +2,23 @@
 
 	var FormEditor = function() {				
 		var self = this;
-		
+		var position = 1;
 		var InputEditorElements = {
 			name : {
 				label: 'Mező neve',
 				type: 'text',
-				position:1
+				position:position++
 			},
 			readOnly : {
 				label: 'Csak olvasható',
 				type: 'checkbox',
-				position: 2
-			}
+				position:position++
+			},
+			maxLength : {
+				label: 'Bevihető szöveg hossza',
+				type: 'text',
+				position:position++
+			},			
 		};
 		
 		var InputElements = function(){
@@ -176,10 +181,11 @@
 			})
 			var attributePropertyInputs = new Array();
 			for(propertyIndex in properties){
-				var property = properties[propertyIndex];
-				var propertyAttributes = InputEditorElements[property];				
-				if(propertyAttributes != undefined){					
-					var inputId = inputName + "_" + property;
+				var property = propertyIndex;
+				var propertyAttributes = InputEditorElements[propertyIndex];
+				if(propertyAttributes != undefined){
+					propertyAttributes.value = properties[propertyIndex];
+					var inputId = inputName + "_" + propertyIndex;
 					generateInputWindowInput(attributePropertyInputs, inputId, propertyAttributes);					
 				}	
 				
@@ -203,6 +209,7 @@
 					input.prop('name', inputId);
 					input.prop('id', inputId);
 					input.prop("type", "text");
+					input.prop("value", attributes.value);
 					
 				break;
 				case 'checkbox' :
@@ -210,6 +217,9 @@
 					input.prop('name', inputId);
 					input.prop('id', inputId);
 					input.prop('type', 'checkbox');
+					if(attributes.value == true){
+						input.prop('checked', true);	
+					}
 				break;				
 			}
 			wrapper = $('<div/>',{});
