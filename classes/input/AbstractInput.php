@@ -1,6 +1,18 @@
 <?php
 abstract class AbstractInput{
+		
+	protected $readOnly = false;
 	
+	protected $disabled = false;
+	
+	protected $template;
+	
+	protected $name;
+	
+	protected $id;	
+	
+	protected $label;
+		
 	protected $validator;
 	
 	protected $page;
@@ -8,11 +20,22 @@ abstract class AbstractInput{
 	public abstract static function className();
 	
 	public abstract function getType();
-	
-	public abstract function getId();
-	
+		
 	public abstract function preRender();
 	
+	public function getName(){
+		return $this->name;
+	}	
+	
+	public function getId(){
+		return $this->id;
+	}
+	
+	public function getLabel(){
+		return $this->label;
+	}
+	
+		
 	public function validate(){
 		$this->vaidator->validate();
 	}
@@ -75,7 +98,7 @@ abstract class AbstractInput{
 		$properties = $reflectionObject->getProperties();
 		$propertiesList = array();
 		foreach($properties as  $property){
-			$propertiesList[] = $property->name;	
+			$propertiesList[$property->name] = $property->name;	
 		}
 		return $propertiesList;
 	}

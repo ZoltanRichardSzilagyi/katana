@@ -3,6 +3,19 @@
 	var FormEditor = function() {				
 		var self = this;
 		
+		var InputEditorElements = {
+			name : {
+				label: 'Mező neve',
+				type: 'text',
+				position:1
+			},
+			readOnly : {
+				label: 'Csak olvasható',
+				type: 'checkbox',
+				position: 2
+			}
+		};
+		
 		var InputElements = function(){
 			
 			this.actualPage = 1;
@@ -27,7 +40,7 @@
 
 		this.init = function() {
 			setSampleInputsDescriptionButtonEvents();
-			setFormAddEvent();
+			bindFormAddEvent();
 		}
 
 		setSampleInputsDescriptionButtonEvents = function() {
@@ -43,9 +56,8 @@
 
 				});
 			});
-		};
-		// TODO ugly name, find a better one		
-		setFormAddEvent = function(){
+		};		
+		bindFormAddEvent = function(){
 			$(sampleInputListSelector).sortable({
 				connectWith : "ul",
 				receive : function(event, ui){
@@ -76,8 +88,7 @@
 			
 		}
 				
-		generateInput = function(inputElement, newInput){
-			console.log(inputElement);			
+		generateInput = function(inputElement, newInput){			
 			var inputElementType = inputElement.attr("input-type");
 			var inputName = generateInputName(inputElementType);
 			var inputElementProperties = {
@@ -117,18 +128,27 @@
 			  	// TODO bind editor open event
 			  	newInput.append('<div class="options"></div>');
 			  	var optionsButton = newInput.find('div.options');
-			  	// XXX not used
-			  	//var properties = result.properties;
+
 			  	var itemPosition = newInput.index();
-			  	inputElements.add(inputElementProperties.name, inputElementProperties);
-				bindInputEditorHandler(optionsButton, inputElementProperties.name);  	
+			  	var inputName = inputElementProperties.name;
+			  	
+			  	inputElements.add(inputName, inputElementProperties);
+
+				var inputWindowWrapperId = "#window_" + inputName;					
+				var inputWindowWrapper = $('<div/>', {
+					id : inputWindowWrapperId,
+				});
+				inputWindowWrapper.addClass("inputWindowEditor");
+				generateInputWindowForm(inputName, inputWindowWrapper, result.properties);	
+				
+				bindInputEditorHandler(optionsButton, inputElementProperties.name, inputWindowWrapper);
 		}
 		
-		bindInputEditorHandler = function(optionsButton, inputName){
+		bindInputEditorHandler = function(optionsButton, inputName, inputWindowWrapper){
 			optionsButton.click(function(){
-				$("#windowWrapper").dialog({
+
+				$(inputWindowWrapper).dialog({
 					draggable : true,
-					//modal : true,
 					resizable: true,
 					minWidth: 300,
 					minHeight: 300,
@@ -151,12 +171,61 @@
 			});
 		}
 		
+		generateInputWindowForm = function(inputName, wrapper, properties){
+			var propertyForm = $('<form/>',{			
+			})
+			var attributePropertyInputs = new Array();
+			for(propertyIndex in properties){
+				var property = properties[propertyIndex];
+				var propertyAttributes = InputEditorElements[property];				
+				if(propertyAttributes != undefined){					
+					var inputId = inputName + "_" + property;
+					generateInputWindowInput(attributePropertyInputs, inputId, propertyAttributes);					
+				}	
+				
+			};
+			$.each(attributePropertyInputs, function(index, propertyInput){
+				propertyForm.append(propertyInput);
+			});
+			wrapper.append(propertyForm);
+		}
+		
+		generateInputWindowInput = function(attributePropertyInputs, inputId, attributes){
+			var type = attributes.type;
+			var input;
+			var label = $('<label/>', {
+				text: attributes.label,
+			});
+			label.prop('for', inputId);
+			switch(type){
+				case 'text' :
+					input = $('<input/>', {});
+					input.prop('name', inputId);
+					input.prop('id', inputId);
+					input.prop("type", "text");
+					
+				break;
+				case 'checkbox' :
+					input = $('<input/>', {});
+					input.prop('name', inputId);
+					input.prop('id', inputId);
+					input.prop('type', 'checkbox');
+				break;				
+			}
+			wrapper = $('<div/>',{});
+			wrapper.addClass('inputPropertyWrapper');
+			wrapper.append(label);
+			wrapper.append(input)
+			attributePropertyInputs[attributes.position] = wrapper;
+		}
+		
 		saveInputProperties = function(){
 			// TODO
 		}
 		
 		unbindInputEditorHandler = function(){
-			// TODO
+			// TODO when input delete
+			// TODO delete inputwindowwrapper
 		}
 		
 	};

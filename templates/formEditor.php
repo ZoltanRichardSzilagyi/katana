@@ -27,10 +27,6 @@
 				</ul>
 		</div>
 		<div id="windowWrapper">
-			<form>
-				<label for="name">Name</label>
-				<input type="name"/ name="name" id="name">
-			</form>	
 		</div>
 	</div>	
 </div>
