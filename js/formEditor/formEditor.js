@@ -77,7 +77,7 @@
 			$(generatedInputListSelector).sortable({
 				connectWith : "ul",
 				receive : function(event, ui){
-					$(ui.item).after('<li></li>');
+					$(ui.item).after('<li class="inputWrapper"></li>');
 					var newInput = $(ui.item).next();
 					var generatorInput = ui.item;
 					generateInput(generatorInput, newInput);
@@ -108,7 +108,7 @@
 				label : inputElementType
 			}
 			sendInputElement(inputElementProperties, function(result){
-				attachNewInput(newInput, result, inputElementProperties);
+				attachNewInput(newInput, result, result.properties);
 			});
 		}
 		
@@ -129,13 +129,14 @@
 			if(inputElements[inputElementType] == null){
 				return inputElementType;
 			}else{
+				// TODO generate name
 				return "name";	
 			}			
 		}
 		
-		attachNewInput = function(newInput, result, inputElementProperties){				
+		attachNewInput = function(newInput, result, inputElementProperties){
 			  	newInput.html(result.content);
-			  	// TODO bind editor open event
+
 			  	newInput.append('<div class="options"></div>');
 			  	var optionsButton = newInput.find('div.options');
 
@@ -245,26 +246,26 @@
 		}
 		
 		changeInputProperties = function(form){
-			var inputOldName = $(form).find('input[name=old-name]');
-			var oldName = inputOldName.val();
-
+			var inputOldName = $(form).find('input[name=old-name]');			
+			var oldName = inputOldName.val();			
 			var inputType = inputElements[oldName].className;
-
-			var inputs = $(form).find('input, select');
+			var inputs = $(form).find('input, select').not('input[name=old-name]');
+			
+			var inputProperties = $.extend(true, {}, inputElements[oldName]);;
 			$.each(inputs, function(index, input){
 				var inputName = $(input).prop('name');
 				var inputNamePrefix = inputType + '_';
-				console.log(inputNamePrefix);
 				var propertyName = inputName.replace(inputNamePrefix, '');
-				console.log(propertyName);
-
+				var inputValue = $(input).val();
+				inputProperties[propertyName] = inputValue;
 			});
-			// TODO check new name is unique
-			//sendInputElement(form, test);
-		}
-		
-		test = function(result){
-			console.log(result);
+			
+			var generatedInput = $('input[name='+oldName+']');
+			var inputWrapper = generatedInput.closest('li.inputWrapper');
+			sendInputElement(inputProperties, function(result){
+				attachNewInput(inputWrapper, result, result.properties);
+			});			
+
 		}
 		
 		unbindInputEditorHandler = function(){

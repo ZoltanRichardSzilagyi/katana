@@ -23,6 +23,10 @@ abstract class AbstractInput{
 		
 	public abstract function preRender();
 	
+	private $excludedProperties = array(
+		'validator' => true
+	);
+	
 	public function __construct($inputProperties = null){	
 		$this->setProperties($inputProperties);		
 	}	
