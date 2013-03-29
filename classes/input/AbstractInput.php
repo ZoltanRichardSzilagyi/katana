@@ -23,6 +23,10 @@ abstract class AbstractInput{
 		
 	public abstract function preRender();
 	
+	public function __construct($inputProperties = null){	
+		$this->setProperties($inputProperties);		
+	}	
+	
 	public function getName(){
 		return $this->name;
 	}	
@@ -37,7 +41,11 @@ abstract class AbstractInput{
 	
 		
 	public function validate(){
-		$this->vaidator->validate();
+		$this->validator->validate($this->getPropertiesList());
+	}
+	
+	public function getValidator(){
+		return $this->validator; 
 	}
 	
 	public function setValidator($validator){
@@ -51,12 +59,7 @@ abstract class AbstractInput{
 	public function setPage($page){
 		$this->page = $page;
 	}
-	
-	public function __construct($inputProperties = null){	
-		$this->setProperties($inputProperties);		
-	}
-			
-	
+		
 	public function getTemplate(){
 		return $this->template;
 	}
@@ -87,7 +90,7 @@ abstract class AbstractInput{
 		TemplateUtils::fetchTemplate("inputs/" . $this->getTemplate(), $this->templateValues);
 	}
 	
-	public function toString(){
+	public function toHtml(){
 		ob_start();
 		$this->render();
 		return ob_get_clean();

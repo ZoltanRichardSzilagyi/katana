@@ -10,25 +10,45 @@ class FormEditorController extends AjaxController{
 	}
 	
 	public function registerAjaxEvents(){
-		$this->addAdminEvent("generateInput");	
+		$this->addAdminEvent("generateInput");
+		$this->addAdminEvent("saveForm");	
 	}
 	
 	public function generateInput(){
+		$this->exitAtEmptyInputProperties();
 		$this->setInputProperties();	
 		$this->getInputFactoryInstance();
-
 		$inputElement = InputFactory::getByType($this->inputElementProperties);
-				
 		$properties = $inputElement->getPropertiesList();
-		$inputContent = $inputElement->toString();
+		// TODO wrap inputproperties array, add getClassName and other standard methods
+		$validator = ClassLoader::getInputValidatorInstance($this->inputElementProperties['className']);
+		$inputElement->setValidator($validator);
+		
+		$inputElement->validate();
+		$validationResult = $inputElement->getValidator()->getValidationResult();
 		$retVal = array(
 			'properties' => $properties,
-			'content' => $inputContent
+			'content' => $inputElement->toHtml(),
+			'errors' => $validationResult
 		);
 		echo json_encode($retVal);
 		exit;
 	}
-		
+	
+	public function saveForm(){
+		// TODO
+	}
+			
+	private function exitAtEmptyInputProperties(){
+		if(!$this->isInputPropertiesSended()){
+			exit;
+		}		
+	}
+	
+	private function isInputPropertiesSended(){
+		return isset($_POST['inputElementProperties']);
+	}
+	
 	private function setInputProperties(){		
 		if(isset($_POST['inputElementProperties'])){
 			$this->inputElementProperties = $_POST['inputElementProperties'];
@@ -38,5 +58,6 @@ class FormEditorController extends AjaxController{
 	private function getInputFactoryInstance(){
 		$this->inputFactory = ClassLoader::getUtilsInstance("InputFactory");		
 	}
+	
 	
 }

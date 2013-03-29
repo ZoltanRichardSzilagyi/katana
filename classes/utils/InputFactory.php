@@ -16,7 +16,6 @@ class InputFactory{
 		// TODO remove switch, secure check $className value and getInputInstance
 		switch ($inputType) {
 			case TextInput::className():
-				return InputFactory::getTextInput($inputPropertiesHolder);
 				return ClassLoader::getInputInstance(TextInput::className(), $inputPropertiesHolder);	
 			break;
 			
@@ -33,11 +32,6 @@ class InputFactory{
 			break;
 		}
 	}
-	
-	public static function getTextInput($inputPropertiesHolder){
-		return ClassLoader::getInputInstance(TextInput::className(), $inputPropertiesHolder);
-	}
-	
 	
 	public static function getSampleInputs(){  
 		ClassLoader::requireAllInput();	

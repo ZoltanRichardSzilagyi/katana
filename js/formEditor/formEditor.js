@@ -9,6 +9,11 @@
 				type: 'text',
 				position:position++
 			},
+			label : {
+				label: 'Mező címkéje',
+				type: 'text',
+				position:position++
+			},			
 			readOnly : {
 				label: 'Csak olvasható',
 				type: 'checkbox',
@@ -167,7 +172,7 @@
 							$(this).dialog("destroy");
 						},
 						"Save": function(){
-							saveInputProperties();
+							changeInputProperties($(this).find('form'));
 						}
 						
 					}
@@ -186,14 +191,24 @@
 				if(propertyAttributes != undefined){
 					propertyAttributes.value = properties[propertyIndex];
 					var inputId = inputName + "_" + propertyIndex;
-					generateInputWindowInput(attributePropertyInputs, inputId, propertyAttributes);					
+					generateInputWindowInput(attributePropertyInputs, inputId, propertyAttributes);										
 				}	
 				
 			};
 			$.each(attributePropertyInputs, function(index, propertyInput){
 				propertyForm.append(propertyInput);
 			});
-			wrapper.append(propertyForm);
+			var oldNameInput = createHiddenInputField('old-name', inputName);
+			propertyForm.append(oldNameInput);
+			wrapper.append(propertyForm);			
+		}
+		
+		createHiddenInputField = function(name, value){
+			var input = $('<input/>');
+			input.prop('name', name);
+			input.prop('type', 'hidden');
+			input.val(value);
+			return input;
 		}
 		
 		generateInputWindowInput = function(attributePropertyInputs, inputId, attributes){
@@ -229,8 +244,27 @@
 			attributePropertyInputs[attributes.position] = wrapper;
 		}
 		
-		saveInputProperties = function(){
-			// TODO
+		changeInputProperties = function(form){
+			var inputOldName = $(form).find('input[name=old-name]');
+			var oldName = inputOldName.val();
+
+			var inputType = inputElements[oldName].className;
+
+			var inputs = $(form).find('input, select');
+			$.each(inputs, function(index, input){
+				var inputName = $(input).prop('name');
+				var inputNamePrefix = inputType + '_';
+				console.log(inputNamePrefix);
+				var propertyName = inputName.replace(inputNamePrefix, '');
+				console.log(propertyName);
+
+			});
+			// TODO check new name is unique
+			//sendInputElement(form, test);
+		}
+		
+		test = function(result){
+			console.log(result);
 		}
 		
 		unbindInputEditorHandler = function(){

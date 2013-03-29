@@ -104,6 +104,17 @@ class ClassLoader{
 		return ClassLoader::createInstance($inputType, array($inputPropertiesHolder));
 	}
 	
+	public static function getInputValidatorInstance($inputType){
+		$validatorClassName = $inputType . "Validator";
+		ClassLoader::requireInputValidator($validatorClassName);
+		return ClassLoader::createInstance($validatorClassName);
+	}
+	
+	private static function requireInputValidator($validatorClassName){
+		ClassLoader::requireClass("input/validator/type/" . $validatorClassName);
+	}
+	
+	
 		
 	public static function requireAllInput(){
 		$inputTypesBasePath = ClassLoader::$instance->classPath . "input/type/";	

@@ -5,8 +5,8 @@ abstract class AbstractInputValidator{
 	
 	protected $errors = array();
 	
-	public function validate($inputValues){		
-		foreach($inputValues as $key->$value){
+	public function validate($inputProperties){		
+		foreach($inputProperties as $key => $value){
 						
 		}
 	}
