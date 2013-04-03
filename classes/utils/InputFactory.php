@@ -52,8 +52,7 @@ class InputFactory{
 		$properties['value'] = "Gordon Freeman";
 		$properties['label'] = "Your name";
 		$properties['maxLength'] = "64";
-		$properties['placeHolder'] = "Your name";
-		$properties['readOnly'] = true;						
+		$properties['placeholder'] = "Your name";						
 		return InputFactory::getByType($properties);
 	}
 	
@@ -66,8 +65,7 @@ class InputFactory{
 		$properties['value'] = "22";
 		$properties['label'] = "Your age";
 		$properties['maxLength'] = "2";
-		$properties['placeHolder'] = "Your age";
-		$properties['readOnly'] = true;
+		$properties['placeholder'] = "Your age";
 		return InputFactory::getByType($properties);
 	}
 	
@@ -80,8 +78,7 @@ class InputFactory{
 		$properties['value'] = "1054333";
 		$properties['label'] = "Price";
 		$properties['maxLength'] = "15";
-		$properties['placeHolder'] = "Item price";
-		$properties['readOnly'] = true;
+		$properties['placeholder'] = "Item price";
 		$properties['locale'] = "Magyar forint";
 		$properties['symbol'] = "HUF";
 		$properties['decimal'] = ".";

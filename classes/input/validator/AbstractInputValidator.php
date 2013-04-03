@@ -15,6 +15,10 @@ abstract class AbstractInputValidator{
 		return $this->errors;
 	}
 	
+	public function isValid(){
+		return empty($this->errors);
+	}
+	
 	public function addError($inputName, $message){
 		$this->errors[$inputName] = $message;
 	}

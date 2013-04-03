@@ -13,6 +13,11 @@
 				label: 'Mező címkéje',
 				type: 'text',
 				position:position++
+			},
+			placeholder : {
+				label: 'Placeholder',
+				type: 'text',
+				position:position++
 			},			
 			readOnly : {
 				label: 'Csak olvasható',
@@ -173,7 +178,7 @@
 							$(this).dialog("destroy");
 						},
 						"Save": function(){
-							changeInputProperties($(this).find('form'));
+							changeInputProperties($(this));
 						}
 						
 					}
@@ -225,7 +230,7 @@
 					input.prop('name', inputId);
 					input.prop('id', inputId);
 					input.prop("type", "text");
-					input.prop("value", attributes.value);
+					input.prop('value', attributes.value);
 					
 				break;
 				case 'checkbox' :
@@ -233,7 +238,8 @@
 					input.prop('name', inputId);
 					input.prop('id', inputId);
 					input.prop('type', 'checkbox');
-					if(attributes.value == true){
+					input.prop('value', 1);
+					if(attributes.value == 1){
 						input.prop('checked', true);	
 					}
 				break;				
@@ -245,27 +251,59 @@
 			attributePropertyInputs[attributes.position] = wrapper;
 		}
 		
-		changeInputProperties = function(form){
+		changeInputProperties = function(propertyWindow){
+			var form = $(propertyWindow).find('form');
 			var inputOldName = $(form).find('input[name=old-name]');			
 			var oldName = inputOldName.val();			
-			var inputType = inputElements[oldName].className;
-			var inputs = $(form).find('input, select').not('input[name=old-name]');
+			var inputs = $(form).find('input, select, textarea').not('input[name=old-name]');
 			
-			var inputProperties = $.extend(true, {}, inputElements[oldName]);;
+			var inputProperties = $.extend(true, {}, inputElements[oldName]);			
 			$.each(inputs, function(index, input){
 				var inputName = $(input).prop('name');
-				var inputNamePrefix = inputType + '_';
+				var inputNamePrefix = oldName + '_';
 				var propertyName = inputName.replace(inputNamePrefix, '');
 				var inputValue = $(input).val();
-				inputProperties[propertyName] = inputValue;
+				switch($(input).prop("type")){
+					case 'checkbox':
+						if($(input).prop("checked")){
+							inputProperties[propertyName] = 1;	
+						}else{
+							inputProperties[propertyName] = 0;
+						}
+					break;
+					case 'select-one':
+						// TODO
+					break;
+					default:
+						inputProperties[propertyName] = inputValue;
+					break;
+				}
+				
 			});
-			
-			var generatedInput = $('input[name='+oldName+']');
-			var inputWrapper = generatedInput.closest('li.inputWrapper');
 			sendInputElement(inputProperties, function(result){
-				attachNewInput(inputWrapper, result, result.properties);
+				propertyWindowSaveEvent(oldName, result, propertyWindow);
+				
 			});			
 
+		}
+		
+		propertyWindowSaveEvent = function(inputOldName, result, propertyWindow){
+			if(result.valid){
+				var generatedInput = $('input[name='+inputOldName+']');
+				var inputWrapper = generatedInput.closest('li.inputWrapper');				
+				attachNewInput(inputWrapper, result, result.properties);
+				inputElements[inputOldName] = null;
+				var inputName = result.properties.name;				
+				inputElements[inputName] = result.properties;
+				propertyWindow.dialog('destroy');
+				console.log(inputElements);
+			}else{
+				propertyWindowErrorEvent(result);
+			}
+		}
+		
+		propertyWindowErrorEvent = function(result){
+			
 		}
 		
 		unbindInputEditorHandler = function(){

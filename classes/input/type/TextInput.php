@@ -4,7 +4,7 @@ class TextInput extends AbstractInput{
 
 	protected $value;
 		
-	protected $placeHolder;
+	protected $placeholder;
 		
 	protected $maxLength;
 	
@@ -27,8 +27,8 @@ class TextInput extends AbstractInput{
 	}
 	
 	
-	public function getPlaceHolder(){
-		return $this->placeHolder;
+	public function getPlaceholder(){
+		return $this->placeholder;
 	}
 	
 	public function getMaxLength(){
