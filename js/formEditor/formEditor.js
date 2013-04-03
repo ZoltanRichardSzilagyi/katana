@@ -1,5 +1,6 @@
 (function($) {
-
+	
+	// TODO create sample window instead of embedded that in the button
 	var FormEditor = function() {				
 		var self = this;
 		var position = 1;
