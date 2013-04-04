@@ -77,7 +77,7 @@ div.sampleInputElement div.descriptionBox{
 }
 
 
-#generatedInputList{
+.generatedInputList{
     /*background: none repeat scroll 0 0 red;*/
     height: 200px;
     width: 500px;	 
@@ -96,7 +96,7 @@ div.sampleInputElement div.descriptionBox{
 	padding:5px 0px 5px 0px;
 }
 
-#formInputElements div.options{
+div.options{
 	width:32px;
 	height:32px;
 	background-image:url('icons/tools.png');
@@ -106,4 +106,59 @@ div.sampleInputElement div.descriptionBox{
 }
 #windowWrapper{
 	display: none;
+}
+#currentPage{
+	width:32px;
+	height:32px;
+	float:left;	
+}
+
+#formPager{
+	float: left;
+}
+
+#formPageOptions{
+	float:right;
+}
+
+#formPageOptions div{
+	float:left;
+}
+
+#prevPage{
+	width:32px;
+	height:32px;
+	background-image:url('icons/back.png');
+	opacity:0.3;
+	float:left;	
+}
+#nextPage{
+	width:32px;
+	height:32px;
+	background-image:url('icons/forward.png');
+	opacity:0.3;
+	float:left;	
+}
+
+#addPage{
+	width:32px;
+	height:32px;
+	background-image:url('icons/page.png');
+	background-repeat:no-repeat;
+	cursor: pointer;
+}
+
+#editPage{
+	width:32px;
+	height:32px;
+	background-image:url('icons/settings.png');
+	background-repeat:no-repeat;
+	cursor: pointer;		
+}
+
+#deletePage{
+	width:32px;
+	height:32px;
+	background-image:url('icons/rubbish-bin.png');
+	opacity:0.3;
 }

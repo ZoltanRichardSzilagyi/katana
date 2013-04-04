@@ -1,9 +1,9 @@
 (function($) {
-	
-	// TODO create sample window instead of embedded that in the button
+		
 	var FormEditor = function() {				
 		var self = this;
 		var position = 1;
+		// TODO translate texts
 		var InputEditorElements = {
 			name : {
 				label: 'Mező neve',
@@ -32,19 +32,41 @@
 			},			
 		};
 		
-		var InputElements = function(){
-			
-			this.actualPage = 1;
-										
+		var InputElements = function(){														
 			this.add = function(name, properties){
 				this[name] = properties;				
-			}
-			
+			}			
 			this.remove = function(name){
 				this[name] = null;
+			}			
+		};
+		
+		var Pages = function(){
+			var pagesNum = 1;
+			var currentPage = 1;
+			
+			this.add = function(){
+				pagesNum++;
+				currentPage = pagesNum;
+			}
+			this.remove = function(){
+				pagesNum--;
 			}
 			
-		};
+			this.getPagesNum = function(){
+				return pagesNum;
+			}
+			
+			this.setCurrentPage = function(pageId){
+				currentPage = pageId;
+			}
+			
+			this.getCurrentPage = function(){
+				return currentPage;
+			}
+		}
+		
+		var pages = new Pages();
 		
 		inputElements = new InputElements();
 
@@ -52,11 +74,16 @@
 		
 		var sampleInputListSelector = "#sampleInputsList";
 		
-		var generatedInputListSelector = "#generatedInputList";
+		var generatedInputListSelector = ".generatedInputList";
+		
+		var newPageButtonSelector = "#addPage";
+		
+		var currentPageSelector = "#currentPage";
 
 		this.init = function() {
 			setSampleInputsDescriptionButtonEvents();
 			bindFormAddEvent();
+			addNewPageButtonEvent();
 		}
 
 		setSampleInputsDescriptionButtonEvents = function() {
@@ -80,7 +107,15 @@
 					$(ui.item).remove();
 				}
 			});
-			$(generatedInputListSelector).sortable({
+			// TODO create sample window instead of embedded that in the button
+			$(sampleInputListSelector).disableSelection();
+			
+			setGeneratedInputsListToSortable($(generatedInputListSelector));			
+		}
+		
+		setGeneratedInputsListToSortable = function(inputLists){
+			// TODO move to an own function
+			$(inputLists).sortable({
 				connectWith : "ul",
 				receive : function(event, ui){
 					$(ui.item).after('<li class="inputWrapper"></li>');
@@ -99,9 +134,7 @@
 						
 					}
 				}				
-			});
-			$(sampleInputListSelector).disableSelection();
-			
+			});			
 		}
 				
 		generateInput = function(inputElement, newInput){			
@@ -310,6 +343,17 @@
 		unbindInputEditorHandler = function(){
 			// TODO when input delete
 			// TODO delete inputwindowwrapper
+		}
+		
+		addNewPageButtonEvent = function(){
+			$(newPageButtonSelector).click(function(){
+				addNewPage();				
+			});
+		}
+		
+		addNewPage = function(){
+			pages.add();
+			$(currentPageSelector).html(pages.getPagesNum());
 		}
 		
 	};
