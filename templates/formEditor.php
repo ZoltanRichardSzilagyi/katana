@@ -6,7 +6,7 @@
 			</div>
 			<div id="formInputElements">
 				<form>
-					<ul class="generatedInputList droptrue active" page-id="1">
+					<ul class="formPage droptrue active" page-id="1">
 					</ul>
 				</form>	
 			</div>

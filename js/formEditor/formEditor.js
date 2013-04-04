@@ -74,11 +74,15 @@
 		
 		var sampleInputListSelector = "#sampleInputsList";
 		
-		var generatedInputListSelector = ".generatedInputList";
+		var formPageSelector = ".formPage";
+		
+		var activeFormPageSelector =".formPage.active"
 		
 		var newPageButtonSelector = "#addPage";
 		
 		var currentPageSelector = "#currentPage";
+		
+		var formInputElementsSelector = "#formInputElements";
 
 		this.init = function() {
 			setSampleInputsDescriptionButtonEvents();
@@ -110,11 +114,10 @@
 			// TODO create sample window instead of embedded that in the button
 			$(sampleInputListSelector).disableSelection();
 			
-			setGeneratedInputsListToSortable($(generatedInputListSelector));			
+			setFormpageToSortable($(formPageSelector));			
 		}
 		
-		setGeneratedInputsListToSortable = function(inputLists){
-			// TODO move to an own function
+		setFormpageToSortable = function(inputLists){
 			$(inputLists).sortable({
 				connectWith : "ul",
 				receive : function(event, ui){
@@ -211,13 +214,12 @@
 						"Cancel": function(ev, ui){
 							$(this).dialog("destroy");
 						},
-						"Save": function(){
+						"Save": function(){							
 							changeInputProperties($(this));
 						}
 						
 					}
 				});
-				// TODO generate editor content
 			});
 		}
 		
@@ -337,7 +339,8 @@
 		}
 		
 		propertyWindowErrorEvent = function(result){
-			
+			// TODO develop
+			alert('input property error');	
 		}
 		
 		unbindInputEditorHandler = function(){
@@ -354,7 +357,24 @@
 		addNewPage = function(){
 			pages.add();
 			$(currentPageSelector).html(pages.getPagesNum());
+			
+			var newFormPage = createNewFormPage();
+			$(formInputElementsSelector).append(newFormPage);
+			setFormpageToSortable(newFormPage);
+			setFormPageToActive(newFormPage);
 		}
+		
+		createNewFormPage = function(){
+			var formWrapper = $('<ul/>');
+			formWrapper.addClass('formPage droptrue');
+			return formWrapper;
+		}
+		
+		setFormPageToActive = function(formPage){
+			var activePage = $(activeFormPageSelector);
+		}
+		
+		
 		
 	};
 
