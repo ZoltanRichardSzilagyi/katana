@@ -1,6 +1,5 @@
-(function($) {
-		
-	var FormEditor = function() {				
+(function($){
+	var FormEditor = function(){
 		var self = this;
 		var position = 1;
 		// TODO translate texts
@@ -126,6 +125,9 @@
 					var generatorInput = ui.item;
 					generateInput(generatorInput, newInput);
 					$(sampleInputListSelector).sortable("cancel");
+				},
+				over : function(event, ui){
+					// TODO add highlighting
 				},
 				// TODO fixme (remove via drag out)
 				remove : function(event, ui){
