@@ -9,6 +9,7 @@
 #formEditorLeftPanel{
 	width: 500px;
 	float:left;
+	overflow:hidden;
 }
 
 #formEditorRightPanel{
@@ -18,7 +19,29 @@
 
 #formPagesBox{
 	float:left;
+	padding:5px;
 }
+
+.sortingInProgress{
+	border: 1px dotted;	
+}
+
+.progressBarWrapper{
+	background-color: #000;
+	opacity: 0.4;
+	z-index:9000;
+	border-radius: 10px;
+}
+
+.generatingInProgress{
+  	background: url("icons/ajax-loader.gif") no-repeat scroll 0 0 transparent;
+    height: 15px;
+    margin: 0 auto;
+    position: relative;
+    top: 100px;
+    width: 128px;
+}
+
 
 #formEditorToolbox{
 	padding:20px;
@@ -175,3 +198,4 @@ div.options{
 	background-image:url('icons/rubbish-bin.png');
 	opacity:0.3;
 }
+

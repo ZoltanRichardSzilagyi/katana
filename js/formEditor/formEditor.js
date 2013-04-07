@@ -69,6 +69,8 @@
 		
 		inputElements = new InputElements();
 
+		var formEditorSelector = "#formEditor";
+		
 		var inputDescriptionButtonSelector = "div.sampleInputElement div.descriptionBoxButton";
 		
 		var sampleInputListSelector = "#sampleInputsList";
@@ -120,14 +122,19 @@
 			$(inputLists).sortable({
 				connectWith : "ul",
 				receive : function(event, ui){
+					$(activeFormPageSelector).removeClass('sortingInProgress')
+					
 					$(ui.item).after('<li class="inputWrapper"></li>');
 					var newInput = $(ui.item).next();
 					var generatorInput = ui.item;
 					generateInput(generatorInput, newInput);
 					$(sampleInputListSelector).sortable("cancel");
 				},
-				over : function(event, ui){
-					// TODO add highlighting
+				over : function(event, ui){					
+					$(activeFormPageSelector).addClass('sortingInProgress');
+				},
+				deactivate : function(event, ui){
+					$(activeFormPageSelector).removeClass('sortingInProgress')
 				},
 				// TODO fixme (remove via drag out)
 				remove : function(event, ui){
@@ -141,7 +148,38 @@
 				}				
 			});			
 		}
-				
+		
+		toggleFormEditorProgressBar = function(state){
+			if(state){
+				createFormEditorProgressBar();
+			}else{
+				removeFormEditorProgressBar();
+			}
+		}
+		
+		createFormEditorProgressBar = function(){
+			var leftPanel = $(formEditorSelector).parent();
+			var progressBarWrapper = $('<div/>');
+			progressBarWrapper.prop("id", "progressBarWrapper");
+			progressBarWrapper.css("position", "absolute");			
+			var position = leftPanel.position();
+			progressBarWrapper.width(leftPanel.width());
+			progressBarWrapper.height(leftPanel.height());
+			progressBarWrapper.css("top", position.top + "px");
+			progressBarWrapper.css("left", position.left + "px");
+			progressBarWrapper.addClass("progressBarWrapper");
+			
+			var progressBar = $('<div/>');
+			progressBar.addClass('generatingInProgress');
+			progressBarWrapper.append(progressBar);
+			
+			leftPanel.append(progressBarWrapper);
+		}
+		
+		removeFormEditorProgressBar = function(){
+			$("#progressBarWrapper").remove();
+		}
+						
 		generateInput = function(inputElement, newInput){			
 			var inputElementType = inputElement.attr("input-type");
 			var inputName = generateInputName(inputElementType);
@@ -151,10 +189,13 @@
 				template : inputElementType,
 				label : inputElementType
 			}
+			toggleFormEditorProgressBar(true);
 			sendInputElement(inputElementProperties, function(result){
 				attachNewInput(newInput, result, result.properties);
+				toggleFormEditorProgressBar(false);
 			});
 		}
+				
 		
 		sendInputElement = function(inputElementProperties, successCallback){
 			// FIXME hardcoded url			
@@ -320,7 +361,7 @@
 			});
 			sendInputElement(inputProperties, function(result){
 				propertyWindowSaveEvent(oldName, result, propertyWindow);
-				
+				toggleFormEditorProgressBar(false);				
 			});			
 
 		}
@@ -334,7 +375,6 @@
 				var inputName = result.properties.name;				
 				inputElements[inputName] = result.properties;
 				propertyWindow.dialog('destroy');
-				console.log(inputElements);
 			}else{
 				propertyWindowErrorEvent(result);
 			}
@@ -358,22 +398,39 @@
 		
 		addNewPage = function(){
 			pages.add();
-			$(currentPageSelector).html(pages.getPagesNum());
+			$(currentPageSelector).html(pages.getPagesNum());		
 			
-			var newFormPage = createNewFormPage();
+			var newFormPage = createNewFormPage(pages.getPagesNum());
 			$(formInputElementsSelector).append(newFormPage);
 			setFormpageToSortable(newFormPage);
+			increaseFormEditorSize(newFormPage.width());
+			
+			var activePage = $(activeFormPageSelector);
+			console.log(activePage);
+			var activePageId = activePage.attr("page-id");			
 			setFormPageToActive(newFormPage);
 		}
 		
-		createNewFormPage = function(){
-			var formWrapper = $('<ul/>');
-			formWrapper.addClass('formPage droptrue');
-			return formWrapper;
+		increaseFormEditorSize = function(size){
+			var originalWidth = $(formEditorSelector).width(); 
+			$(formEditorSelector).width(originalWidth + size)
+		}
+		
+		createNewFormPage = function(pageId){
+			var formPage = $('<ul/>');
+			formPage.addClass('formPage droptrue');
+			formPage.attr("page-id", pageId);			
+			return formPage;
 		}
 		
 		setFormPageToActive = function(formPage){
 			var activePage = $(activeFormPageSelector);
+			activePage.removeClass("active");
+			formPage.addClass("active");
+		}
+		
+		flipFormPagesRight = function(targetFormPageId){
+			
 		}
 		
 		

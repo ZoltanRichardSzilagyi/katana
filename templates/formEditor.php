@@ -3,8 +3,6 @@
 	<div id="formEditorBody">
 		<div id="formEditorLeftPanel">
 			<div id="formEditor">
-				<div id="formProperties">
-				</div>
 				<div id="formInputElements">
 					<form>
 						<ul class="formPage droptrue active" page-id="1">
