@@ -115,8 +115,8 @@ div.sampleInputElement div.descriptionBox{
 .formPage{
 	height: 200px;
     margin: 0 auto;
-    width: 300px;
-
+    width: 400px;
+	float: left;
 }
 
 #formInputElements ul li{

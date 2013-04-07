@@ -1,4 +1,5 @@
 (function($){
+	"use strict";
 	var FormEditor = function(){
 		var self = this;
 		var position = 1;
@@ -67,7 +68,7 @@
 		
 		var pages = new Pages();
 		
-		inputElements = new InputElements();
+		var inputElements = new InputElements();
 
 		var formEditorSelector = "#formEditor";
 		
@@ -91,7 +92,7 @@
 			addNewPageButtonEvent();
 		}
 
-		setSampleInputsDescriptionButtonEvents = function() {
+		var setSampleInputsDescriptionButtonEvents = function() {
 			var buttons = $(inputDescriptionButtonSelector);
 			$(buttons).each(function() {
 				$(this).click(function() {
@@ -105,7 +106,7 @@
 				});
 			});
 		};		
-		bindFormAddEvent = function(){
+		var bindFormAddEvent = function(){
 			$(sampleInputListSelector).sortable({
 				connectWith : "ul",
 				receive : function(event, ui){
@@ -118,7 +119,7 @@
 			setFormpageToSortable($(formPageSelector));			
 		}
 		
-		setFormpageToSortable = function(inputLists){
+		var setFormpageToSortable = function(inputLists){
 			$(inputLists).sortable({
 				connectWith : "ul",
 				receive : function(event, ui){
@@ -149,7 +150,7 @@
 			});			
 		}
 		
-		toggleFormEditorProgressBar = function(state){
+		var toggleFormEditorProgressBar = function(state){
 			if(state){
 				createFormEditorProgressBar();
 			}else{
@@ -157,7 +158,7 @@
 			}
 		}
 		
-		createFormEditorProgressBar = function(){
+		var createFormEditorProgressBar = function(){
 			var leftPanel = $(formEditorSelector).parent();
 			var progressBarWrapper = $('<div/>');
 			progressBarWrapper.prop("id", "progressBarWrapper");
@@ -176,11 +177,11 @@
 			leftPanel.append(progressBarWrapper);
 		}
 		
-		removeFormEditorProgressBar = function(){
+		var removeFormEditorProgressBar = function(){
 			$("#progressBarWrapper").remove();
 		}
 						
-		generateInput = function(inputElement, newInput){			
+		var generateInput = function(inputElement, newInput){			
 			var inputElementType = inputElement.attr("input-type");
 			var inputName = generateInputName(inputElementType);
 			var inputElementProperties = {
@@ -197,7 +198,7 @@
 		}
 				
 		
-		sendInputElement = function(inputElementProperties, successCallback){
+		var sendInputElement = function(inputElementProperties, successCallback){
 			// FIXME hardcoded url			
 			$.ajax({
 			  type: 'POST',
@@ -210,7 +211,7 @@
 			});			
 		}
 		
-		generateInputName = function(inputElementType){
+		var generateInputName = function(inputElementType){
 			if(inputElements[inputElementType] == null){
 				return inputElementType;
 			}else{
@@ -219,7 +220,7 @@
 			}			
 		}
 		
-		attachNewInput = function(newInput, result, inputElementProperties){
+		var attachNewInput = function(newInput, result, inputElementProperties){
 			  	newInput.html(result.content);
 
 			  	newInput.append('<div class="options"></div>');
@@ -240,7 +241,7 @@
 				bindInputEditorHandler(optionsButton, inputElementProperties.name, inputWindowWrapper);
 		}
 		
-		bindInputEditorHandler = function(optionsButton, inputName, inputWindowWrapper){
+		var bindInputEditorHandler = function(optionsButton, inputName, inputWindowWrapper){
 			optionsButton.click(function(){
 
 				$(inputWindowWrapper).dialog({
@@ -266,11 +267,11 @@
 			});
 		}
 		
-		generateInputWindowForm = function(inputName, wrapper, properties){
+		var generateInputWindowForm = function(inputName, wrapper, properties){
 			var propertyForm = $('<form/>',{			
 			})
 			var attributePropertyInputs = new Array();
-			for(propertyIndex in properties){
+			for(var propertyIndex in properties){
 				var property = propertyIndex;
 				var propertyAttributes = InputEditorElements[propertyIndex];
 				if(propertyAttributes != undefined){
@@ -288,7 +289,7 @@
 			wrapper.append(propertyForm);			
 		}
 		
-		createHiddenInputField = function(name, value){
+		var createHiddenInputField = function(name, value){
 			var input = $('<input/>');
 			input.prop('name', name);
 			input.prop('type', 'hidden');
@@ -296,7 +297,7 @@
 			return input;
 		}
 		
-		generateInputWindowInput = function(attributePropertyInputs, inputId, attributes){
+		var generateInputWindowInput = function(attributePropertyInputs, inputId, attributes){
 			var type = attributes.type;
 			var input;
 			var label = $('<label/>', {
@@ -323,14 +324,14 @@
 					}
 				break;				
 			}
-			wrapper = $('<div/>',{});
+			var wrapper = $('<div/>',{});
 			wrapper.addClass('inputPropertyWrapper');
 			wrapper.append(label);
 			wrapper.append(input)
 			attributePropertyInputs[attributes.position] = wrapper;
 		}
 		
-		changeInputProperties = function(propertyWindow){
+		var changeInputProperties = function(propertyWindow){
 			var form = $(propertyWindow).find('form');
 			var inputOldName = $(form).find('input[name=old-name]');			
 			var oldName = inputOldName.val();			
@@ -366,7 +367,7 @@
 
 		}
 		
-		propertyWindowSaveEvent = function(inputOldName, result, propertyWindow){
+		var propertyWindowSaveEvent = function(inputOldName, result, propertyWindow){
 			if(result.valid){
 				var generatedInput = $('input[name='+inputOldName+']');
 				var inputWrapper = generatedInput.closest('li.inputWrapper');				
@@ -380,23 +381,23 @@
 			}
 		}
 		
-		propertyWindowErrorEvent = function(result){
+		var propertyWindowErrorEvent = function(result){
 			// TODO develop
 			alert('input property error');	
 		}
 		
-		unbindInputEditorHandler = function(){
+		var unbindInputEditorHandler = function(){
 			// TODO when input delete
 			// TODO delete inputwindowwrapper
 		}
 		
-		addNewPageButtonEvent = function(){
+		var addNewPageButtonEvent = function(){
 			$(newPageButtonSelector).click(function(){
 				addNewPage();				
 			});
 		}
 		
-		addNewPage = function(){
+		var addNewPage = function(){
 			pages.add();
 			$(currentPageSelector).html(pages.getPagesNum());		
 			
@@ -406,30 +407,59 @@
 			increaseFormEditorSize(newFormPage.width());
 			
 			var activePage = $(activeFormPageSelector);
-			console.log(activePage);
 			var activePageId = activePage.attr("page-id");			
 			setFormPageToActive(newFormPage);
+			scrollFormPages(activePageId, pages.getPagesNum());
 		}
 		
-		increaseFormEditorSize = function(size){
+		var increaseFormEditorSize = function(size){
 			var originalWidth = $(formEditorSelector).width(); 
 			$(formEditorSelector).width(originalWidth + size)
 		}
 		
-		createNewFormPage = function(pageId){
+		var createNewFormPage = function(pageId){
 			var formPage = $('<ul/>');
 			formPage.addClass('formPage droptrue');
 			formPage.attr("page-id", pageId);			
 			return formPage;
 		}
 		
-		setFormPageToActive = function(formPage){
+		var setFormPageToActive = function(formPage){
 			var activePage = $(activeFormPageSelector);
 			activePage.removeClass("active");
 			formPage.addClass("active");
 		}
 		
-		flipFormPagesRight = function(targetFormPageId){
+		var scrollFormPages = function(currentFormPageId, targetFormPageId){
+			if(currentFormPageId == targetFormPageId){
+				return;
+			}
+			if(currentFormPageId > targetFormPageId){
+				scrollFormPagesLeft(currentFormPageId, targetFormPageId);	
+			}else{
+				scrollFormPagesRight(currentFormPageId, targetFormPageId);
+			}
+			
+		}
+		
+		var scrollFormPagesLeft = function(from, to){
+			
+		}
+		
+		var scrollFormPagesRight = function(from, to){
+			var startFormPage = getFormPage(from);
+			var targetFormPage = getFormPage(to);
+		}
+		
+		var getFormPage = function(pageId){
+			return $(formEditorSelector + ' ' + formInputElementsSelector + ' ul[page-id="'+pageId+'"]');
+		}
+		
+		var scrollFormPageLeft = function(){
+			
+		}
+		
+		var scrollFormPageRight = function(from, to){
 			
 		}
 		
@@ -437,6 +467,6 @@
 		
 	};
 
-	formEditor = new FormEditor();
+	var formEditor = new FormEditor();
 	formEditor.init();
 })(jQuery);
