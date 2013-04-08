@@ -409,8 +409,9 @@
 			setFormPagePosition(newFormPage, newPageId-1);
 			
 			var activePageId = getActivePageId();			
-			scrollFormPages(activePageId, newPageId);
 			setFormPageToActive(newFormPage);
+			scrollFormPages(activePageId, newPageId);
+			
 			
 		}
 		
@@ -449,9 +450,9 @@
 				return;
 			}
 			if(currentFormPageId > targetFormPageId){
-				scrollFormPagesLeft(targetFormPageId);	
+				scrollFormPagesLeft(currentFormPageId, targetFormPageId);	
 			}else{
-				scrollFormPagesRight(targetFormPageId);
+				scrollFormPagesRight(currentFormPageId, targetFormPageId);
 			}
 			
 		}
@@ -460,9 +461,8 @@
 			
 		}
 		
-		var scrollFormPagesRight = function(to){;
-			var activePageId = getActivePageId();
-			var delta = (activePageId - to) * 400;
+		var scrollFormPagesRight = function(from, to){;
+			var delta = (from - to) * 400;
 			$(formEditorSelector).animate({
 					left: delta
 				},
