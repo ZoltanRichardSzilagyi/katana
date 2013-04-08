@@ -405,11 +405,13 @@
 			$(formInputElementsSelector).append(newFormPage);
 			setFormpageToSortable(newFormPage);
 			increaseFormEditorSize(newFormPage.width());
+			var newPageId = pages.getPagesNum();
+			setFormPagePosition(newFormPage, newPageId-1);
 			
-			var activePage = $(activeFormPageSelector);
-			var activePageId = activePage.attr("page-id");			
+			var activePageId = getActivePageId();			
+			scrollFormPages(activePageId, newPageId);
 			setFormPageToActive(newFormPage);
-			scrollFormPages(activePageId, pages.getPagesNum());
+			
 		}
 		
 		var increaseFormEditorSize = function(size){
@@ -417,10 +419,22 @@
 			$(formEditorSelector).width(originalWidth + size)
 		}
 		
+		var setFormPagePosition = function(formPage, formPageIndex){
+			console.log(formPageIndex);
+			var position = formPage.width() * formPageIndex + "px";
+			console.log(position);
+			formPage.css("left", position);			
+		}
+		
+		var getActivePageId = function(){
+			var activePage = $(activeFormPageSelector);
+			return activePage.attr("page-id");
+		}
+		
 		var createNewFormPage = function(pageId){
 			var formPage = $('<ul/>');
 			formPage.addClass('formPage droptrue');
-			formPage.attr("page-id", pageId);			
+			formPage.attr("page-id", pageId);	
 			return formPage;
 		}
 		
@@ -435,9 +449,9 @@
 				return;
 			}
 			if(currentFormPageId > targetFormPageId){
-				scrollFormPagesLeft(currentFormPageId, targetFormPageId);	
+				scrollFormPagesLeft(targetFormPageId);	
 			}else{
-				scrollFormPagesRight(currentFormPageId, targetFormPageId);
+				scrollFormPagesRight(targetFormPageId);
 			}
 			
 		}
@@ -446,22 +460,26 @@
 			
 		}
 		
-		var scrollFormPagesRight = function(from, to){
-			var startFormPage = getFormPage(from);
-			var targetFormPage = getFormPage(to);
+		var scrollFormPagesRight = function(to){;
+			var activePageId = getActivePageId();
+			var delta = (activePageId - to) * 400;
+			$(formEditorSelector).animate({
+					left: delta
+				},
+				"slow",
+				"easeOutBack"
+			);
+			
 		}
 		
 		var getFormPage = function(pageId){
 			return $(formEditorSelector + ' ' + formInputElementsSelector + ' ul[page-id="'+pageId+'"]');
 		}
 		
-		var scrollFormPageLeft = function(){
+		var scrollFormPageLeft = function(to){
 			
-		}
-		
-		var scrollFormPageRight = function(from, to){
-			
-		}
+		}		
+
 		
 		
 		

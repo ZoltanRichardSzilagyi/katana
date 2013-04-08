@@ -3,18 +3,21 @@
 
 #formEditor{
 	width: 500px;
-	min-height:300px;		
+	min-height:300px;
+	position:relative;		
 }
 
 #formEditorLeftPanel{
 	width: 500px;
 	float:left;
+	z-index:1;
 	overflow:hidden;
 }
 
 #formEditorRightPanel{
 	width:300px;
 	float:left;
+	z-index:30000;
 }
 
 #formPagesBox{
@@ -117,6 +120,16 @@ div.sampleInputElement div.descriptionBox{
     margin: 0 auto;
     width: 400px;
 	float: left;
+	position: absolute;
+	z-index:-1;
+}
+
+.active{
+	z-index: 1;
+}
+
+.firstFormPage{
+	left: 0;
 }
 
 #formInputElements ul li{

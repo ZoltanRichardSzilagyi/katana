@@ -5,7 +5,7 @@
 			<div id="formEditor">
 				<div id="formInputElements">
 					<form>
-						<ul class="formPage droptrue active" page-id="1">
+						<ul class="formPage firstFormPage droptrue active" page-id="1">
 						</ul>
 					</form>	
 				</div>
