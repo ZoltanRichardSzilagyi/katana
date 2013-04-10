@@ -505,9 +505,13 @@
 			}
 			if(pages.getCurrentPage() > 1){
 				$(prevPageSelector).addClass('activePager');				
+			}else{
+				$(prevPageSelector).removeClass('activePager');
 			}
 			if(pages.getCurrentPage() < pages.getPagesNum()){
 				$(nextPageSelector).addClass('activePager');
+			}else{
+				$(nextPageSelector).removeClass('activePager');
 			}
 		}
 		
