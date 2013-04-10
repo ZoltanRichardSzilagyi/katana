@@ -5,7 +5,7 @@
 			<div id="formEditor">
 				<div id="formInputElements">
 					<form>
-						<ul class="formPage firstFormPage droptrue active" page-id="1">
+						<ul class="formPage droptrue active" page-id="1">
 						</ul>
 					</form>	
 				</div>
@@ -15,9 +15,9 @@
 			<div id="formPagesBox">
 				<div><h4>Pages</h4></div>
 				<div id="formPager">
-					<div id="prevPage" title="<?php echo LanguageUtils::translate("Previous page") ?>"></div>
+					<div id="prevPage" class="formPager" title="<?php echo LanguageUtils::translate("Previous page") ?>"></div>
 					<div id="currentPage" title="<?php echo LanguageUtils::translate("Current page") ?>">1</div>
-					<div id="nextPage" title="<?php echo LanguageUtils::translate("Next page") ?>"></div>
+					<div id="nextPage" class="formPager" title="<?php echo LanguageUtils::translate("Next page") ?>"></div>
 				</div>
 				<div  id="formPageOptions">
 					<div id="addPage" title="<?php echo LanguageUtils::translate("Add new page") ?>"></div>

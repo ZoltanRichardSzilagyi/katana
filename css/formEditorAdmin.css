@@ -4,7 +4,7 @@
 #formEditor{
 	width: 500px;
 	min-height:300px;
-	position:relative;		
+	position:relative;0		
 }
 
 #formEditorLeftPanel{
@@ -120,16 +120,11 @@ div.sampleInputElement div.descriptionBox{
     margin: 0 auto;
     width: 400px;
 	float: left;
-	position: absolute;
 	z-index:-1;
 }
 
 .active{
 	z-index: 1;
-}
-
-.firstFormPage{
-	left: 0;
 }
 
 #formInputElements ul li{
@@ -174,19 +169,23 @@ div.options{
 	float:left;
 }
 
-#prevPage{
+.formPager{
 	width:32px;
 	height:32px;
-	background-image:url('icons/back.png');
 	opacity:0.3;
 	float:left;	
 }
+
+#prevPage{
+	background-image:url('icons/back.png');
+}
 #nextPage{
-	width:32px;
-	height:32px;
-	background-image:url('icons/forward.png');
-	opacity:0.3;
-	float:left;	
+	background-image:url('icons/forward.png');	
+}
+
+.activePager{
+	opacity:1;
+	cursor:pointer;
 }
 
 #addPage{

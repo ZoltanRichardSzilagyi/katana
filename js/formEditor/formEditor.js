@@ -47,7 +47,6 @@
 			
 			this.add = function(){
 				pagesNum++;
-				currentPage = pagesNum;
 			}
 			this.remove = function(){
 				pagesNum--;
@@ -80,15 +79,22 @@
 		
 		var activeFormPageSelector =".formPage.active"
 		
+		var prevPageSelector = "#prevPage";
+		
+		var nextPageSelector = "#nextPage";
+		
 		var newPageButtonSelector = "#addPage";
 		
 		var currentPageSelector = "#currentPage";
 		
 		var formInputElementsSelector = "#formInputElements";
+		
+		var formPagerSelector = ".formPager";
 
 		this.init = function() {
 			setSampleInputsDescriptionButtonEvents();
 			bindFormAddEvent();
+			setPagerButtonsClickEvent();
 			addNewPageButtonEvent();
 		}
 
@@ -391,6 +397,28 @@
 			// TODO delete inputwindowwrapper
 		}
 		
+		var setPagerButtonsClickEvent = function(){
+			$(formPagerSelector).click(
+				function(event){
+					var buttonId = event.target.id;
+					var button = $(this);					 
+					if(!button.hasClass('activePager')){
+						return;
+					}
+					var currentPage = pages.getCurrentPage();
+					var targetPage;
+					if(buttonId == 'prevPage'){						
+						targetPage = currentPage-1;	
+					}
+					if(buttonId == 'nextPage'){
+						targetPage = currentPage + 1;
+					}
+					scrollFormPages(currentPage, targetPage);
+
+				}
+			);			
+		}
+		
 		var addNewPageButtonEvent = function(){
 			$(newPageButtonSelector).click(function(){
 				addNewPage();				
@@ -398,33 +426,20 @@
 		}
 		
 		var addNewPage = function(){
-			pages.add();
-			$(currentPageSelector).html(pages.getPagesNum());		
-			
+			pages.add();					
 			var newFormPage = createNewFormPage(pages.getPagesNum());
 			$(formInputElementsSelector).append(newFormPage);
 			setFormpageToSortable(newFormPage);
 			increaseFormEditorSize(newFormPage.width());
 			var newPageId = pages.getPagesNum();
-			setFormPagePosition(newFormPage, newPageId-1);
-			
-			var activePageId = getActivePageId();			
-			setFormPageToActive(newFormPage);
-			scrollFormPages(activePageId, newPageId);
-			
-			
+						
+			var activePageId = getActivePageId();						
+			scrollFormPages(activePageId, newPageId);						
 		}
-		
+				
 		var increaseFormEditorSize = function(size){
 			var originalWidth = $(formEditorSelector).width(); 
 			$(formEditorSelector).width(originalWidth + size)
-		}
-		
-		var setFormPagePosition = function(formPage, formPageIndex){
-			console.log(formPageIndex);
-			var position = formPage.width() * formPageIndex + "px";
-			console.log(position);
-			formPage.css("left", position);			
 		}
 		
 		var getActivePageId = function(){
@@ -438,51 +453,73 @@
 			formPage.attr("page-id", pageId);	
 			return formPage;
 		}
-		
-		var setFormPageToActive = function(formPage){
-			var activePage = $(activeFormPageSelector);
-			activePage.removeClass("active");
-			formPage.addClass("active");
-		}
-		
+								
 		var scrollFormPages = function(currentFormPageId, targetFormPageId){
-			if(currentFormPageId == targetFormPageId){
-				return;
-			}
 			if(currentFormPageId > targetFormPageId){
 				scrollFormPagesLeft(currentFormPageId, targetFormPageId);	
-			}else{
-				scrollFormPagesRight(currentFormPageId, targetFormPageId);
 			}
-			
+			if(currentFormPageId < targetFormPageId){				
+				scrollFormPagesRight(currentFormPageId, targetFormPageId);
+			}			
+			setFormPageToActive(targetFormPageId);			
+			pages.setCurrentPage(targetFormPageId);
+			displayFormId();
+			changePagerButtonsActiveStatus();
 		}
-		
+
 		var scrollFormPagesLeft = function(from, to){
-			
+			var delta = (from - to) * 400;
+			var actualLeftPosition = getFormEditorLeftPosition();
+			var distance = delta + actualLeftPosition;
+			$(formEditorSelector).animate({
+					left: "" + distance + "px"
+				},
+				"slow"
+			);
 		}
-		
+
 		var scrollFormPagesRight = function(from, to){;
 			var delta = (from - to) * 400;
+			var actualLeftPosition = getFormEditorLeftPosition();
+			var distance = delta + actualLeftPosition;
 			$(formEditorSelector).animate({
-					left: delta
+					left: "" + distance + "px"
 				},
-				"slow",
-				"easeOutBack"
+				"slow"
 			);
-			
+		}
+						
+		var getFormEditorLeftPosition = function(){
+			var position = $(formEditorSelector).position();
+			return position.left;
 		}
 		
 		var getFormPage = function(pageId){
 			return $(formEditorSelector + ' ' + formInputElementsSelector + ' ul[page-id="'+pageId+'"]');
 		}
 		
-		var scrollFormPageLeft = function(to){
-			
-		}		
-
+		var changePagerButtonsActiveStatus = function(){
+			if(pages.getPagesNum < 2){
+				$(formPagerSelector).removeClass('activePager');
+				return;
+			}
+			if(pages.getCurrentPage() > 1){
+				$(prevPageSelector).addClass('activePager');				
+			}
+			if(pages.getCurrentPage() < pages.getPagesNum()){
+				$(nextPageSelector).addClass('activePager');
+			}
+		}
 		
+		var setFormPageToActive = function(formPageId){
+			var activePage = $(activeFormPageSelector);
+			activePage.removeClass("active");
+			getFormPage(formPageId).addClass("active");
+		}
 		
-		
+		var displayFormId = function(){
+			$(currentPageSelector).html(pages.getCurrentPage());
+		}
 	};
 
 	var formEditor = new FormEditor();
