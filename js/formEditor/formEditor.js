@@ -23,75 +23,82 @@
 		this.getCurrentPage = function(){
 			return currentPage;
 		}
-	}	
+	}
 	
+	var inputElementPosition = 1;
+	
+	var InputEditorElements = {
+		position : 1,
+		name : {
+			label: 'Mező neve',
+			type: 'text',
+			position:inputElementPosition++
+		},
+		label : {
+			label: 'Mező címkéje',
+			type: 'text',
+			position:inputElementPosition++
+		},
+		placeholder : {
+			label: 'Placeholder',
+			type: 'text',
+			position:inputElementPosition++
+		},			
+		readOnly : {
+			label: 'Csak olvasható',
+			type: 'checkbox',
+			position:inputElementPosition++
+		},
+		maxLength : {
+			label: 'Bevihető szöveg hossza',
+			type: 'text',
+			position:inputElementPosition++
+		},			
+	};
+	
+	var InputElements = function(){														
+		this.add = function(name, properties){
+			this[name] = properties;				
+		}			
+		this.remove = function(name){
+			this[name] = null;
+		}			
+	};
+	
+	var Selectors = {
+		formEditor : "#formEditor",
+		
+		inputDescriptionButtonSelector : "div.sampleInputElement div.descriptionBoxButton",
+		
+		sampleInputList : "#sampleInputsList",
+		
+		formPage : ".formPage",
+		
+		activeFormPage :".formPage.active",
+		
+		prevPage : "#prevPage",
+		
+		nextPage : "#nextPage",
+		
+		newPageButton : "#addPage",
+		
+		currentPage : "#currentPage",
+		
+		formInputElements : "#formInputElements",
+		
+		formPager : ".formPager",		
+	}	
+		
+
 	var FormEditor = function(){
 		var self = this;
-		var position = 1;
+
 		// TODO translate texts
-		var InputEditorElements = {
-			name : {
-				label: 'Mező neve',
-				type: 'text',
-				position:position++
-			},
-			label : {
-				label: 'Mező címkéje',
-				type: 'text',
-				position:position++
-			},
-			placeholder : {
-				label: 'Placeholder',
-				type: 'text',
-				position:position++
-			},			
-			readOnly : {
-				label: 'Csak olvasható',
-				type: 'checkbox',
-				position:position++
-			},
-			maxLength : {
-				label: 'Bevihető szöveg hossza',
-				type: 'text',
-				position:position++
-			},			
-		};
-		
-		var InputElements = function(){														
-			this.add = function(name, properties){
-				this[name] = properties;				
-			}			
-			this.remove = function(name){
-				this[name] = null;
-			}			
-		};
-				
+						
 		var pages = new Pages();
 		
 		var inputElements = new InputElements();
-
-		var formEditorSelector = "#formEditor";
-		
-		var inputDescriptionButtonSelector = "div.sampleInputElement div.descriptionBoxButton";
-		
-		var sampleInputListSelector = "#sampleInputsList";
-		
-		var formPageSelector = ".formPage";
-		
-		var activeFormPageSelector =".formPage.active"
-		
-		var prevPageSelector = "#prevPage";
-		
-		var nextPageSelector = "#nextPage";
-		
-		var newPageButtonSelector = "#addPage";
-		
-		var currentPageSelector = "#currentPage";
-		
-		var formInputElementsSelector = "#formInputElements";
-		
-		var formPagerSelector = ".formPager";
-
+				
 		this.init = function() {
 			setSampleInputsDescriptionButtonEvents();
 			bindFormAddEvent();
@@ -100,7 +107,7 @@
 		}
 
 		var setSampleInputsDescriptionButtonEvents = function() {
-			var buttons = $(inputDescriptionButtonSelector);
+			var buttons = $(Selectors.inputDescriptionButtonSelector);
 			$(buttons).each(function() {
 				$(this).click(function() {
 					var sampleBox = $(this).next();
@@ -114,35 +121,35 @@
 			});
 		};		
 		var bindFormAddEvent = function(){
-			$(sampleInputListSelector).sortable({
+			$(Selectors.sampleInputList).sortable({
 				connectWith : "ul",
 				receive : function(event, ui){
 					$(ui.item).remove();
 				}
 			});
 			// TODO create sample window instead of embedded that in the button
-			$(sampleInputListSelector).disableSelection();
+			$(Selectors.sampleInputList).disableSelection();
 			
-			setFormpageToSortable($(formPageSelector));			
+			setFormpageToSortable($(Selectors.formPage));			
 		}
 		
 		var setFormpageToSortable = function(inputLists){
 			$(inputLists).sortable({
 				connectWith : "ul",
 				receive : function(event, ui){
-					$(activeFormPageSelector).removeClass('sortingInProgress')
+					$(Selectors.activeFormPage).removeClass('sortingInProgress')
 					
 					$(ui.item).after('<li class="inputWrapper"></li>');
 					var newInput = $(ui.item).next();
 					var generatorInput = ui.item;
 					generateInput(generatorInput, newInput);
-					$(sampleInputListSelector).sortable("cancel");
+					$(Selectors.sampleInputList).sortable("cancel");
 				},
 				over : function(event, ui){					
-					$(activeFormPageSelector).addClass('sortingInProgress');
+					$(Selectors.activeFormPage).addClass('sortingInProgress');
 				},
 				deactivate : function(event, ui){
-					$(activeFormPageSelector).removeClass('sortingInProgress')
+					$(Selectors.activeFormPage).removeClass('sortingInProgress')
 				},
 				// TODO fixme (remove via drag out)
 				remove : function(event, ui){
@@ -166,7 +173,7 @@
 		}
 		
 		var createFormEditorProgressBar = function(){
-			var leftPanel = $(formEditorSelector).parent();
+			var leftPanel = $(Selectors.formEditor).parent();
 			var progressBarWrapper = $('<div/>');
 			progressBarWrapper.prop("id", "progressBarWrapper");
 			progressBarWrapper.css("position", "absolute");			
@@ -399,7 +406,7 @@
 		}
 		
 		var setPagerButtonsClickEvent = function(){
-			$(formPagerSelector).click(
+			$(Selectors.formPager).click(
 				function(event){
 					var buttonId = event.target.id;
 					var button = $(this);					 
@@ -421,7 +428,7 @@
 		}
 		
 		var addNewPageButtonEvent = function(){
-			$(newPageButtonSelector).click(function(){
+			$(Selectors.newPageButton).click(function(){
 				addNewPage();				
 			});
 		}
@@ -429,7 +436,7 @@
 		var addNewPage = function(){
 			pages.add();					
 			var newFormPage = createNewFormPage(pages.getPagesNum());
-			$(formInputElementsSelector).append(newFormPage);
+			$(Selectors.formInputElements).append(newFormPage);
 			setFormpageToSortable(newFormPage);
 			increaseFormEditorSize(newFormPage.width());
 			var newPageId = pages.getPagesNum();
@@ -439,12 +446,12 @@
 		}
 				
 		var increaseFormEditorSize = function(size){
-			var originalWidth = $(formEditorSelector).width(); 
-			$(formEditorSelector).width(originalWidth + size)
+			var originalWidth = $(Selectors.formEditor).width(); 
+			$(Selectors.formEditor).width(originalWidth + size)
 		}
 		
 		var getActivePageId = function(){
-			var activePage = $(activeFormPageSelector);
+			var activePage = $(Selectors.activeFormPage);
 			return activePage.attr("page-id");
 		}
 		
@@ -472,7 +479,7 @@
 			var delta = (from - to) * 400;
 			var actualLeftPosition = getFormEditorLeftPosition();
 			var distance = delta + actualLeftPosition;
-			$(formEditorSelector).animate({
+			$(Selectors.formEditor).animate({
 					left: "" + distance + "px"
 				},
 				"slow"
@@ -483,7 +490,7 @@
 			var delta = (from - to) * 400;
 			var actualLeftPosition = getFormEditorLeftPosition();
 			var distance = delta + actualLeftPosition;
-			$(formEditorSelector).animate({
+			$(Selectors.formEditor).animate({
 					left: "" + distance + "px"
 				},
 				"slow"
@@ -491,39 +498,39 @@
 		}
 						
 		var getFormEditorLeftPosition = function(){
-			var position = $(formEditorSelector).position();
+			var position = $(Selectors.formEditor).position();
 			return position.left;
 		}
 		
 		var getFormPage = function(pageId){
-			return $(formEditorSelector + ' ' + formInputElementsSelector + ' ul[page-id="'+pageId+'"]');
+			return $(Selectors.formEditor + ' ' + Selectors.formInputElements + ' ul[page-id="'+pageId+'"]');
 		}
 		
 		var changePagerButtonsActiveStatus = function(){
 			if(pages.getPagesNum < 2){
-				$(formPagerSelector).removeClass('activePager');
+				$(Selectors.formPager).removeClass('activePager');
 				return;
 			}
 			if(pages.getCurrentPage() > 1){
-				$(prevPageSelector).addClass('activePager');				
+				$(Selectors.prevPage).addClass('activePager');				
 			}else{
-				$(prevPageSelector).removeClass('activePager');
+				$(Selectors.prevPage).removeClass('activePager');
 			}
 			if(pages.getCurrentPage() < pages.getPagesNum()){
-				$(nextPageSelector).addClass('activePager');
+				$(Selectors.nextPage).addClass('activePager');
 			}else{
-				$(nextPageSelector).removeClass('activePager');
+				$(Selectors.nextPage).removeClass('activePager');
 			}
 		}
 		
 		var setFormPageToActive = function(formPageId){
-			var activePage = $(activeFormPageSelector);
+			var activePage = $(Selectors.activeFormPage);
 			activePage.removeClass("active");
 			getFormPage(formPageId).addClass("active");
 		}
 		
 		var displayFormId = function(){
-			$(currentPageSelector).html(pages.getCurrentPage());
+			$(Selectors.currentPage).html(pages.getCurrentPage());
 		}
 	};
 
