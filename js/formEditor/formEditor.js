@@ -1,5 +1,30 @@
 (function($){
 	"use strict";
+	
+	var Pages = function(){
+		var pagesNum = 1;
+		var currentPage = 1;
+		
+		this.add = function(){
+			pagesNum++;
+		}
+		this.remove = function(){
+			pagesNum--;
+		}
+		
+		this.getPagesNum = function(){
+			return pagesNum;
+		}
+		
+		this.setCurrentPage = function(pageId){
+			currentPage = pageId;
+		}
+		
+		this.getCurrentPage = function(){
+			return currentPage;
+		}
+	}	
+	
 	var FormEditor = function(){
 		var self = this;
 		var position = 1;
@@ -40,31 +65,7 @@
 				this[name] = null;
 			}			
 		};
-		
-		var Pages = function(){
-			var pagesNum = 1;
-			var currentPage = 1;
-			
-			this.add = function(){
-				pagesNum++;
-			}
-			this.remove = function(){
-				pagesNum--;
-			}
-			
-			this.getPagesNum = function(){
-				return pagesNum;
-			}
-			
-			this.setCurrentPage = function(pageId){
-				currentPage = pageId;
-			}
-			
-			this.getCurrentPage = function(){
-				return currentPage;
-			}
-		}
-		
+				
 		var pages = new Pages();
 		
 		var inputElements = new InputElements();
