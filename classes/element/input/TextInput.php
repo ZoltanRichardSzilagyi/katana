@@ -1,5 +1,5 @@
 <?php
-ClassLoader::requireClass("input/AbstractInput");
+ClassLoader::requireClass("element/input/AbstractInput");
 class TextInput extends AbstractInput{
 
 	protected $value;

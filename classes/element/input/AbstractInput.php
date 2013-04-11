@@ -1,5 +1,5 @@
 <?php
-ClassLoader::requireClass("input/Element");
+ClassLoader::requireClass("element/Element");
 abstract class AbstractInput extends Element{
 			
 	protected $label;	

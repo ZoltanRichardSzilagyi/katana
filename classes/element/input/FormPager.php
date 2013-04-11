@@ -1,5 +1,5 @@
 <?php
-ClassLoader::requireClass("input/Element");
+ClassLoader::requireClass("element/Element");
 class FormPager extends Element{
 	
 	private $prevButtonValue;

@@ -44,7 +44,7 @@ class ClassLoader{
 	}
 	
 	private static function setObjectDepencies($object, $depencies){
-		// TODO with reflection
+		// TODO use reflection
 		foreach($depencies as $propertyName => $propertyValue){
 			$setterName = "set" . $propertyName;
 			$object->$setterName = $propertyValue;
@@ -95,11 +95,10 @@ class ClassLoader{
 	}
 		
 	public static function requireInputType($inputType){
-		ClassLoader::requireClass("input/type/" . $inputType);
+		ClassLoader::requireClass("element/input/" . $inputType);
 	}
 	
-	public static function getInputInstance($inputType, $inputPropertiesHolder){
-		ClassLoader::requireClass("input/AbstractInput");			
+	public static function getInputInstance($inputType, $inputPropertiesHolder){			
 		ClassLoader::requireInputType($inputType);
 		return ClassLoader::createInstance($inputType, array($inputPropertiesHolder));
 	}
@@ -111,13 +110,11 @@ class ClassLoader{
 	}
 	
 	private static function requireInputValidator($validatorClassName){
-		ClassLoader::requireClass("input/validator/type/" . $validatorClassName);
+		ClassLoader::requireClass("element/validator/" . $validatorClassName);
 	}
-	
-	
-		
+			
 	public static function requireAllInput(){
-		$inputTypesBasePath = ClassLoader::$instance->classPath . "input/type/";	
+		$inputTypesBasePath = ClassLoader::$instance->classPath . "element/input/";	
 		$res = opendir($inputTypesBasePath);
 		$inputTypes = new ArrayObject;
 		while(($inputFile = readdir($res))!== false ){

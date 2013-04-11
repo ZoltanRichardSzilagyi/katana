@@ -1,5 +1,5 @@
 <?php 
-ClassLoader::requireClass("input/validator/AbstractInputValidator");
+ClassLoader::requireClass("element/validator/AbstractInputValidator");
 class TextInputValidator extends AbstractInputValidator{
 	
 	private function name($value){
