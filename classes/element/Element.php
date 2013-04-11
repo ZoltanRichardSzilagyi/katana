@@ -55,7 +55,7 @@ abstract class Element{
 		
 		$this->templateValues = ClassLoader::getValueHolderInstance();
 		$this->templateValues->add("input", $this);
-		TemplateUtils::fetchTemplate("inputs/" . $this->getTemplate(), $this->templateValues);
+		TemplateUtils::fetchTemplate("elements/" . $this->getTemplate(), $this->templateValues);
 	}
 	
 	public function toHtml(){
