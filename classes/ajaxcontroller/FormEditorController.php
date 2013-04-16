@@ -1,7 +1,7 @@
 <?php
 class FormEditorController extends AjaxController{
 	
-	private $inputFactory;
+	private $elementFactory;
 	
 	private $inputElementProperties;
 				
@@ -17,8 +17,8 @@ class FormEditorController extends AjaxController{
 	public function generateInput(){
 		$this->exitAtEmptyInputProperties();
 		$this->setInputProperties();	
-		$this->getInputFactoryInstance();
-		$inputElement = InputFactory::getByType($this->inputElementProperties);
+		$this->getElementFactoryInstance();
+		$inputElement = $this->elementFactory->getByType($this->inputElementProperties);
 		$properties = $inputElement->getPropertiesList();
 		// TODO wrap inputproperties array, add getClassName and other standard methods
 		$validator = ClassLoader::getInputValidatorInstance($this->inputElementProperties['className']);
@@ -56,8 +56,8 @@ class FormEditorController extends AjaxController{
 		}
 	}	
 	
-	private function getInputFactoryInstance(){
-		$this->inputFactory = ClassLoader::getUtilsInstance("InputFactory");		
+	private function getElementFactoryInstance(){
+		$this->elementFactory = ClassLoader::getUtilsInstance("ElementFactory");		
 	}
 	
 	

@@ -16,7 +16,11 @@ class ElementFactory{
 			
 			case CurrencyInput::className():
 				return ClassLoader::getInputInstance(CurrencyInput::className(), $inputPropertiesHolder);	
-			break;			
+			break;
+			
+			case Button::className():
+				return ClassLoader::getInputInstance(Button::className(), $inputPropertiesHolder);
+			break;				
 			
 			default:
 				return null;
@@ -78,6 +82,8 @@ class ElementFactory{
 		$properties['format'] = "%v %s";
 		return InputFactory::getByType($properties);
 	}
+	
+	
 	
 	
 	

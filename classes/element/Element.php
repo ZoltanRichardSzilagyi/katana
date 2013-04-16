@@ -9,6 +9,8 @@ abstract class Element{
 	
 	protected $template;
 	
+	public abstract static function className();
+	
 	private $excludedProperties = array(
 		'validator' => true
 	);			

@@ -9,9 +9,7 @@ abstract class AbstractInput extends Element{
 	protected $disabled = false;
 
 	protected $validator;
-		
-	public abstract static function className();
-	
+			
 	public abstract function getType();
 		
 	public abstract function preRender();

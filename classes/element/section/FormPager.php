@@ -2,8 +2,8 @@
 ClassLoader::requireClass("element/Element");
 class FormPager extends Element{
 	
-	private $prevButtonValue;
+	private $prevButton;
 	
-	private $nextButtonValue;
+	private $nextButton;
 		
 }
