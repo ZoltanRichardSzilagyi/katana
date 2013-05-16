@@ -1,4 +1,7 @@
 <?php
+namespace katana\classes\utils;
+use katana\Katana;
+use \Exception;
 class TemplateUtils{
 	
 	public function __construct($basePath){

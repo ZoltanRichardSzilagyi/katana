@@ -35,6 +35,7 @@ class ElementFactory{
 		$sampleInputs[TextInput::className()] = self::getSampleTextInput();
 		$sampleInputs[NumberInput::className()] = self::getSampleNumberInput();
 		$sampleInputs[CurrencyInput::className()] = self::getSampleCurrencyInput();
+		$sampleInputs[Button::className()] = self::getSampleButton();
 		return $sampleInputs;
 	}
 	
@@ -80,8 +81,20 @@ class ElementFactory{
 		$properties['precision'] = "0";
 		$properties['thousand'] = ",";
 		$properties['format'] = "%v %s";
-		return InputFactory::getByType($properties);
+		return self::getByType($properties);
 	}
+	
+	private static function getSampleButton(){
+		$properties = array();
+		$properties['className'] = Button::className();
+		$properties['id'] = "ok";		
+		$properties['name'] = "ok";
+		$properties['template'] = "/input/sample/" . Button::className();
+		$properties['value'] = "ok";
+		$properties['label'] = "Ok";
+		return self::getByType($properties);
+	}
+		
 	
 	
 	

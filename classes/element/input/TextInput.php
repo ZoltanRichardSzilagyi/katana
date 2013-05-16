@@ -1,5 +1,6 @@
 <?php
-ClassLoader::requireClass("element/input/AbstractInput");
+namespace katana\classes\element\input;
+use katana\classes\element\input\AbstractInput;
 class TextInput extends AbstractInput{
 
 	protected $value;

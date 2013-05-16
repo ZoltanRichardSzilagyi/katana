@@ -1,4 +1,5 @@
 <?php
+namespace katana\classes\element;
 abstract class Element{
 
 	protected $id;
@@ -9,11 +10,29 @@ abstract class Element{
 	
 	protected $template;
 	
-	public abstract static function className();
+	protected $validator;
 	
 	private $excludedProperties = array(
 		'validator' => true
-	);			
+	);		
+	
+	public function __construct($inputProperties = null){	
+		$this->setProperties($inputProperties);		
+	}	
+	
+	public abstract static function className();
+	
+	public function validate(){
+		$this->validator->validate($this->getPropertiesList());
+	}
+			
+	public function getValidator(){
+		return $this->validator; 
+	}
+	
+	public function setValidator(AbstractInputValidator $validator){
+		$this->validator = $validator;
+	}
 	
 	public function getName(){
 		return $this->name;
@@ -49,7 +68,9 @@ abstract class Element{
 		foreach($inputProperties as $key => $value){
 			$this->$key = $value;
 		}
-	}	
+	}
+	
+	public abstract function preRender();		
 
 		
 	public function render(){

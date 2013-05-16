@@ -28,7 +28,6 @@
 	var inputElementPosition = 1;
 	
 	var InputEditorElements = {
-		position : 1,
 		name : {
 			label: 'Mező neve',
 			type: 'text',
@@ -53,7 +52,12 @@
 			label: 'Bevihető szöveg hossza',
 			type: 'text',
 			position:inputElementPosition++
-		},			
+		},
+		value : {
+			label: 'Érték',
+			type: 'text',
+			position:inputElementPosition++
+		},					
 	};
 	
 	var InputElements = function(){														
@@ -127,7 +131,7 @@
 					$(ui.item).remove();
 				}
 			});
-			// TODO create sample window instead of embedded that in the button
+			// TODO create sample window instead of embed that into the button
 			$(Selectors.sampleInputList).disableSelection();
 			
 			setFormpageToSortable($(Selectors.formPage));			
@@ -137,9 +141,8 @@
 			$(inputLists).sortable({
 				connectWith : "ul",
 				receive : function(event, ui){
-					$(Selectors.activeFormPage).removeClass('sortingInProgress')
-					
-					$(ui.item).after('<li class="inputWrapper"></li>');
+					$(Selectors.activeFormPage).removeClass('sortingInProgress');					
+					$(ui.item).after('<li class="inputWrapper"></li>');					
 					var newInput = $(ui.item).next();
 					var generatorInput = ui.item;
 					generateInput(generatorInput, newInput);
@@ -383,7 +386,7 @@
 		
 		var propertyWindowSaveEvent = function(inputOldName, result, propertyWindow){
 			if(result.valid){
-				var generatedInput = $('input[name='+inputOldName+']');
+				var generatedInput = $('input[name='+inputOldName+'], button[name='+inputOldName+']');
 				var inputWrapper = generatedInput.closest('li.inputWrapper');				
 				attachNewInput(inputWrapper, result, result.properties);
 				inputElements[inputOldName] = null;

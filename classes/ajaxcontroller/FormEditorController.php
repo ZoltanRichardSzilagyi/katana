@@ -1,4 +1,7 @@
 <?php
+namespace katana\classes\ajaxcontroller;
+use katana\classes\utils\ClassLoader;
+
 class FormEditorController extends AjaxController{
 	
 	private $elementFactory;

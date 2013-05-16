@@ -1,6 +1,7 @@
 <?php
-ClassLoader::requireClass("element/Element");
-class Button{
+namespace katana\classes\element\input;
+use katana\classes\element\Element;
+class Button extends Element{
 	
 	protected $value;
 		
@@ -16,6 +17,10 @@ class Button{
 	
 	public function getLabel(){
 		return $this->label;
+	}
+	
+	public function preRender(){
+		
 	}
 	
 }

@@ -1,5 +1,6 @@
 <?php
-ClassLoader::requireInputType("TextInput");
+namespace katana\classes\element\input;
+use katana\classes\element\input\TextInput;
 class CurrencyInput extends TextInput{
 	
 	protected $locale;

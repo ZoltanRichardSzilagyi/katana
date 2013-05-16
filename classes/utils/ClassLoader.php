@@ -1,4 +1,8 @@
 <?php
+namespace katana\classes\utils;
+use \ReflectionClass;
+use \Exception;
+use \ArrayObject;
 class ClassLoader{
 		
 	public function __construct($classPath){
@@ -17,7 +21,6 @@ class ClassLoader{
 	private static $instance;	
 		
 	public $classPath;
-	
 		
 	private static function requireClass($className){
 		require_once(ClassLoader::$instance->classPath . $className . ".php");
@@ -113,8 +116,8 @@ class ClassLoader{
 		ClassLoader::requireClass("element/validator/" . $validatorClassName);
 	}
 			
-	public static function requireAllInput(){
-		$inputTypesBasePath = ClassLoader::$instance->classPath . "element/input/";	
+	public static function requireAllInput(){		
+		$inputTypesBasePath = ClassLoader::$instance->classPath . "element/input/";			
 		$res = opendir($inputTypesBasePath);
 		$inputTypes = new ArrayObject;
 		while(($inputFile = readdir($res))!== false ){
@@ -122,11 +125,11 @@ class ClassLoader{
 				$inputClassName = str_replace(".php", "", $inputFile);	
 				$inputTypes->append($inputClassName);
 				$inputFilePath = $inputTypesBasePath . $inputFile;
-				require_once($inputFilePath);	
+				require_once($inputFilePath);
 			}
 		}
-		closedir($res);
-		return $inputTypes;
+		closedir($res);		
+		return $inputTypes;		
 	}
 			
 }

@@ -1,4 +1,5 @@
 <?php
+namespace katana\classes\ajaxcontroller;
 abstract class AjaxController{
 		
 	public abstract function getClassName();	
