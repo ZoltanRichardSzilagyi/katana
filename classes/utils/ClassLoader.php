@@ -1,5 +1,5 @@
 <?php
-namespace katana\classes\utils;
+namespace classes\utils;
 use \ReflectionClass;
 use \Exception;
 use \ArrayObject;
@@ -93,6 +93,7 @@ class ClassLoader{
 	}
 	
 	public static function getValueHolderInstance(){
+		throw new Exception("ValueHolder deprecated!", 1);		
 		ClassLoader::requireClass("utils/ValueHolder");
 		return ClassLoader::createInstance("ValueHolder");
 	}

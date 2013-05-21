@@ -11,6 +11,6 @@ Author: Zoltán Szilágyi
 Version: 1.0
 Author URI: n/a
 */
-use katana\Katana;
+use classes\Katana;
 require_once(dirname(__FILE__) . "/classes/Katana.php");
-new Katana();
+new Katana(dirname(__FILE__));

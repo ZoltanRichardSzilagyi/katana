@@ -1,5 +1,11 @@
 <?php
-namespace katana\classes\element;
+namespace classes\element;
+
+use classes\utils\ValueHolder;
+use classes\utils\TemplateUtils;
+use classes\utils\LanguageUtils;
+use \RefelctionObject;
+
 abstract class Element{
 
 	protected $id;
@@ -76,7 +82,7 @@ abstract class Element{
 	public function render(){
 		$this->preRender();
 		
-		$this->templateValues = ClassLoader::getValueHolderInstance();
+		$this->templateValues = new ValueHolder();
 		$this->templateValues->add("input", $this);
 		TemplateUtils::fetchTemplate("elements/" . $this->getTemplate(), $this->templateValues);
 	}

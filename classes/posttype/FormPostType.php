@@ -1,8 +1,13 @@
 <?php
-namespace katana\classes\posttype;
-use katana\Katana;
-use katana\classes\utils\LanguageUtils;
-use katana\classes\utils\Classloader;
+namespace classes\posttype;
+
+use classes\Katana;
+use classes\utils\LanguageUtils;
+use classes\utils\Classloader;
+use classes\utils\ElementFactory;
+use classes\utils\TemplateUtils;
+use classes\utils\ValueHolder;
+
 class FormPostType extends CustomPostType{
 	
 	protected $postTypeId = "katana_forms";
@@ -60,20 +65,19 @@ class FormPostType extends CustomPostType{
 		$this->registerMetaBox("formEditorMetabox", "Katana");
 	}
 	
-	public function formEditorMetabox($post){	
+	public function formEditorMetabox($post){
 		$this->formDao = ClassLoader::getDaoInstance("FormDao");
-		$this->templateValues = ClassLoader::getValueHolderInstance();
+		$this->templateValues = new ValueHolder();
 		
 		$form = $this->formDao->get($post->ID);
 		
-		$elementFactory = ClassLoader::getUtilsInstance("ElementFactory");
+		$elementFactory = new ElementFactory();
 		$sampleInputs = $elementFactory->getSampleInputs();
 		$this->templateValues->add("sampleInputs", $sampleInputs);
 		
 		TemplateUtils::attachStyle("formEditorAdmin", "formEditorAdmin");
-		$this->attachScripts();		
-		TemplateUtils::fetchTemplate("formEditor", $this->templateValues);				
-
+		$this->attachScripts();								
+		TemplateUtils::fetchTemplate("formEditor", $this->templateValues);
 	}
 	
 	private function attachScripts(){

@@ -1,6 +1,6 @@
 <?php
-namespace katana\classes\posttype;
-use katana\classes\utils\ClassLoader;
+namespace classes\posttype;
+use classes\utils\ClassLoader;
 abstract class CustomPostType{
 
 	protected $postTypeData;

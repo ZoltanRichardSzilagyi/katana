@@ -1,12 +1,12 @@
 <?php
-namespace katana\classes\utils;
-use katana\Katana;
+namespace classes\utils;
+use classes\Katana;
 use \Exception;
 class TemplateUtils{
 	
 	public function __construct($basePath){
 		if(TemplateUtils::$instance == null){			
-			$this->templatesPath = $basePath . "/templates/";
+			$this->templatesPath = $basePath . "templates/";
 			TemplateUtils::$instance = $this;
 			TemplateUtils::$styleBaseUrl =  plugins_url(Katana::ID) . "/css/";
 			TemplateUtils::$scriptBaseUrl =  plugins_url(Katana::ID) . "/js/";			
@@ -31,7 +31,7 @@ class TemplateUtils{
 		if($templateParams != null){
 			extract($templateParams->getValues());
 		}
-		require(TemplateUtils::$instance->getTemplatesPath() . $templateName . ".php");				
+		require_once(TemplateUtils::$instance->getTemplatesPath() . $templateName . ".php");				
 	}
 
 	public function getTemplatesPath(){

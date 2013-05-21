@@ -1,4 +1,6 @@
 <?php
+namespace classes\utils;
+
 class ValueHolder{
 	
 	private $values = array();

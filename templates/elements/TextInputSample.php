@@ -1,3 +1,6 @@
+<?php 
+use classes\utils\LanguageUtils;
+?>
 <div class="sampleInputElement">
 	<div class="title">
 		<?php echo LanguageUtils::translate("Text field") ?>

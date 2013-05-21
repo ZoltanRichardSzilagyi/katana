@@ -1,6 +1,6 @@
 <?php
-namespace katana\classes\utils;
-use katana\Katana;
+namespace classes\utils;
+use classes\Katana;
 class LanguageUtils{
 	
 	private static $instance = null;

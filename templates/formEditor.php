@@ -1,3 +1,6 @@
+<?php 
+use classes\utils\LanguageUtils;
+?>
 <div id="katanaForms">
 	<h4><?php echo LanguageUtils::translate("Form editor") ?></h4>
 	<div id="formEditorBody">
@@ -28,13 +31,13 @@
 			<div id="formEditorToolbox">			
 				<div class="boxTitle"><?php echo LanguageUtils::translate("Fields"); ?></div>
 					<ul id="sampleInputsList" class="droptrue ui-sortable">
-						<?php $sampleInputsIterator = $sampleInputs -> getIterator(); ?>			
-						<?php while($sampleInputsIterator->valid()){?>
-							<?php $input = $sampleInputsIterator -> current(); ?>				
-						<li input-type="<?php echo $input::className()?>">
+						<?php $sampleInputsIterator = $sampleInputs -> getIterator(); ?>									
+						<?php while($sampleInputsIterator->valid()){?>							
+							<?php $input = $sampleInputsIterator->current(); ?>											
+						<li input-type="<?php echo $input::className()?>">							
 							<?php $input->render() ?> 
 						</li>
-						<?php $sampleInputsIterator -> next(); ?>
+						<?php $sampleInputsIterator->next(); ?>						
 						<?php } ?>
 					</ul>
 			</div>

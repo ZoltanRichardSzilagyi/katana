@@ -1,6 +1,6 @@
 <?php
-namespace katana\classes\element\input;
-use katana\classes\element\Element;
+namespace classes\element\input;
+use classes\element\Element;
 class Button extends Element{
 	
 	protected $value;

@@ -1,6 +1,6 @@
 <?php
-namespace katana\classes\element\input;
-use katana\classes\element\input\AbstractInput;
+namespace classes\element\input;
+use classes\element\input\AbstractInput;
 class TextInput extends AbstractInput{
 
 	protected $value;

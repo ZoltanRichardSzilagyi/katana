@@ -1,6 +1,6 @@
 <?php
-namespace katana\classes\element\input;
-use katana\classes\element\Element;
+namespace classes\element\input;
+use classes\element\Element;
 abstract class AbstractInput extends Element{
 			
 	protected $label;	

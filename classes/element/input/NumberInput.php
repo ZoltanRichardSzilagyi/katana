@@ -1,6 +1,6 @@
 <?php
-namespace katana\classes\element\input;
-use katana\classes\element\input\TextInput;
+namespace classes\element\input;
+use classes\element\input\TextInput;
 class NumberInput extends TextInput{
 		
 	public static function className(){

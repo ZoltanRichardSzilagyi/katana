@@ -1,5 +1,6 @@
 <?php
-ClassLoader::requireClass("element/Element");
+namespace classes\element\section;
+use classes\element\Element;
 class FormPager extends Element{
 	
 	private $prevButton;
