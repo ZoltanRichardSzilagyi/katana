@@ -15,7 +15,7 @@ class ElementFactory{
 	
 	public static function getByType($inputPropertiesHolder){
 		$inputType = $inputPropertiesHolder['className'];
-		ClassLoader::requireAllInput();
+		//ElementFactory::requireAllInput();
 		
 		$class = new ReflectionClass($inputType);		
 		$constructor = $class->getConstructor();		
@@ -23,7 +23,7 @@ class ElementFactory{
 	}
 	
 	public static function getSampleInputs(){  
-		ClassLoader::requireAllInput();	
+		//ElementFactory::requireAllInput();	
 		$sampleInputs = new ArrayObject();
 		$sampleInputs[TextInput::className()] = self::getSampleTextInput();
 		$sampleInputs[NumberInput::className()] = self::getSampleNumberInput();
@@ -31,6 +31,22 @@ class ElementFactory{
 		$sampleInputs[Button::className()] = self::getSampleButton();
 		return $sampleInputs;
 	}
+	
+	private static function requireAllInput(){		
+		$inputTypesBasePath = ClassLoader::getClassPath() . "element/input/";			
+		$res = opendir($inputTypesBasePath);
+		$inputTypes = new ArrayObject;
+		while(($inputFile = readdir($res))!== false ){
+			if($inputFile != "." && $inputFile != ".."){
+				$inputClassName = str_replace(".php", "", $inputFile);	
+				$inputTypes->append($inputClassName);
+				$inputFilePath = $inputTypesBasePath . $inputFile;
+				require_once($inputFilePath);
+			}
+		}
+		closedir($res);		
+		return $inputTypes;		
+	}	
 	
 	private static function getSampleTextInput(){
 		$properties = array();

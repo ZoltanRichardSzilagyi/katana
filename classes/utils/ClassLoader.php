@@ -21,6 +21,10 @@ class ClassLoader{
 	private static $instance;	
 		
 	public $classPath;
+	
+	public static function getClassPath(){
+		return ClassLoader::$instance->classPath;
+	}
 		
 	private static function requireClass($className){
 		require_once(ClassLoader::$instance->classPath . $className . ".php");
@@ -117,20 +121,5 @@ class ClassLoader{
 		ClassLoader::requireClass("element/validator/" . $validatorClassName);
 	}
 			
-	public static function requireAllInput(){		
-		$inputTypesBasePath = ClassLoader::$instance->classPath . "element/input/";			
-		$res = opendir($inputTypesBasePath);
-		$inputTypes = new ArrayObject;
-		while(($inputFile = readdir($res))!== false ){
-			if($inputFile != "." && $inputFile != ".."){
-				$inputClassName = str_replace(".php", "", $inputFile);	
-				$inputTypes->append($inputClassName);
-				$inputFilePath = $inputTypesBasePath . $inputFile;
-				require_once($inputFilePath);
-			}
-		}
-		closedir($res);		
-		return $inputTypes;		
-	}
 			
 }

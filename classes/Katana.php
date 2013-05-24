@@ -20,13 +20,19 @@ class Katana{
 	
 	public function __construct($basePath){
 		$this->setPluginDirRootPath($basePath);
-		spl_autoload_register(__NAMESPACE__."\Katana::autoload");	
+		$this->registerAutoLoader();	
 		$this->init();		
 	}
+			
+	public function registerAutoLoader(){
+		spl_autoload_register(__NAMESPACE__."\Katana::autoload");
+	}
 	
-	public static function autoload($class){
-		// FIXME this bug	
-		if($class!="wp_atom_server" && $class!="WP_User_Search"){	
+	private static function autoload($class){
+		if($class == 'TextInput'){
+			debug_print_backtrace();
+		}
+		if($class!="wp_atom_server" && $class!="WP_User_Search" && $class != "WP_Widget_Meta"){	
 			require_once(Katana::$pluginDirRootPath . $class.".php");
 		}
 	}
@@ -59,6 +65,9 @@ class Katana{
 		if(!is_admin()){
 			return;
 		}
+		/**
+		 * @var FormEditorController
+		 */
 		$controller = new FormEditorController();
 		$controller->registerAjaxEvents();
 	}

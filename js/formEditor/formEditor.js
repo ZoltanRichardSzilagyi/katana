@@ -219,7 +219,7 @@
 			// FIXME hardcoded url			
 			$.ajax({
 			  type: 'POST',
-			  url: '/wp-admin/admin-ajax.php?action=FormEditorController_generateInput',
+			  url: '/wp-admin/admin-ajax.php?action=Katana_generateInput',
 			  dataType : 'json',
 			  data : {
 			  	inputElementProperties : inputElementProperties

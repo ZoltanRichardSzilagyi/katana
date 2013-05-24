@@ -13,11 +13,11 @@ abstract class AjaxController{
 	
 	protected function addAdminEvent($methodName){
 		$hookName = $this->createHookName($methodName);
-		add_action('wp_ajax_' . $hookName, array($this, $methodName));
+		$res = add_action('wp_ajax_' . $hookName, array($this, $methodName));
 	}
 	
 	private function createHookName($methodName){
-		return $this->getClassName() . "_" . $methodName;
+		return "Katana" . "_" . $methodName;
 	}
 	
 	

@@ -1,6 +1,9 @@
 <?php
 namespace classes\ajaxcontroller;
+
 use classes\utils\ClassLoader;
+use classes\utils\ElementFactory;
+use classes\ajaxcontroller\AjaxController;
 
 class FormEditorController extends AjaxController{
 	
@@ -60,7 +63,7 @@ class FormEditorController extends AjaxController{
 	}	
 	
 	private function getElementFactoryInstance(){
-		$this->elementFactory = ClassLoader::getUtilsInstance("ElementFactory");		
+		$this->elementFactory = new ElementFactory();		
 	}
 	
 	
