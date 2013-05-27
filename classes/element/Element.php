@@ -84,7 +84,12 @@ abstract class Element{
 		
 		$this->templateValues = new ValueHolder();
 		$this->templateValues->add("input", $this);
-		TemplateUtils::fetchTemplate("elements/" . $this->getTemplate(), $this->templateValues);
+		$template = $this->translateTemplateToPath();
+		TemplateUtils::fetchTemplate($this->translateTemplateToPath(), $this->templateValues);
+	}
+	
+	private function translateTemplateToPath(){
+		return str_replace(".", "/", $this->getTemplate());
 	}
 	
 	public function toHtml(){
