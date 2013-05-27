@@ -4,7 +4,7 @@ namespace classes\element;
 use classes\utils\ValueHolder;
 use classes\utils\TemplateUtils;
 use classes\utils\LanguageUtils;
-use \RefelctionObject;
+use \ReflectionObject;
 
 abstract class Element{
 

@@ -1,10 +1,10 @@
 <?php
 namespace classes\utils;
-use \ReflectionCLass;
-use \ArrayObject;
 
 use classes\utils\ClassLoader;
 use classes\utils\LanguageUtils;
+use \ReflectionClass;
+use \ArrayObject;
 
 use classes\element\input\Button;
 use classes\element\input\CurrencyInput;
@@ -14,16 +14,13 @@ use classes\element\input\TextInput;
 class ElementFactory{
 	
 	public static function getByType($inputPropertiesHolder){
-		$inputType = $inputPropertiesHolder['className'];
-		//ElementFactory::requireAllInput();
-		
+		$inputType = $inputPropertiesHolder['className'];		
 		$class = new ReflectionClass($inputType);		
 		$constructor = $class->getConstructor();		
 		return $class->newInstanceArgs(array($inputPropertiesHolder));
 	}
 	
 	public static function getSampleInputs(){  
-		//ElementFactory::requireAllInput();	
 		$sampleInputs = new ArrayObject();
 		$sampleInputs[TextInput::className()] = self::getSampleTextInput();
 		$sampleInputs[NumberInput::className()] = self::getSampleNumberInput();
@@ -31,23 +28,7 @@ class ElementFactory{
 		$sampleInputs[Button::className()] = self::getSampleButton();
 		return $sampleInputs;
 	}
-	
-	private static function requireAllInput(){		
-		$inputTypesBasePath = ClassLoader::getClassPath() . "element/input/";			
-		$res = opendir($inputTypesBasePath);
-		$inputTypes = new ArrayObject;
-		while(($inputFile = readdir($res))!== false ){
-			if($inputFile != "." && $inputFile != ".."){
-				$inputClassName = str_replace(".php", "", $inputFile);	
-				$inputTypes->append($inputClassName);
-				$inputFilePath = $inputTypesBasePath . $inputFile;
-				require_once($inputFilePath);
-			}
-		}
-		closedir($res);		
-		return $inputTypes;		
-	}	
-	
+
 	private static function getSampleTextInput(){
 		$properties = array();
 		$properties['className'] = TextInput::className();

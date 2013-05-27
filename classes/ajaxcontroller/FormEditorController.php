@@ -27,16 +27,18 @@ class FormEditorController extends AjaxController{
 		$inputElement = $this->elementFactory->getByType($this->inputElementProperties);
 		$properties = $inputElement->getPropertiesList();
 		// TODO wrap inputproperties array, add getClassName and other standard methods
-		$validator = ClassLoader::getInputValidatorInstance($this->inputElementProperties['className']);
-		$inputElement->setValidator($validator);
+		// TODO input self validation
 		
-		$inputElement->validate();
-		$validationResult = $inputElement->getValidator()->getValidationResult();
+		//$validator = ClassLoader::getInputValidatorInstance($this->inputElementProperties['className']);
+		////$inputElement->setValidator($validator);
+		
+		//$inputElement->validate();
+		//$validationResult = $inputElement->getValidator()->getValidationResult();
 		$retVal = array(
 			'properties' => $properties,
 			'content' => $inputElement->toHtml(),
-			'valid' => $inputElement->getValidator()->isValid(),
-			'errors' => $validationResult
+			//'valid' => $inputElement->getValidator()->isValid(),
+			//'errors' => $validationResult
 		);
 		echo json_encode($retVal);
 		exit;
@@ -60,7 +62,15 @@ class FormEditorController extends AjaxController{
 		if(isset($_POST['inputElementProperties'])){
 			$this->inputElementProperties = $_POST['inputElementProperties'];
 		}
-	}	
+		$this->normalizeClassName();
+	}
+	
+	private function normalizeClassName(){
+		$className = $this->inputElementProperties['className'];
+		$normalizedClassName = str_replace("\\\\", "\\", $className);
+		$this->inputElementProperties['className'] = $normalizedClassName;
+		
+	}
 	
 	private function getElementFactoryInstance(){
 		$this->elementFactory = new ElementFactory();		
