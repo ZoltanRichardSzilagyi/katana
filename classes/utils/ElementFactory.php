@@ -34,7 +34,7 @@ class ElementFactory{
 		$properties['className'] = TextInput::className();
 		$properties['id'] = "name";		
 		$properties['name'] = "name";
-		$properties['template'] = "elements.input.sample.TextInput";
+		$properties['template'] = "sample";
 		$properties['value'] = "Gordon Freeman";
 		$properties['label'] = "Your name";
 		$properties['maxLength'] = "64";
@@ -47,7 +47,7 @@ class ElementFactory{
 		$properties['className'] = NumberInput::className();
 		$properties['id'] = "age";		
 		$properties['name'] = "age";
-		$properties['template'] = "elements.input.sample.NumberInput";
+		$properties['template'] = "sample";
 		$properties['value'] = "22";
 		$properties['label'] = "Your age";
 		$properties['maxLength'] = "2";
@@ -60,7 +60,7 @@ class ElementFactory{
 		$properties['className'] = CurrencyInput::className();
 		$properties['id'] = "price";		
 		$properties['name'] = "price";
-		$properties['template'] = "elements.input.sample.CurrencyInput";
+		$properties['template'] = "sample";
 		$properties['value'] = "1054333";
 		$properties['label'] = "Price";
 		$properties['maxLength'] = "15";
@@ -79,7 +79,7 @@ class ElementFactory{
 		$properties['className'] = Button::className();
 		$properties['id'] = "ok";		
 		$properties['name'] = "ok";
-		$properties['template'] = "elements.input.sample.Button";
+		$properties['template'] = "sample";
 		$properties['value'] = "ok";
 		$properties['label'] = "Ok";
 		return self::getByType($properties);

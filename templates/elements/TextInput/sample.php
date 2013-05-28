@@ -24,5 +24,8 @@ use classes\utils\LanguageUtils;
 					readonly="readonly"
 					<?php }?>/>
 		</div>
+		<script type="text/javascript">
+			
+		</script>
 	</div>
 </div>

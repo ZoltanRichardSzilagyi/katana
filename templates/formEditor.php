@@ -34,7 +34,7 @@ use classes\utils\LanguageUtils;
 						<?php $sampleInputsIterator = $sampleInputs -> getIterator(); ?>									
 						<?php while($sampleInputsIterator->valid()){?>							
 							<?php $input = $sampleInputsIterator->current(); ?>											
-						<li input-type="<?php echo $input::className()?>" template="<?php echo $input->getTemplate()?>">							
+						<li input-type="<?php echo $input::className()?>">							
 							<?php $input->render() ?> 
 						</li>
 						<?php $sampleInputsIterator->next(); ?>						

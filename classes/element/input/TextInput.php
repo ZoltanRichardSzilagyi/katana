@@ -11,6 +11,10 @@ class TextInput extends AbstractInput{
 	
 	protected $classes = array();
 			
+	public static function getSimpleName(){
+		return "TextInput";
+	} 
+	
 	public static function className(){
 		return get_class();
 	}

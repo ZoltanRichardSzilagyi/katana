@@ -26,8 +26,18 @@ abstract class Element{
 		$this->setProperties($inputProperties);		
 	}	
 	
-	public abstract static function className();
+	/**
+	 * The simple name of an input
+	 * e.g: TextInput, CurrencyInput
+	 */
+	public abstract static function getSimpleName();
 	
+	
+	/**
+	 * The class name of the input (namespace included)
+	 */
+	public abstract static function className();
+		
 	public function validate(){
 		$this->validator->validate($this->getPropertiesList());
 	}
@@ -84,8 +94,11 @@ abstract class Element{
 		
 		$this->templateValues = new ValueHolder();
 		$this->templateValues->add("input", $this);
-		$template = $this->translateTemplateToPath();
-		TemplateUtils::fetchTemplate($this->translateTemplateToPath(), $this->templateValues);
+		TemplateUtils::fetchTemplate($this->createTemplatePath(), $this->templateValues);
+	}
+	
+	private function createTemplatePath(){
+		return "elements/{$this->getSimpleName()}/{$this->getTemplate()}";
 	}
 	
 	private function translateTemplateToPath(){

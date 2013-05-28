@@ -4,6 +4,10 @@ use classes\element\input\TextInput;
 class DateInput extends TextInput{
 	
 	protected $locale;
+	
+	public static function getSimpleName(){
+		return "DateInput";
+	} 	
 		
 	public static function className(){
 		return get_class();

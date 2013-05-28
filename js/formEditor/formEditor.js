@@ -66,7 +66,7 @@
 		}			
 		this.remove = function(name){
 			this[name] = null;
-		}			
+		}
 	};
 	
 	var Selectors = {

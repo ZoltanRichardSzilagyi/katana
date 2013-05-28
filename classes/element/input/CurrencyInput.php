@@ -15,7 +15,9 @@ class CurrencyInput extends TextInput{
 	
 	protected $format;
 	
-	
+	public static function getSimpleName(){
+		return "CurrencyInput";
+	} 	
 	
 	public static function className(){
 		return get_class();

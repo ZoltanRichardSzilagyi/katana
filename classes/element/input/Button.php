@@ -7,6 +7,10 @@ class Button extends Element{
 		
 	protected $label;
 	
+	public static function getSimpleName(){
+		return "Button";
+	} 	
+	
 	public static function className(){
 		return get_class();
 	}
