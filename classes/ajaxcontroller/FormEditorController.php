@@ -37,6 +37,7 @@ class FormEditorController extends AjaxController{
 		$retVal = array(
 			'properties' => $properties,
 			'content' => $inputElement->toHtml(),
+			'valid' => true
 			//'valid' => $inputElement->getValidator()->isValid(),
 			//'errors' => $validationResult
 		);

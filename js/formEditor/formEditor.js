@@ -1,6 +1,34 @@
 (function($){
 	"use strict";
 	
+	// TODO descriptors not used yet
+	var KatanaFormInputDescriptor = function(){
+		
+		var templates;
+		
+		var label;
+		
+		this.setTemplates = function(templatesList){
+			templates = templatesList;
+		}
+		
+		this.setDefaultLabel = function(label){
+			
+		}
+		
+	}
+	
+	var KatanaFormInputDescriptorHolder = function(){
+		this.add = function(inputType, properties){
+			this[inputType] = properties;				
+		}
+		this.get = function(inputType){
+			return this[inputType]
+		}			
+		
+	}
+	
+	
 	var Pages = function(){
 		var pagesNum = 1;
 		var currentPage = 1;
@@ -200,13 +228,14 @@
 						
 		var generateInput = function(inputElement, newInput){			
 			var inputElementType = inputElement.attr("input-type");
+			var inputElementSimpleName = inputElement.attr("simple-name");
 			var inputName = generateInputName(inputElementType);
 			// TODO template handling
 			var inputElementProperties = {
-				name : inputName,
+				name : inputElementSimpleName,
 				className : inputElementType,
 				template : 'default',
-				label : inputElementType
+				label : inputElementSimpleName
 			}
 			toggleFormEditorProgressBar(true);
 			sendInputElement(inputElementProperties, function(result){

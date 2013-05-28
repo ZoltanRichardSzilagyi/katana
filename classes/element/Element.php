@@ -101,10 +101,6 @@ abstract class Element{
 		return "elements/{$this->getSimpleName()}/{$this->getTemplate()}";
 	}
 	
-	private function translateTemplateToPath(){
-		return str_replace(".", "/", $this->getTemplate());
-	}
-	
 	public function toHtml(){
 		ob_start();
 		$this->render();
