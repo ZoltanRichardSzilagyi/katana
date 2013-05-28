@@ -201,10 +201,11 @@
 		var generateInput = function(inputElement, newInput){			
 			var inputElementType = inputElement.attr("input-type");
 			var inputName = generateInputName(inputElementType);
+			// TODO template handling
 			var inputElementProperties = {
 				name : inputName,
 				className : inputElementType,
-				template : inputElementType,
+				template : 'default',
 				label : inputElementType
 			}
 			toggleFormEditorProgressBar(true);
