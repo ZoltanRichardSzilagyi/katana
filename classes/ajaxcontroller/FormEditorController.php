@@ -27,19 +27,13 @@ class FormEditorController extends AjaxController{
 		$inputElement = $this->elementFactory->getByType($this->inputElementProperties);
 		$properties = $inputElement->getPropertiesList();
 		// TODO wrap inputproperties array, add getClassName and other standard methods
-		// TODO input self validation
 		
-		//$validator = ClassLoader::getInputValidatorInstance($this->inputElementProperties['className']);
-		////$inputElement->setValidator($validator);
-		
-		//$inputElement->validate();
-		//$validationResult = $inputElement->getValidator()->getValidationResult();
+		$validationResult = $inputElement->validate();
 		$retVal = array(
 			'properties' => $properties,
 			'content' => $inputElement->toHtml(),
-			'valid' => true
-			//'valid' => $inputElement->getValidator()->isValid(),
-			//'errors' => $validationResult
+			'valid' => $validationResult->isValid(),
+			'errors' => $validationResult->getErrors()
 		);
 		echo json_encode($retVal);
 		exit;

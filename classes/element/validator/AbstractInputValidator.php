@@ -1,4 +1,7 @@
 <?php
+namespace classes\element\validator;
+use classes\element\validator\ValidationResult;
+
 abstract class AbstractInputValidator{
 	
 	protected $translateUtils;
@@ -9,13 +12,10 @@ abstract class AbstractInputValidator{
 		foreach($inputProperties as $key => $value){
 						
 		}
+		return new ValidationResult($this->isValid(), $this->errors);
 	}
 	
-	public function getValidationResult(){
-		return $this->errors;
-	}
-	
-	public function isValid(){
+	private function isValid(){
 		return empty($this->errors);
 	}
 	

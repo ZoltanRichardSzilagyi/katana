@@ -15,9 +15,7 @@ abstract class Element{
 	protected $page;
 	
 	protected $template;
-	
-	protected $validator;
-	
+		
 	private $excludedProperties = array(
 		'validator' => true
 	);		
@@ -37,19 +35,15 @@ abstract class Element{
 	 * The class name of the input (namespace included)
 	 */
 	public abstract static function className();
-		
+	
+	public abstract function createValidatorInstance();
+	
+	// TODO rename to ValidateProperties
 	public function validate(){
-		$this->validator->validate($this->getPropertiesList());
+		$validator = $this->createValidatorInstance();
+		return $validator->validate($this->getPropertiesList());
 	}
-			
-	public function getValidator(){
-		return $this->validator; 
-	}
-	
-	public function setValidator(AbstractInputValidator $validator){
-		$this->validator = $validator;
-	}
-	
+				
 	public function getName(){
 		return $this->name;
 	}	

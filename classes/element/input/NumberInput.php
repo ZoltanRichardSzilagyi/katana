@@ -9,7 +9,12 @@ class NumberInput extends TextInput{
 		
 	public static function className(){
 		return get_class();
-	}		
+	}
+	
+	// TODO create
+	public function createValidatorInstance(){
+		return null;
+	}			
 	
 	public function preRender(){
 	}

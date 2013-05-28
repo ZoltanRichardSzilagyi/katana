@@ -1,6 +1,7 @@
 <?php
 namespace classes\element\input;
 use classes\element\input\AbstractInput;
+use classes\element\validator\TextInputValidator;
 class TextInput extends AbstractInput{
 
 	protected $value;
@@ -25,6 +26,10 @@ class TextInput extends AbstractInput{
 	
 	public function getType(){
 		return "text";
+	}
+	
+	public function createValidatorInstance(){
+		return new TextInputValidator();
 	}
 				
 	public function getValue(){

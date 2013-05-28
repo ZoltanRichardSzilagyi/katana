@@ -15,6 +15,12 @@ class Button extends Element{
 		return get_class();
 	}
 	
+	// TODO create
+	public function createValidatorInstance(){
+		return null;
+	}			
+	
+	
 	public function getValue(){
 		return $this->value;
 	}
