@@ -1,16 +1,17 @@
 <?php
 namespace classes\utils;
 
-use classes\utils\ClassLoader;
-use classes\utils\LanguageUtils;
 use \ReflectionClass;
 use \ArrayObject;
+
+use classes\utils\LanguageUtils;
 
 use classes\element\input\Button;
 use classes\element\input\CurrencyInput;
 use classes\element\input\DateInput;
 use classes\element\input\NumberInput;
 use classes\element\input\TextInput;
+
 class ElementFactory{
 	
 	public static function getByType($inputPropertiesHolder){

@@ -1,13 +1,9 @@
 <?php
+namespace classes\dao;
 abstract class Dao{
-		
-	/**
-	 * @var wpdb
-	 */
-	protected $db;
 	
-	public final function setDb($db){
-		$this->db = $db;
+	public function __construct(){
+		global $wpdb;
+		$this->db = $wpdb;
 	}
-	
 }

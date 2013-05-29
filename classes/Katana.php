@@ -3,7 +3,6 @@
 
 namespace classes;
 
-use classes\utils\ClassLoader;
 use classes\utils\LanguageUtils;
 use classes\utils\TemplateUtils;
 use classes\ajaxcontroller\FormEditorController;
@@ -47,8 +46,7 @@ class Katana{
 		$this->registerAdminAjaxControllers();
 	}
 	
-	private function initUtilClasses(){					
-		new ClassLoader(Katana::$pluginDirRootPath);
+	private function initUtilClasses(){
 		new LanguageUtils(Katana::$pluginDirRootPath);
 		new TemplateUtils(Katana::$pluginDirRootPath);
 	}

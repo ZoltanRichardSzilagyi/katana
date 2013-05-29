@@ -1,5 +1,8 @@
-<?php 
-ClassLoader::requireClass("element/validator/AbstractInputValidator");
+<?php
+namespace classes\element\validator;
+
+use classes\element\validator\AbstractInputValidator;
+ 
 class CurrencyInputValidator extends AbstractInputValidator{
 	
 	private function validateName($value){

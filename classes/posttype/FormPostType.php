@@ -7,6 +7,7 @@ use classes\utils\Classloader;
 use classes\utils\ElementFactory;
 use classes\utils\TemplateUtils;
 use classes\utils\ValueHolder;
+use classes\dao\FormDao;
 
 class FormPostType extends CustomPostType{
 	
@@ -66,7 +67,7 @@ class FormPostType extends CustomPostType{
 	}
 	
 	public function formEditorMetabox($post){
-		$this->formDao = ClassLoader::getDaoInstance("FormDao");
+		$this->formDao = new FormDao();
 		$this->templateValues = new ValueHolder();
 		
 		$form = $this->formDao->get($post->ID);

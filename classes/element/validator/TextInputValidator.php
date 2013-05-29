@@ -1,6 +1,8 @@
 <?php 
 namespace classes\element\validator;
+
 use classes\element\validator\AbstractInputValidator;
+
 class TextInputValidator extends AbstractInputValidator{
 	
 	private function name($value){

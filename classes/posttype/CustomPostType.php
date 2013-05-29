@@ -1,6 +1,5 @@
 <?php
 namespace classes\posttype;
-use classes\utils\ClassLoader;
 abstract class CustomPostType{
 
 	protected $postTypeData;
@@ -29,7 +28,6 @@ abstract class CustomPostType{
 	}
 	
 	final protected function registerMetaBox($metaBoxId, $label){
-		//ClassLoader::requireAllInput();
 		add_meta_box($metaBoxId, $label, 
 		array($this, $metaBoxId), $this->postTypeId );
 	}	

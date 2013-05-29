@@ -1,7 +1,6 @@
 <?php
 namespace classes\ajaxcontroller;
 
-use classes\utils\ClassLoader;
 use classes\utils\ElementFactory;
 use classes\ajaxcontroller\AjaxController;
 
