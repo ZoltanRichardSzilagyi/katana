@@ -21,7 +21,7 @@ class ElementFactory{
 		return $class->newInstanceArgs(array($inputPropertiesHolder));
 	}
 	
-	public static function getSampleInputs(){  
+	public static function getSampleInputs(){
 		$sampleInputs = new ArrayObject();
 		$sampleInputs[TextInput::className()] = self::getSampleTextInput();
 		$sampleInputs[NumberInput::className()] = self::getSampleNumberInput();
