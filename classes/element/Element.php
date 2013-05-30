@@ -6,6 +6,9 @@ use classes\utils\TemplateUtils;
 use classes\utils\LanguageUtils;
 use \ReflectionObject;
 
+/**
+ * Base class of every element, section or input, etc type
+ */
 abstract class Element{
 
 	protected $id;
@@ -60,6 +63,9 @@ abstract class Element{
 		return $this->template;
 	}
 
+	/**
+     * Return with the properties of the input
+     */
 	public function getPropertiesList(){
 		$reflectionObject = new ReflectionObject($this);
 		$properties = $reflectionObject->getProperties();
@@ -81,8 +87,10 @@ abstract class Element{
 	}
 	
 	public abstract function preRender();		
-
 		
+	/**
+     * Rendering and sending to the output the template of the input
+     */
 	public function render(){
 		$this->preRender();
 		
