@@ -1,5 +1,13 @@
 <?php 
 use classes\utils\LanguageUtils;
+use classes\utils\TemplateUtils;
+
+TemplateUtils::attachStyle("formEditorAdmin", "formEditorAdmin");
+
+TemplateUtils::attachScript("jquery-ui", "jquery-ui/js/jquery-ui-1.10.0.custom", array('jquery'));  
+TemplateUtils::attachScript("formEditor", "formEditor/formEditor", array('jquery', 'jquery-ui'));           
+TemplateUtils::attachScript("accounting", "accounting/accounting", array('jquery', 'formEditor'));
+TemplateUtils::attachStyle("jquery-ui", "ui/jquery-ui-1.10.0.custom.min");
 ?>
 <div id="katanaForms">
 	<h4><?php echo LanguageUtils::translate("Form editor") ?></h4>
