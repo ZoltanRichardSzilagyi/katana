@@ -64,20 +64,18 @@ class FormPostType extends CustomPostType{
 	}
 	
 	public function addmetaBoxes(){
-		$this->registerMetaBox("formEditorMetabox", "Katana");
+		$this->registerMetaBox("formEditorMetabox", Katana::ID);
 	}
 	
 	public function formEditorMetabox($post){
-		$this->formDao = new FormDao();
-		$this->templateValues = new ValueHolder();
-		
+		$this->formDao = new FormDao();				
 		$form = $this->formDao->get($post->ID);
 		
 		$elementFactory = new ElementFactory();
 		$sampleInputs = $elementFactory->getSampleInputs();
 		
-		$this->templateValues->add("sampleInputs", $sampleInputs);		
-										
+		$this->templateValues = new ValueHolder();
+		$this->templateValues->add("sampleInputs", $sampleInputs);												
 		TemplateUtils::fetchTemplate("formEditor", $this->templateValues);
 	}	
 }
