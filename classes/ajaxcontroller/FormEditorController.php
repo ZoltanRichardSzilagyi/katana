@@ -27,7 +27,7 @@ class FormEditorController extends AjaxController{
 		$properties = $inputElement->getPropertiesList();
 		// TODO wrap inputproperties array, add getClassName and other standard methods
 		
-		$validationResult = $inputElement->validate();
+		$validationResult = $inputElement->validateGenerator();
 		$retVal = array(
 			'properties' => $properties,
 			'content' => $inputElement->toHtml(),

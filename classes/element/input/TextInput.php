@@ -1,7 +1,10 @@
 <?php
 namespace classes\element\input;
+
 use classes\element\input\AbstractInput;
 use classes\element\validator\TextInputValidator;
+use classes\element\validator\generator\TextInputGeneratorValidator;
+
 class TextInput extends AbstractInput{
 
 	protected $value;
@@ -31,6 +34,10 @@ class TextInput extends AbstractInput{
 	public function createValidatorInstance(){
 		return new TextInputValidator();
 	}
+    
+    public function createGeneratorValidatorInstance(){
+        return new TextInputGeneratorValidator($this);
+    }
 				
 	public function getValue(){
 		return $this->value;

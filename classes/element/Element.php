@@ -40,12 +40,18 @@ abstract class Element{
 	public abstract static function className();
 	
 	public abstract function createValidatorInstance();
+    
+    public abstract function createGeneratorValidatorInstance();
 	
-	// TODO rename to ValidateProperties
 	public function validate(){
 		$validator = $this->createValidatorInstance();
 		return $validator->validate($this->getPropertiesList());
 	}
+    
+    public function validateGenerator(){
+        $validator = $this->createGeneratorValidatorInstance();
+        return $validator->validate($this);        
+    }
 				
 	public function getName(){
 		return $this->name;

@@ -14,7 +14,13 @@ class NumberInput extends TextInput{
 	// TODO create
 	public function createValidatorInstance(){
 		return null;
-	}			
+	}
+    
+    // TODO create
+    public function createGeneratorValidatorInstance(){
+        return null;
+    }
+    			
 	
 	public function preRender(){
 	}
