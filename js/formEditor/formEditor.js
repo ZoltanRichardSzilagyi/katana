@@ -1,4 +1,4 @@
-(function($){
+(function ($) {
 	"use strict";
 	
 	// TODO descriptors not used yet
@@ -145,8 +145,262 @@
 				});
 			});
 		},
-
 		
+        createFormEditorProgressBar = function(){
+            var leftPanel = $(Selectors.formEditor).parent(),
+            progressBarWrapper = $('<div/>'),
+            position = leftPanel.position(),
+            progressBar = $('<div/>');
+            
+            progressBarWrapper.prop("id", "progressBarWrapper");
+            progressBarWrapper.css("position", "absolute");         
+                        
+            progressBarWrapper.width(leftPanel.width());
+            progressBarWrapper.height(leftPanel.height());
+            progressBarWrapper.css("top", position.top + "px");
+            progressBarWrapper.css("left", position.left + "px");
+            progressBarWrapper.addClass("progressBarWrapper");
+                        
+            progressBar.addClass('generatingInProgress');
+            progressBarWrapper.append(progressBar);
+            
+            leftPanel.append(progressBarWrapper);
+        },
+        
+        removeFormEditorProgressBar = function(){
+            $("#progressBarWrapper").remove();
+        },
+
+        toggleFormEditorProgressBar = function(state){
+            if(state){
+                createFormEditorProgressBar();
+            }else{
+                removeFormEditorProgressBar();
+            }
+        },
+        
+        generateInputName = function(inputElementType){
+            var retValue;
+            if(inputElements[inputElementType] === null){
+                retValue = inputElementType;
+            }else{
+                // TODO generate name
+                retValue = "name";  
+            }
+            return retValue;
+        },
+        
+        sendInputElement = function(inputElementProperties, successCallback){
+            // FIXME hardcoded url          
+            $.ajax({
+              type: 'POST',
+              url: '/wp-admin/admin-ajax.php?action=Katana_generateInput',
+              dataType : 'json',
+              data : {
+                inputElementProperties : inputElementProperties
+              },
+              success: successCallback
+            });         
+        },
+        
+        generateInputWindowInput = function(attributePropertyInputs, inputId, attributes){
+            var type = attributes.type,
+            input,
+            label = $('<label/>', {
+                text: attributes.label
+            }),
+            wrapper = $('<div/>',{});
+            label.prop('for', inputId);
+            
+            switch(type){
+                case 'text' :
+                    input = $('<input/>', {});
+                    input.prop('name', inputId);
+                    input.prop('id', inputId);
+                    input.prop("type", "text");
+                    input.prop('value', attributes.value);
+                    
+                break;
+                case 'checkbox' :
+                    input = $('<input/>', {});
+                    input.prop('name', inputId);
+                    input.prop('id', inputId);
+                    input.prop('type', 'checkbox');
+                    input.prop('value', 1);
+                    if(attributes.value === 1){
+                        input.prop('checked', true);    
+                    }
+                break;              
+            }           
+            wrapper.addClass('inputPropertyWrapper');
+            wrapper.append(label);
+            wrapper.append(input);
+            attributePropertyInputs[attributes.position] = wrapper;
+        },
+        
+        createHiddenInputField = function(name, value){
+            var input = $('<input/>');
+            input.prop('name', name);
+            input.prop('type', 'hidden');
+            input.val(value);
+            return input;
+        },
+        
+        generateInputWindowForm = function(inputName, wrapper, properties){
+            var propertyForm = $('<form/>',{}),
+                attributePropertyInputs = [],
+                propertyIndex,
+                property,
+                propertyAttributes,
+                inputId,
+                oldNameInput;
+            
+            for(propertyIndex in properties){
+                if(properties.hasOwnProperty(propertyIndex)){                
+                    property = propertyIndex;
+                    propertyAttributes = InputEditorElements[propertyIndex];
+                    
+                    if(propertyAttributes !== undefined){
+                        propertyAttributes.value = properties[propertyIndex];
+                        inputId = inputName + "_" + propertyIndex;
+                        generateInputWindowInput(attributePropertyInputs, inputId, propertyAttributes);                                     
+                    }   
+                }
+            }
+            
+            $.each(attributePropertyInputs, function(index, propertyInput){
+                propertyForm.append(propertyInput);
+            });
+            
+            oldNameInput = createHiddenInputField('old-name', inputName);
+            propertyForm.append(oldNameInput);
+            wrapper.append(propertyForm);           
+        },
+        
+        attachNewInput = function(newInput, result, inputElementProperties){
+            var optionsButton = newInput.find('div.options'),
+            
+            itemPosition = newInput.index(),
+            inputName = inputElementProperties.name,
+            
+            inputWindowWrapperId = "#window_" + inputName,                  
+            inputWindowWrapper = $('<div/>', {
+                id : inputWindowWrapperId
+            });
+            
+            newInput.html(result.content);
+            newInput.append('<div class="options"></div>');
+                        
+            inputElements.add(inputName, inputElementProperties);
+            
+            inputWindowWrapper.addClass("inputWindowEditor");
+            generateInputWindowForm(inputName, inputWindowWrapper, result.properties);  
+            
+            bindInputEditorHandler(optionsButton, inputElementProperties.name, inputWindowWrapper);
+        },
+        
+        
+        propertyWindowSaveEvent = function(inputOldName, result, propertyWindow){
+            if(result.valid){
+                var generatedInput = $('input[name='+inputOldName+'], button[name='+inputOldName+']'),
+                inputWrapper = generatedInput.closest('li.inputWrapper'),
+                inputName = result.properties.name;             
+                
+                attachNewInput(inputWrapper, result, result.properties);
+                inputElements[inputOldName] = null;
+                
+                                
+                inputElements[inputName] = result.properties;
+                propertyWindow.dialog('destroy');
+            }else{
+                propertyWindowErrorEvent(result, inputOldName);
+            }
+        },
+                
+        changeInputProperties = function(propertyWindow){
+            
+            var form = $(propertyWindow).find('form'),
+            inputOldName = $(form).find('input[name=old-name]'),            
+            oldName = inputOldName.val(),           
+            inputs = $(form).find('input, select, textarea').not('input[name=old-name]'),           
+            inputProperties = $.extend(true, {}, inputElements[oldName]);           
+            
+            $.each(inputs, function(index, input){
+                
+                var inputName = $(input).prop('name'),
+                inputNamePrefix = oldName + '_',
+                propertyName = inputName.replace(inputNamePrefix, ''),
+                inputValue = $(input).val();
+                
+                switch($(input).prop("type")){
+                    case 'checkbox':
+                        if($(input).prop("checked")){
+                            inputProperties[propertyName] = 1;  
+                        }else{
+                            inputProperties[propertyName] = 0;
+                        }
+                    break;
+                    case 'select-one':
+                        // TODO
+                    break;
+                    default:
+                        inputProperties[propertyName] = inputValue;
+                    break;
+                }
+                
+            });
+            sendInputElement(inputProperties, function(result){
+                propertyWindowSaveEvent(oldName, result, propertyWindow);
+                toggleFormEditorProgressBar(false);             
+            });         
+
+        },
+        
+        
+        bindInputEditorHandler = function(optionsButton, inputName, inputWindowWrapper){
+            optionsButton.click(function(){
+
+                $(inputWindowWrapper).dialog({
+                    draggable : true,
+                    resizable: true,
+                    minWidth: 300,
+                    minHeight: 300,
+                    // TODO multilinguale
+                    title: inputName + " editor",
+                    zIndex: 85000,
+                    show: true,
+                    hide: true,
+                    buttons : {
+                        "Cancel": function(ev, ui){
+                            $(this).dialog("destroy");
+                        },
+                        "Save": function(){                         
+                            changeInputProperties($(this));
+                        }
+                        
+                    }
+                });
+            });
+        },
+        
+        generateInput = function(inputElement, newInput){           
+            var inputElementType = inputElement.attr("input-type"),
+            inputElementSimpleName = inputElement.attr("simple-name"),
+            inputName = generateInputName(inputElementType),
+            // TODO template handling
+            inputElementProperties = {
+                name : inputElementSimpleName,
+                className : inputElementType,
+                template : 'default',
+                label : inputElementSimpleName
+            };
+            toggleFormEditorProgressBar(true);
+            sendInputElement(inputElementProperties, function(result){
+                attachNewInput(newInput, result, result.properties);
+                toggleFormEditorProgressBar(false);
+            });
+        },
+
 		setFormpageToSortable = function(inputLists){
 			$(inputLists).sortable({
 				connectWith : "ul",
@@ -169,6 +423,7 @@
 				remove : function(event, ui){
 					var type = $(ui.item).attr("input-type");
 					if(type === undefined){
+					    /*global confirm */
 						if(confirm("Delete input item?")){
 							$(ui.item).remove();	
 						}
@@ -190,257 +445,7 @@
 			
 			setFormpageToSortable($(Selectors.formPage));			
 		},
-				
-		createFormEditorProgressBar = function(){
-			var leftPanel = $(Selectors.formEditor).parent(),
-			progressBarWrapper = $('<div/>'),
-			position = leftPanel.position(),
-			progressBar = $('<div/>');
-			
-			progressBarWrapper.prop("id", "progressBarWrapper");
-			progressBarWrapper.css("position", "absolute");			
-						
-			progressBarWrapper.width(leftPanel.width());
-			progressBarWrapper.height(leftPanel.height());
-			progressBarWrapper.css("top", position.top + "px");
-			progressBarWrapper.css("left", position.left + "px");
-			progressBarWrapper.addClass("progressBarWrapper");
-						
-			progressBar.addClass('generatingInProgress');
-			progressBarWrapper.append(progressBar);
-			
-			leftPanel.append(progressBarWrapper);
-		},
-		
-		removeFormEditorProgressBar = function(){
-			$("#progressBarWrapper").remove();
-		},
-		
-        toggleFormEditorProgressBar = function(state){
-            if(state){
-                createFormEditorProgressBar();
-            }else{
-                removeFormEditorProgressBar();
-            }
-        },
-        
-        sendInputElement = function(inputElementProperties, successCallback){
-            // FIXME hardcoded url          
-            $.ajax({
-              type: 'POST',
-              url: '/wp-admin/admin-ajax.php?action=Katana_generateInput',
-              dataType : 'json',
-              data : {
-                inputElementProperties : inputElementProperties
-              },
-              success: successCallback
-            });         
-        },
-        
-        generateInputName = function(inputElementType){
-            var retValue;
-            if(inputElements[inputElementType] === null){
-                retValue = inputElementType;
-            }else{
-                // TODO generate name
-                retValue = "name";  
-            }
-            return retValue;
-        },
-        
-        attachNewInput = function(newInput, result, inputElementProperties){
-            newInput.html(result.content);
 
-            newInput.append('<div class="options"></div>');
-            var optionsButton = newInput.find('div.options'),
-            
-            itemPosition = newInput.index(),
-            inputName = inputElementProperties.name;
-            
-            inputElements.add(inputName, inputElementProperties);
-            
-            var inputWindowWrapperId = "#window_" + inputName,                  
-            inputWindowWrapper = $('<div/>', {
-                id : inputWindowWrapperId
-            });
-            
-            inputWindowWrapper.addClass("inputWindowEditor");
-            generateInputWindowForm(inputName, inputWindowWrapper, result.properties);  
-            
-            bindInputEditorHandler(optionsButton, inputElementProperties.name, inputWindowWrapper);
-        },
-
-		generateInput = function(inputElement, newInput){			
-			var inputElementType = inputElement.attr("input-type"),
-			inputElementSimpleName = inputElement.attr("simple-name"),
-			inputName = generateInputName(inputElementType),
-			// TODO template handling
-			inputElementProperties = {
-				name : inputElementSimpleName,
-				className : inputElementType,
-				template : 'default',
-				label : inputElementSimpleName
-			};
-			toggleFormEditorProgressBar(true);
-			sendInputElement(inputElementProperties, function(result){
-				attachNewInput(newInput, result, result.properties);
-				toggleFormEditorProgressBar(false);
-			});
-		},
-								
-		bindInputEditorHandler = function(optionsButton, inputName, inputWindowWrapper){
-			optionsButton.click(function(){
-
-				$(inputWindowWrapper).dialog({
-					draggable : true,
-					resizable: true,
-					minWidth: 300,
-					minHeight: 300,
-					// TODO multilinguale
-					title: inputName + " editor",
-					zIndex: 85000,
-					show: true,
-					hide: true,
-					buttons : {
-						"Cancel": function(ev, ui){
-							$(this).dialog("destroy");
-						},
-						"Save": function(){							
-							changeInputProperties($(this));
-						}
-						
-					}
-				});
-			});
-		},
-		
-		generateInputWindowForm = function(inputName, wrapper, properties){
-			var propertyForm = $('<form/>',{			
-			}),
-			attributePropertyInputs = new Array(),
-			propertyIndex;
-			
-			for(propertyIndex in properties){
-				
-				var property = propertyIndex,
-				propertyAttributes = InputEditorElements[propertyIndex];
-				
-				if(propertyAttributes != undefined){
-					propertyAttributes.value = properties[propertyIndex];
-					var inputId = inputName + "_" + propertyIndex;
-					generateInputWindowInput(attributePropertyInputs, inputId, propertyAttributes);										
-				}	
-				
-			}
-			
-			$.each(attributePropertyInputs, function(index, propertyInput){
-				propertyForm.append(propertyInput);
-			});
-			
-			var oldNameInput = createHiddenInputField('old-name', inputName);
-			propertyForm.append(oldNameInput);
-			wrapper.append(propertyForm);			
-		},
-		
-		createHiddenInputField = function(name, value){
-			var input = $('<input/>');
-			input.prop('name', name);
-			input.prop('type', 'hidden');
-			input.val(value);
-			return input;
-		},
-		
-		generateInputWindowInput = function(attributePropertyInputs, inputId, attributes){
-			var type = attributes.type,
-			input,
-			label = $('<label/>', {
-				text: attributes.label
-			}),
-			wrapper = $('<div/>',{});
-			label.prop('for', inputId);
-			
-			switch(type){
-				case 'text' :
-					input = $('<input/>', {});
-					input.prop('name', inputId);
-					input.prop('id', inputId);
-					input.prop("type", "text");
-					input.prop('value', attributes.value);
-					
-				break;
-				case 'checkbox' :
-					input = $('<input/>', {});
-					input.prop('name', inputId);
-					input.prop('id', inputId);
-					input.prop('type', 'checkbox');
-					input.prop('value', 1);
-					if(attributes.value === 1){
-						input.prop('checked', true);	
-					}
-				break;				
-			}			
-			wrapper.addClass('inputPropertyWrapper');
-			wrapper.append(label);
-			wrapper.append(input);
-			attributePropertyInputs[attributes.position] = wrapper;
-		},
-		
-		changeInputProperties = function(propertyWindow){
-			
-			var form = $(propertyWindow).find('form'),
-			inputOldName = $(form).find('input[name=old-name]'),			
-			oldName = inputOldName.val(),			
-			inputs = $(form).find('input, select, textarea').not('input[name=old-name]'),			
-			inputProperties = $.extend(true, {}, inputElements[oldName]);			
-			
-			$.each(inputs, function(index, input){
-				
-				var inputName = $(input).prop('name'),
-				inputNamePrefix = oldName + '_',
-				propertyName = inputName.replace(inputNamePrefix, ''),
-				inputValue = $(input).val();
-				
-				switch($(input).prop("type")){
-					case 'checkbox':
-						if($(input).prop("checked")){
-							inputProperties[propertyName] = 1;	
-						}else{
-							inputProperties[propertyName] = 0;
-						}
-					break;
-					case 'select-one':
-						// TODO
-					break;
-					default:
-						inputProperties[propertyName] = inputValue;
-					break;
-				}
-				
-			});
-			sendInputElement(inputProperties, function(result){
-				propertyWindowSaveEvent(oldName, result, propertyWindow);
-				toggleFormEditorProgressBar(false);				
-			});			
-
-		},
-		
-		propertyWindowSaveEvent = function(inputOldName, result, propertyWindow){
-			if(result.valid){
-				var generatedInput = $('input[name='+inputOldName+'], button[name='+inputOldName+']'),
-				inputWrapper = generatedInput.closest('li.inputWrapper'),
-				inputName = result.properties.name;				
-				
-				attachNewInput(inputWrapper, result, result.properties);
-				inputElements[inputOldName] = null;
-				
-								
-				inputElements[inputName] = result.properties;
-				propertyWindow.dialog('destroy');
-			}else{
-				propertyWindowErrorEvent(result, inputOldName);
-			}
-		},
-		
 		addErrorMessageToEditorField = function(inputName, field, errorMessage){
 		    var inputFieldParent = $("#" + inputName + "_" + field).parent(),
                 errorMessageWrapper = $('<div/>', {});            
@@ -456,9 +461,11 @@
             field,
             errorMessage;   
 		    
-		    for(field in errors){		        
-		        errorMessage = errors[field];
-		        addErrorMessageToEditorField(inputName, field, errorMessage);
+		    for(field in errors){
+		        if(errors.hasOwnProperty(field)){
+		          errorMessage = errors[field];
+		          addErrorMessageToEditorField(inputName, field, errorMessage);
+		         } 
 		    }	
 		},
 		
@@ -472,13 +479,14 @@
 				function(event){
 					
 					var buttonId = event.target.id,
-					button = $(this);					 
+                        button = $(this),
+                        currentPage,
+                        targetPage;					 
 					
 					if(!button.hasClass('activePager')){
 						return;
 					}
-					var currentPage = pages.getCurrentPage(),
-					targetPage;
+					currentPage = pages.getCurrentPage();
 					
 					if(buttonId === 'prevPage'){						
 						targetPage = currentPage-1;	
@@ -499,20 +507,24 @@
 		},
 		
 		addNewPage = function(){
+            var newFormPage,
+                newPageId,
+                activePageId;
+                                
 			pages.add();					
-			var newFormPage = createNewFormPage(pages.getPagesNum());
+			newFormPage = createNewFormPage(pages.getPagesNum());
 			$(Selectors.formInputElements).append(newFormPage);
 			setFormpageToSortable(newFormPage);
 			increaseFormEditorSize(newFormPage.width());
-			var newPageId = pages.getPagesNum();
+			newPageId = pages.getPagesNum();
 						
-			var activePageId = getActivePageId();						
+			activePageId = getActivePageId();						
 			scrollFormPages(activePageId, newPageId);						
 		},
 				
 		increaseFormEditorSize = function(size){
 			var originalWidth = $(Selectors.formEditor).width(); 
-			$(Selectors.formEditor).width(originalWidth + size)
+			$(Selectors.formEditor).width(originalWidth + size);
 		},
 		
 		getActivePageId = function(){
@@ -546,13 +558,13 @@
 			distance = delta + actualLeftPosition;
 			
 			$(Selectors.formEditor).animate({
-					left: "" + distance + "px"
+					left: distance + "px"
 				},
 				"slow"
 			);
 		},
 
-		scrollFormPagesRight = function(from, to){;
+		scrollFormPagesRight = function(from, to){
 			var delta = (from - to) * 400,
 			actualLeftPosition = getFormEditorLeftPosition(),
 			distance = delta + actualLeftPosition;
@@ -612,4 +624,4 @@
 
 	formEditor = new FormEditor();
 	formEditor.init();
-})(jQuery);
+}(jQuery));
