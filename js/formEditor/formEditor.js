@@ -438,13 +438,29 @@
 				inputElements[inputName] = result.properties;
 				propertyWindow.dialog('destroy');
 			}else{
-				propertyWindowErrorEvent(result);
+				propertyWindowErrorEvent(result, inputOldName);
 			}
 		},
 		
-		propertyWindowErrorEvent = function(result){
-			// TODO develop
-			alert('input property error');	
+		addErrorMessageToEditorField = function(inputName, field, errorMessage){
+		    var inputFieldParent = $("#" + inputName + "_" + field).parent(),
+                errorMessageWrapper = $('<div/>', {});            
+            
+            inputFieldParent.addClass("input-error");
+            errorMessageWrapper.addClass("input-error-notice");
+            errorMessageWrapper.html(errorMessage);    
+            inputFieldParent.append(errorMessageWrapper); 
+		},
+		
+		propertyWindowErrorEvent = function(result, inputName){
+		    var errors = result.errors,
+            field,
+            errorMessage;   
+		    
+		    for(field in errors){		        
+		        errorMessage = errors[field];
+		        addErrorMessageToEditorField(inputName, field, errorMessage);
+		    }	
 		},
 		
 		unbindInputEditorHandler = function(){

@@ -33,7 +33,8 @@ abstract class AbstractElementGeneratorValidator{
     
     private function validateDefaultFields(){
         $this->validateName();
-        $this->validateTemplate();
+        // TODO add template property to the editor
+        //$this->validateTemplate();
     }
     
     protected function validateName(){
