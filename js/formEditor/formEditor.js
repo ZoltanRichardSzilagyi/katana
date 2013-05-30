@@ -163,12 +163,12 @@
 					$(Selectors.activeFormPage).addClass('sortingInProgress');
 				},
 				deactivate : function(event, ui){
-					$(Selectors.activeFormPage).removeClass('sortingInProgress')
+					$(Selectors.activeFormPage).removeClass('sortingInProgress');
 				},
 				// TODO fixme (remove via drag out)
 				remove : function(event, ui){
-					type = $(ui.item).attr("input-type");
-					if(type == undefined){
+					var type = $(ui.item).attr("input-type");
+					if(type === undefined){
 						if(confirm("Delete input item?")){
 							$(ui.item).remove();	
 						}
@@ -248,7 +248,28 @@
             return retValue;
         },
         
-							
+        attachNewInput = function(newInput, result, inputElementProperties){
+            newInput.html(result.content);
+
+            newInput.append('<div class="options"></div>');
+            var optionsButton = newInput.find('div.options'),
+            
+            itemPosition = newInput.index(),
+            inputName = inputElementProperties.name;
+            
+            inputElements.add(inputName, inputElementProperties);
+            
+            var inputWindowWrapperId = "#window_" + inputName,                  
+            inputWindowWrapper = $('<div/>', {
+                id : inputWindowWrapperId
+            });
+            
+            inputWindowWrapper.addClass("inputWindowEditor");
+            generateInputWindowForm(inputName, inputWindowWrapper, result.properties);  
+            
+            bindInputEditorHandler(optionsButton, inputElementProperties.name, inputWindowWrapper);
+        },
+
 		generateInput = function(inputElement, newInput){			
 			var inputElementType = inputElement.attr("input-type"),
 			inputElementSimpleName = inputElement.attr("simple-name"),
@@ -266,29 +287,7 @@
 				toggleFormEditorProgressBar(false);
 			});
 		},
-						
-		attachNewInput = function(newInput, result, inputElementProperties){
-            newInput.html(result.content);
-
-            newInput.append('<div class="options"></div>');
-            var optionsButton = newInput.find('div.options'),
-            
-            itemPosition = newInput.index(),
-            inputName = inputElementProperties.name;
-            
-            inputElements.add(inputName, inputElementProperties);
-            
-            var inputWindowWrapperId = "#window_" + inputName,					
-            inputWindowWrapper = $('<div/>', {
-            	id : inputWindowWrapperId,
-            });
-            
-            inputWindowWrapper.addClass("inputWindowEditor");
-            generateInputWindowForm(inputName, inputWindowWrapper, result.properties);	
-            
-            bindInputEditorHandler(optionsButton, inputElementProperties.name, inputWindowWrapper);
-		},
-		
+								
 		bindInputEditorHandler = function(optionsButton, inputName, inputWindowWrapper){
 			optionsButton.click(function(){
 
@@ -481,10 +480,10 @@
 					var currentPage = pages.getCurrentPage(),
 					targetPage;
 					
-					if(buttonId == 'prevPage'){						
+					if(buttonId === 'prevPage'){						
 						targetPage = currentPage-1;	
 					}
-					if(buttonId == 'nextPage'){
+					if(buttonId === 'nextPage'){
 						targetPage = currentPage + 1;
 					}
 					scrollFormPages(currentPage, targetPage);
@@ -559,7 +558,7 @@
 			distance = delta + actualLeftPosition;
 			
 			$(Selectors.formEditor).animate({
-					left: "" + distance + "px"
+					left: distance + "px"
 				},
 				"slow"
 			);
