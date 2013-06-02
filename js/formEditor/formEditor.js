@@ -180,7 +180,7 @@
         },
         
         generateInputName = function(inputElementType){
-            var retValue;
+            var retValue;            
             if(inputElements[inputElementType] === null){
                 retValue = inputElementType;
             }else{
@@ -278,6 +278,9 @@
         },
         
         attachNewInput = function(newInput, result, inputElementProperties){
+            newInput.html(result.content);
+            newInput.append('<div class="options"></div>');
+            
             var optionsButton = newInput.find('div.options'),
             
             itemPosition = newInput.index(),
@@ -286,10 +289,7 @@
             inputWindowWrapperId = "#window_" + inputName,                  
             inputWindowWrapper = $('<div/>', {
                 id : inputWindowWrapperId
-            });
-            
-            newInput.html(result.content);
-            newInput.append('<div class="options"></div>');
+            });            
                         
             inputElements.add(inputName, inputElementProperties);
             
@@ -358,8 +358,7 @@
         
         
         bindInputEditorHandler = function(optionsButton, inputName, inputWindowWrapper){
-            optionsButton.click(function(){
-
+            optionsButton.click(function(){                
                 $(inputWindowWrapper).dialog({
                     draggable : true,
                     resizable: true,
