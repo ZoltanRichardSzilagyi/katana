@@ -6,6 +6,8 @@ use \ArrayObject;
 
 use classes\utils\LanguageUtils;
 
+use classes\utils\elements\ElementDescriptor;
+
 use classes\element\input\Button;
 use classes\element\input\CurrencyInput;
 use classes\element\input\DateInput;
@@ -23,10 +25,10 @@ class ElementFactory{
 	
 	public static function getSampleInputs(){
 		$sampleInputs = new ArrayObject();
-		$sampleInputs[TextInput::className()] = self::getSampleTextInput();
-		$sampleInputs[NumberInput::className()] = self::getSampleNumberInput();
-		$sampleInputs[CurrencyInput::className()] = self::getSampleCurrencyInput();
-		$sampleInputs[Button::className()] = self::getSampleButton();
+		$sampleInputs->append(self::getSampleTextInput());
+		$sampleInputs->append(self::getSampleNumberInput());
+		$sampleInputs->append(self::getSampleCurrencyInput());
+		$sampleInputs->append(self::getSampleButton());
 		return $sampleInputs;
 	}
 
@@ -40,8 +42,19 @@ class ElementFactory{
 		$properties['label'] = "Your name";
 		$properties['maxLength'] = "64";
 		$properties['placeholder'] = "Your name";						
-		return self::getByType($properties);
+		
+		$input = self::getByType($properties);        
+        $elementOptions = self::getSampleTextInputOptions();
+        $elementDescriptor = new ElementDescriptor($input, $elementOptions);
+		return $elementDescriptor;
 	}
+    
+    private static function getSampleTextInputOptions(){
+        return array(
+            'inputType' => TextInput::className(),
+            'templates' => array('default', 'edited')
+        );
+    }
 	
 	private static function getSampleNumberInput(){
 		$properties = array();
@@ -53,7 +66,10 @@ class ElementFactory{
 		$properties['label'] = "Your age";
 		$properties['maxLength'] = "2";
 		$properties['placeholder'] = "Your age";
-		return self::getByType($properties);
+        
+        $input = self::getByType($properties);        
+        $elementDescriptor = new ElementDescriptor($input);
+        return $elementDescriptor;        
 	}
 	
 	private static function getSampleCurrencyInput(){
@@ -72,7 +88,11 @@ class ElementFactory{
 		$properties['precision'] = "0";
 		$properties['thousand'] = ",";
 		$properties['format'] = "%v %s";
-		return self::getByType($properties);
+        
+        $input = self::getByType($properties);        
+        $elementDescriptor = new ElementDescriptor($input);
+        return $elementDescriptor;        
+
 	}
 	
 	private static function getSampleButton(){
@@ -83,7 +103,10 @@ class ElementFactory{
 		$properties['template'] = "sample";
 		$properties['value'] = "ok";
 		$properties['label'] = "Ok";
-		return self::getByType($properties);
+
+        $input = self::getByType($properties);        
+        $elementDescriptor = new ElementDescriptor($input);
+        return $elementDescriptor;
 	}	
 	
 }

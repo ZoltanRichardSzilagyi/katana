@@ -1,17 +1,19 @@
 <?php
-//namespace katana;
-
 namespace classes;
+
+use \Exception;
 
 use classes\utils\LanguageUtils;
 use classes\utils\TemplateUtils;
+
 use classes\ajaxcontroller\FormEditorController;
+use classes\ajaxcontroller\SampleElementsController;
+
 use classes\posttype\FormPostType;
-use \Exception;
 
 class Katana{
 	
-	const VERSION = "1.0";
+	const VERSION = "1.0.0";
 	
 	const ID ="katana";
 		
@@ -68,6 +70,9 @@ class Katana{
 		 */
 		$controller = new FormEditorController();
 		$controller->registerAjaxEvents();
+        
+        $controller = new SampleElementsController();
+        $controller->registerAjaxEvents();
 	}
 	
 	

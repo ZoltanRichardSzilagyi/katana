@@ -130,6 +130,35 @@
 		pages = new Pages(),
 		
 		inputElements = new InputElements(),
+		
+		getSampleInputs = function(successCallback){
+            // FIXME hardcoded url          
+            $.ajax({
+              type: 'GET',
+              url: '/wp-admin/admin-ajax.php?action=Katana_getSampleInputs',
+              dataType : 'json',
+              success: successCallback
+            });         		    		    
+		},
+		
+		createSampleElementWrapper = function(sampleElement){
+		    
+		},
+
+		renderSampleInputs = function(sampleElements){
+		    var index,
+                sampleElement,
+                sampleElementList;
+		      
+            sampleElementList = $(Selectors.sampleInputList);
+		    
+            for(index in sampleElements){
+                sampleElement = sampleElements[index];
+                sampleElementList.append(sampleElement.element);
+                //<li input-type="<?php echo $input::className()?>" simple-name="<?php echo $input::getSimpleName()?>">
+            };
+		    
+		},
 				
 		setSampleInputsDescriptionButtonEvents = function() {
 			var buttons = $(Selectors.inputDescriptionButtonSelector);
@@ -611,11 +640,16 @@
 			$(Selectors.currentPage).html(pages.getCurrentPage());
 		};
 		
+		
+		
         this.init = function() {
-            setSampleInputsDescriptionButtonEvents();
-            bindFormAddEvent();
-            setPagerButtonsClickEvent();
-            addNewPageButtonEvent();
+            getSampleInputs(function(result){
+                renderSampleInputs(result);
+                setSampleInputsDescriptionButtonEvents();
+                bindFormAddEvent();
+                setPagerButtonsClickEvent();
+                addNewPageButtonEvent();                
+            });
         };		
 		
 	},

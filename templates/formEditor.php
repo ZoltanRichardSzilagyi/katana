@@ -39,14 +39,6 @@ TemplateUtils::attachStyle("jquery-ui", "ui/jquery-ui-1.10.0.custom.min");
 			<div id="formEditorToolbox">			
 				<div class="boxTitle"><?php echo LanguageUtils::translate("Fields"); ?></div>
 					<ul id="sampleInputsList" class="droptrue ui-sortable">
-						<?php $sampleInputsIterator = $sampleInputs -> getIterator(); ?>									
-						<?php while($sampleInputsIterator->valid()){?>							
-							<?php $input = $sampleInputsIterator->current(); ?>											
-						<li input-type="<?php echo $input::className()?>" simple-name="<?php echo $input::getSimpleName()?>">							
-							<?php $input->render() ?> 
-						</li>
-						<?php $sampleInputsIterator->next(); ?>						
-						<?php } ?>
 					</ul>
 			</div>
 		</div>

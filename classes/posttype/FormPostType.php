@@ -71,11 +71,12 @@ class FormPostType extends CustomPostType{
 		$this->formDao = new FormDao();				
 		$form = $this->formDao->get($post->ID);
 		
-		$elementFactory = new ElementFactory();
-		$sampleInputs = $elementFactory->getSampleInputs();
-		
-		$this->templateValues = new ValueHolder();
-		$this->templateValues->add("sampleInputs", $sampleInputs);												
-		TemplateUtils::fetchTemplate("formEditor", $this->templateValues);
+		// $elementFactory = new ElementFactory();
+		// $sampleInputs = $elementFactory->getSampleInputs();
+// 		
+		// $this->templateValues = new ValueHolder();
+		// $this->templateValues->add("sampleInputs", $sampleInputs);												
+		// TemplateUtils::fetchTemplate("formEditor", $this->templateValues);
+		TemplateUtils::fetchTemplate("formEditor");
 	}	
 }
