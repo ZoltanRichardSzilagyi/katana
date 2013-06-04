@@ -141,10 +141,13 @@
             });         		    		    
 		},
 		
-		createSampleElementWrapper = function(sampleElement){
+		createSampleElement = function(sampleElement){
 		    var sampleElementWrapper,
 		    sampleElementOptions;
-		    if(sampleElement.elementOptions === null){
+		    
+		    if(sampleElement.elementOptions === null ||
+		        sampleElement.elementOptions.type === undefined ||
+		        sampleElement.elementOptions.type === null){
 		        return;
 		    }
 
@@ -159,18 +162,16 @@
 		},
 
 		renderSampleElements = function(sampleElements){
-		    console.log(sampleElements);
-
 		    var index,
                 sampleElement,
                 sampleElementList,
                 sampleElementWrapper;
 		      
             sampleElementList = $(Selectors.sampleInputList);
-		    console.log(sampleElements);
+
             for(index in sampleElements){
                 sampleElement = sampleElements[index];
-                sampleElementWrapper = createSampleElementWrapper(sampleElement);
+                sampleElementWrapper = createSampleElement(sampleElement);
                 sampleElementList.append(sampleElementWrapper);                
             };
 		    
