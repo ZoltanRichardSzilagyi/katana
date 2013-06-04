@@ -142,20 +142,34 @@
 		},
 		
 		createSampleElementWrapper = function(sampleElement){
+		    var sampleElementWrapper,
+		    sampleElementOptions;
 		    
+		    if(sampleElement.elementOptions = null){
+		        return;
+		    }
+		    // FIXME
+		    sampleElementOptions = sampleElement.elementOptions;
+		    
+		    sampleElementWrapper = $('<li/>');
+		    sampleElementWrapper.prop("input-type", sampleElementOptions.type)
+		    sampleElementWrapper.prop("simple-name", sampleElementOptions.simpleName);
+		    sampleElementWrapper.append(sampleElement.element);
+		    return sampleElementWrapper;		    
 		},
 
 		renderSampleInputs = function(sampleElements){
 		    var index,
                 sampleElement,
-                sampleElementList;
+                sampleElementList,
+                sampleElementWrapper;
 		      
             sampleElementList = $(Selectors.sampleInputList);
 		    
             for(index in sampleElements){
                 sampleElement = sampleElements[index];
-                sampleElementList.append(sampleElement.element);
-                //<li input-type="<?php echo $input::className()?>" simple-name="<?php echo $input::getSimpleName()?>">
+                sampleElementWrapper = createSampleElementWrapper(sampleElement);
+                sampleElementList.append(sampleElementWrapper);                
             };
 		    
 		},

@@ -51,7 +51,8 @@ class ElementFactory{
     
     private static function getSampleTextInputOptions(){
         return array(
-            'inputType' => TextInput::className(),
+            'type' => TextInput::className(),
+            'simpleName' => TextInput::getSimpleName(),
             'templates' => array('default', 'edited')
         );
     }
