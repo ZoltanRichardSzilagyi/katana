@@ -6,25 +6,25 @@ use classes\ajaxcontroller\AjaxController;
 
 class SampleElementsController extends AjaxController{
     
-    private $sampleInputs;
+    private $sampleElements;
         
     public function getClassName(){
         return get_class();
     }
     
     public function registerAjaxEvents(){
-        $this->addAdminEvent("getSampleInputs");   
+        $this->addAdminEvent("getSampleElements");   
     }
     
-    public function getSampleInputs(){
-        $this->createSampleInputs();
-        echo json_encode($this->sampleInputs);
+    public function getSampleElements(){
+        $this->createSampleElements();
+        echo json_encode($this->sampleElements);
         die();
     }
     
-    private function createSampleInputs(){
+    private function createSampleElements(){
         $elementFactory = new ElementFactory();
-        $this->sampleInputs = $elementFactory->getSampleInputs();        
+        $this->sampleElements = $elementFactory->getSampleElements();        
     }
 
 }

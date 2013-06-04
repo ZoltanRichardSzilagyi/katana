@@ -89,11 +89,11 @@
 	},
 	
 	InputElements = function(){														
-		this.add = function(name, properties){
-			this[name] = properties;				
+		this.add = function(type, properties){
+			this[type] = properties;				
 		};			
-		this.remove = function(name){
-			this[name] = null;
+		this.get = function(name){
+			return this[name];
 		};
 	},
 	
@@ -135,7 +135,7 @@
             // FIXME hardcoded url          
             $.ajax({
               type: 'GET',
-              url: '/wp-admin/admin-ajax.php?action=Katana_getSampleInputs',
+              url: '/wp-admin/admin-ajax.php?action=Katana_getSampleElements',
               dataType : 'json',
               success: successCallback
             });         		    		    
@@ -144,28 +144,30 @@
 		createSampleElementWrapper = function(sampleElement){
 		    var sampleElementWrapper,
 		    sampleElementOptions;
-		    
-		    if(sampleElement.elementOptions = null){
+		    if(sampleElement.elementOptions === null){
 		        return;
 		    }
-		    // FIXME
+
 		    sampleElementOptions = sampleElement.elementOptions;
 		    
+		    inputElements.add(sampleElementOptions.type, sampleElementOptions);
 		    sampleElementWrapper = $('<li/>');
-		    sampleElementWrapper.prop("input-type", sampleElementOptions.type)
-		    sampleElementWrapper.prop("simple-name", sampleElementOptions.simpleName);
+		    sampleElementWrapper.attr("input-type", sampleElementOptions.type)
+		    sampleElementWrapper.attr("simple-name", sampleElementOptions.simpleName);
 		    sampleElementWrapper.append(sampleElement.element);
 		    return sampleElementWrapper;		    
 		},
 
-		renderSampleInputs = function(sampleElements){
+		renderSampleElements = function(sampleElements){
+		    console.log(sampleElements);
+
 		    var index,
                 sampleElement,
                 sampleElementList,
                 sampleElementWrapper;
 		      
             sampleElementList = $(Selectors.sampleInputList);
-		    
+		    console.log(sampleElements);
             for(index in sampleElements){
                 sampleElement = sampleElements[index];
                 sampleElementWrapper = createSampleElementWrapper(sampleElement);
@@ -658,7 +660,7 @@
 		
         this.init = function() {
             getSampleInputs(function(result){
-                renderSampleInputs(result);
+                renderSampleElements(result);
                 setSampleInputsDescriptionButtonEvents();
                 bindFormAddEvent();
                 setPagerButtonsClickEvent();

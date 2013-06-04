@@ -23,7 +23,7 @@ class ElementFactory{
 		return $class->newInstanceArgs(array($inputPropertiesHolder));
 	}
 	
-	public static function getSampleInputs(){
+	public static function getSampleElements(){
 		$sampleInputs = new ArrayObject();
 		$sampleInputs->append(self::getSampleTextInput());
 		$sampleInputs->append(self::getSampleNumberInput());
