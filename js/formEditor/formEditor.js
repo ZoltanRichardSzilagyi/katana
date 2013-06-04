@@ -88,7 +88,7 @@
 		}					
 	},
 	
-	InputElements = function(){														
+	ElementTypes = function(){														
 		this.add = function(type, properties){
 			this[type] = properties;				
 		};			
@@ -129,9 +129,9 @@
 						
 		pages = new Pages(),
 		
-		inputElements = new InputElements(),
+		elementTypes = new ElementTypes(),
 		
-		getSampleInputs = function(successCallback){
+		getSampleElements = function(successCallback){
             // FIXME hardcoded url          
             $.ajax({
               type: 'GET',
@@ -153,7 +153,7 @@
 
 		    sampleElementOptions = sampleElement.elementOptions;
 		    
-		    inputElements.add(sampleElementOptions.type, sampleElementOptions);
+		    elementTypes.add(sampleElementOptions.type, sampleElementOptions);
 		    sampleElementWrapper = $('<li/>');
 		    sampleElementWrapper.attr("input-type", sampleElementOptions.type)
 		    sampleElementWrapper.attr("simple-name", sampleElementOptions.simpleName);
@@ -660,7 +660,7 @@
 		
 		
         this.init = function() {
-            getSampleInputs(function(result){
+            getSampleElements(function(result){
                 renderSampleElements(result);
                 setSampleInputsDescriptionButtonEvents();
                 bindFormAddEvent();

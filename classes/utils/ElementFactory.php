@@ -48,7 +48,7 @@ class ElementFactory{
         $elementDescriptor = new ElementDescriptor($input, $elementOptions);
 		return $elementDescriptor;
 	}
-    
+    // TODO create template handling
     private static function getSampleTextInputOptions(){
         return array(
             'type' => TextInput::className(),
