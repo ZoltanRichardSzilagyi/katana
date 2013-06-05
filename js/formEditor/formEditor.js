@@ -88,10 +88,13 @@
 		}					
 	},
 	
-	ElementTypes = function(){														
-		this.add = function(type, properties){
-			this[type] = properties;				
-		};			
+	InputElements = function(){														
+		this.add = function(name, properties){
+			this[name] = properties;				
+		};
+		this.remove = function(){
+		    this[name] = null;
+		}			
 		this.get = function(name){
 			return this[name];
 		};
@@ -129,7 +132,7 @@
 						
 		pages = new Pages(),
 		
-		elementTypes = new ElementTypes(),
+		inputElements = new InputElements(),
 		
 		getSampleElements = function(successCallback){
             // FIXME hardcoded url          
@@ -152,8 +155,8 @@
 		    }
 
 		    sampleElementOptions = sampleElement.elementOptions;
-		    
-		    elementTypes.add(sampleElementOptions.type, sampleElementOptions);
+		    // TODO
+		    //elementTypes.add(sampleElementOptions.type, sampleElementOptions);
 		    sampleElementWrapper = $('<li/>');
 		    sampleElementWrapper.attr("input-type", sampleElementOptions.type)
 		    sampleElementWrapper.attr("simple-name", sampleElementOptions.simpleName);
@@ -341,7 +344,6 @@
             
             inputWindowWrapper.addClass("inputWindowEditor");
             generateInputWindowForm(inputName, inputWindowWrapper, result.properties);  
-            
             bindInputEditorHandler(optionsButton, inputElementProperties.name, inputWindowWrapper);
         },
         
@@ -404,8 +406,8 @@
         
         
         bindInputEditorHandler = function(optionsButton, inputName, inputWindowWrapper){
-            optionsButton.click(function(){                
-                $(inputWindowWrapper).dialog({
+            optionsButton.click(function(){               
+               var editorDialog = $(inputWindowWrapper).dialog({
                     draggable : true,
                     resizable: true,
                     minWidth: 300,
@@ -417,14 +419,15 @@
                     hide: true,
                     buttons : {
                         "Cancel": function(ev, ui){
+                            // only hide
                             $(this).dialog("destroy");
                         },
                         "Save": function(){                         
                             changeInputProperties($(this));
-                        }
-                        
+                        }                        
                     }
                 });
+                console.log(editorDialog.dialog.buttons);
             });
         },
         
@@ -656,9 +659,7 @@
 		displayFormId = function(){
 			$(Selectors.currentPage).html(pages.getCurrentPage());
 		};
-		
-		
-		
+
         this.init = function() {
             getSampleElements(function(result){
                 renderSampleElements(result);
@@ -670,8 +671,6 @@
         };		
 		
 	},
-	
-
 	formEditor = new FormEditor();
 	formEditor.init();
 }(jQuery));
