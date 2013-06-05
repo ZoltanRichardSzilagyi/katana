@@ -2,7 +2,7 @@
 	"use strict";
 	
 	// TODO descriptors not used yet
-	var KatanaFormInputDescriptor = function(){
+	var KatanaFormEDescriptor = function(){
 		
 		var templates,		
 		  label;
@@ -101,6 +101,11 @@
 	},
 	
 	Selectors = {
+	    
+	    dialogWindowClass : ".ui-dialog",
+	    
+	    dialogWindowButtons : "button",
+	    
 		formEditor : "#formEditor",
 		
 		inputDescriptionButtonSelector : "div.sampleInputElement div.descriptionBoxButton",
@@ -404,30 +409,85 @@
 
         },
         
+        isValidElementName = function(elementName, originalElementName){
+            // TODO filtering control keys 
+            if(elementName == ""){
+                return false;
+            }
+            if(elementName == originalElementName){
+                return true;
+            }
+            if(inputElements.get(elementName) == undefined){
+                return true;
+            }
+            return false;
+        },
         
-        bindInputEditorHandler = function(optionsButton, inputName, inputWindowWrapper){
+        invalidElementNameEvent = function(elementNameInput, saveButton){
+            saveButton.addClass("disabled");
+            saveButton.prop("disabled", true);
+        },
+        
+        validElementNameEvent = function(elementNameInput, saveButton){
+            saveButton.removeClass("disabled");
+            saveButton.prop("disabled", false);
+        },
+        
+        findDialogSaveButton = function(parentDialog){
+            var dialogButtons, 
+                saveButton;
+                
+            dialogButtons = parentDialog.find(Selectors.dialogWindowButtons);
+            return $(dialogButtons[2]);
+        },
+        
+        createElementNameInputHandler = function(elementNameInput, originalElementName){
+            var newElementName,
+                validELementName,
+                parentDialog,
+                dialogSaveButton;
+            
+            parentDialog = elementNameInput.parents(Selectors.dialogWindowClass);
+            dialogSaveButton = findDialogSaveButton(parentDialog);
+            
+            elementNameInput.keypress(function(){
+                newElementName = $(this).val();
+                if(isValidElementName(newElementName, originalElementName)){
+                    validElementNameEvent(elementNameInput, dialogSaveButton);
+                }else{
+                    invalidElementNameEvent(elementNameInput, dialogSaveButton);
+                }
+            });
+        },
+        
+        
+                
+        bindInputEditorHandler = function(optionsButton, elementName, inputWindowWrapper){
             optionsButton.click(function(){               
-               var editorDialog = $(inputWindowWrapper).dialog({
+               var elementNameInputField, 
+                editorDialog = $(inputWindowWrapper).dialog({
                     draggable : true,
                     resizable: true,
                     minWidth: 300,
                     minHeight: 300,
-                    // TODO multilinguale
-                    title: inputName + " editor",
+                    // TODO multilinguale label
+                    title: elementName + " editor",
                     zIndex: 85000,
                     show: true,
                     hide: true,
                     buttons : {
                         "Cancel": function(ev, ui){
-                            // only hide
                             $(this).dialog("destroy");
                         },
-                        "Save": function(){                         
+                        "Save": function(){
+                            // TODO unbind when generating process is valid
+                            elementNameInputField.unbind();
                             changeInputProperties($(this));
                         }                        
                     }
                 });
-                console.log(editorDialog.dialog.buttons);
+                elementNameInputField = editorDialog.find("#"+elementName+"_name");
+               createElementNameInputHandler(elementNameInputField, elementName);
             });
         },
         
