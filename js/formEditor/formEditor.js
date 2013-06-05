@@ -100,6 +100,11 @@
 		};
 	},
 	
+	Messages = {
+	    emptyElementName : "Please add element name!",
+	    usedElementName : "The form already contains an element with this name!"
+	},
+	
 	Selectors = {
 	    
 	    dialogWindowClass : ".ui-dialog",
@@ -410,22 +415,26 @@
         },
         
         isValidElementName = function(elementName, originalElementName){
+            // TODO validation timeout
             // TODO filtering control keys 
             if(elementName == ""){
-                return false;
+                return Messages.emptyElementName;
             }
             if(elementName == originalElementName){
                 return true;
             }
             if(inputElements.get(elementName) == undefined){
                 return true;
+            }else{
+                return Messages.usedElementName;
             }
-            return false;
         },
         
-        invalidElementNameEvent = function(elementNameInput, saveButton){
+        invalidElementNameEvent = function(elementNameInput, saveButton, errorMessage){
+            
             saveButton.addClass("disabled");
             saveButton.prop("disabled", true);
+            addErrorMessageToEditorField(elementNameInput, errorMessage);
         },
         
         validElementNameEvent = function(elementNameInput, saveButton){
@@ -445,17 +454,20 @@
             var newElementName,
                 validELementName,
                 parentDialog,
-                dialogSaveButton;
+                dialogSaveButton,
+                validationResult;
             
             parentDialog = elementNameInput.parents(Selectors.dialogWindowClass);
             dialogSaveButton = findDialogSaveButton(parentDialog);
             
             elementNameInput.keypress(function(){
                 newElementName = $(this).val();
-                if(isValidElementName(newElementName, originalElementName)){
+                validationResult = isValidElementName(newElementName, originalElementName); 
+                removeErrorMessageFromField(elementNameInput);
+                if(validationResult === true){
                     validElementNameEvent(elementNameInput, dialogSaveButton);
                 }else{
-                    invalidElementNameEvent(elementNameInput, dialogSaveButton);
+                    invalidElementNameEvent(elementNameInput, dialogSaveButton, validationResult);
                 }
             });
         },
@@ -554,8 +566,8 @@
 			setFormpageToSortable($(Selectors.formPage));			
 		},
 
-		addErrorMessageToEditorField = function(inputName, field, errorMessage){
-		    var inputFieldParent = $("#" + inputName + "_" + field).parent(),
+		addErrorMessageToEditorField = function(elementPropertyInput, errorMessage){
+		    var inputFieldParent = elementPropertyInput.parent(),
                 errorMessageWrapper = $('<div/>', {});            
             
             inputFieldParent.addClass("input-error");
@@ -564,15 +576,22 @@
             inputFieldParent.append(errorMessageWrapper); 
 		},
 		
+		removeErrorMessageFromField = function(elementPropertyInput){
+		    var inputFieldParent = elementPropertyInput.parent();
+		    inputFieldParent.find(".input-error-notice").remove();
+		},
+		
 		propertyWindowErrorEvent = function(result, inputName){
 		    var errors = result.errors,
             field,
-            errorMessage;   
+            errorMessage,
+            elementPropertyInput;   
 		    
 		    for(field in errors){
 		        if(errors.hasOwnProperty(field)){
 		          errorMessage = errors[field];
-		          addErrorMessageToEditorField(inputName, field, errorMessage);
+		          elementPropertyInput = $($("#" + inputName + "_" + field));
+		          addErrorMessageToEditorField(elementPropertyInput, errorMessage);
 		         } 
 		    }	
 		},
