@@ -31,6 +31,7 @@ TemplateUtils::attachStyle("jquery-ui", "ui/jquery-ui-1.10.0.custom.min");
 					<div id="nextPage" class="formPager" title="<?php echo LanguageUtils::translate("Next page") ?>"></div>
 				</div>
 				<div  id="formPageOptions">
+					<div id="saveForm"><?php echo LanguageUtils::translate("Save") ?></div>
 					<div id="addPage" title="<?php echo LanguageUtils::translate("Add new page") ?>"></div>
 					<div id="editPage" title="<?php echo LanguageUtils::translate("Edit current page") ?>"></div>
 					<div id="deletePage" title="<?php echo LanguageUtils::translate("Delete current page") ?>"></div>

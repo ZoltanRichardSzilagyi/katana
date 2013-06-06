@@ -740,12 +740,13 @@
 		};
 
         this.init = function() {
+            setPagerButtonsClickEvent();
+            addNewPageButtonEvent();
+            
             getSampleElements(function(result){
                 renderSampleElements(result);
                 setSampleInputsDescriptionButtonEvents();
                 bindFormAddEvent();
-                setPagerButtonsClickEvent();
-                addNewPageButtonEvent();                
             });
         };		
 		
