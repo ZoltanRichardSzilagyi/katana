@@ -1,34 +1,7 @@
 (function ($) {
 	"use strict";
-	
-	// TODO descriptors not used yet
-	var KatanaFormEDescriptor = function(){
-		
-		var templates,		
-		  label;
-		
-		this.setTemplates = function(templatesList){
-			templates = templatesList;
-		};
-		
-		this.setDefaultLabel = function(label){
-			alert(label);
-		};		
-	},
-	
-	KatanaFormInputDescriptorHolder = function(){
-		this.add = function(inputType, properties){
-			this[inputType] = properties;				
-		};
-		
-		this.get = function(inputType){
-			return this[inputType];
-		};			
-		
-	},
-	
-	
-	Pages = function(){
+
+	var Pages = function(){
 		var pagesNum = 1,
 		currentPage = 1;
 		
