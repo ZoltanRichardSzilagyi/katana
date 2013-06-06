@@ -61,16 +61,36 @@
 		}					
 	},
 	
-	InputElements = function(){														
+	InputElements = function(){
+	    var elementNames = new Array();														
+		
 		this.add = function(name, properties){
-			this[name] = properties;				
+		    elementNames.push(name);
+			this[name] = properties;
 		};
 		this.remove = function(){
+		    elementNames.pop(name);
 		    this[name] = null;
 		}			
 		this.get = function(name){
 			return this[name];
 		};
+		
+		this.getAll = function(){
+            var elements = new Array(),
+		      elementName,
+		      element,
+		      i;
+		  
+            for(i in elementNames){
+                elementName = elementNames[i];
+                element = this[elementName];		      
+                if(element != null){
+                    elements.push(element);
+                }  
+            }
+            return elements;
+		}
 	},
 	
 	Messages = {
@@ -720,7 +740,7 @@
 		},
 		
 		saveForm = function(){
-		  console.log(inputElements);    
+		    var elements = inputElements.getAll();    
 		};
 		
         this.init = function() {
