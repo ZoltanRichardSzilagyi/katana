@@ -84,7 +84,6 @@ class FormEditorController extends AjaxController{
         }        
         $this->createFormElements();
         $this->formDAO = new FormDao();
-        var_dump($this->formElements);
             
     }
     
