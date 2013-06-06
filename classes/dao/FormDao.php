@@ -1,6 +1,11 @@
 <?php
 namespace classes\dao;
+
 use classes\dao\Dao;
+
+use classes\entity\form\Form;
+use classes\entity\form\FormElement;
+
 final class FormDao extends Dao{
 	
 	public function __construct(){
@@ -14,7 +19,7 @@ final class FormDao extends Dao{
 		return $this->db->get_row($query, ARRAY_A);
 	}
     
-    public function save($formId, $formValues){
+    public function save(Form $form){
         
     }
 	

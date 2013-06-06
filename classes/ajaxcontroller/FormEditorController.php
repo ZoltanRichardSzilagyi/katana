@@ -1,16 +1,23 @@
 <?php
 namespace classes\ajaxcontroller;
 
+use \ArrayObject;
+
 use classes\utils\ElementFactory;
 use classes\ajaxcontroller\AjaxController;
 
 use classes\dao\FormDao;
+
+use classes\entity\form\Form;
+use classes\entity\form\FormElement;
 
 class FormEditorController extends AjaxController{
 	
 	private $elementFactory;
 	
 	private $inputElementProperties;
+    
+    private $formElementsInputData;
     
     private $formElements;
     
@@ -74,27 +81,37 @@ class FormEditorController extends AjaxController{
         if(!$this->validateSaveFormData()){
             // TODO error handling
             die();
-        }
-        $this->normalizeFormElementsClassName();
+        }        
+        $this->createFormElements();
         $this->formDAO = new FormDao();
+        var_dump($this->formElements);
             
     }
     
     private function setFormElementsData(){
         if(isset($_POST['elements'])){
-            $this->formElements = $_POST['elements'];
+            $this->formElementsInputData = $_POST['elements'];
         }
     }
     
     private function validateSaveFormData(){
-        return !empty($this->formElements);
+        return !empty($this->formElementsInputData);
     }
     
     private function normalizeFormElementsClassName(){
-        foreach($this->formElements as $key => $value){
+        foreach($this->formElementsInputData as $key => $value){
             $className = $value['className']; 
-            $this->formElements[$key]['className'] = $this->normalizeClassName($className);
+            $this->formElementsInputData[$key]['className'] = $this->normalizeClassName($className);
         };
+    }
+    
+    private function createFormElements(){
+        $this->normalizeFormElementsClassName();
+        $this->formElements = new ArrayObject();
+        foreach ($this->formElementsInputData as $value) {
+            $formElement = new FormElement($value);
+            $this->formElements->append($formElement);           
+        }    
     }
     
 	
