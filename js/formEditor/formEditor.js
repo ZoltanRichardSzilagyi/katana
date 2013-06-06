@@ -131,7 +131,9 @@
 		
 		formInputElements : "#formInputElements",
 		
-		formPager : ".formPager"		
+		formPager : ".formPager",
+		
+		formSaveButton : "#saveForm"		
 	},	
 		
 
@@ -350,6 +352,7 @@
                 id : inputWindowWrapperId
             });            
                         
+            inputElementProperties.page = pages.getCurrentPage();
             inputElements.add(inputName, inputElementProperties);
             
             inputWindowWrapper.addClass("inputWindowEditor");
@@ -737,8 +740,16 @@
 		
 		displayFormId = function(){
 			$(Selectors.currentPage).html(pages.getCurrentPage());
+		},
+		
+		bindFormSaveEvent = function(){
+            $(Selectors.formSaveButton).click(saveForm);
+		},
+		
+		saveForm = function(){
+		  console.log(inputElements);    
 		};
-
+		
         this.init = function() {
             setPagerButtonsClickEvent();
             addNewPageButtonEvent();
@@ -748,6 +759,8 @@
                 setSampleInputsDescriptionButtonEvents();
                 bindFormAddEvent();
             });
+
+            bindFormSaveEvent();
         };		
 		
 	},
