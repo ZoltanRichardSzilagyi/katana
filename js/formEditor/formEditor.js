@@ -740,7 +740,16 @@
 		
 		saveForm = function(){
 		    var elements = inputElements.getAll();
-		    console.log(elements);    
+            $.ajax({
+              type: 'POST',
+              url: '/wp-admin/admin-ajax.php?action=Katana_saveForm',
+              dataType : 'json',
+              data : {
+                elements : elements
+              }//,
+              //success: successCallback
+            });         
+    
 		};
 		
         this.init = function() {

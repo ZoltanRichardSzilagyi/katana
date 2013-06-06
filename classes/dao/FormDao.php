@@ -13,5 +13,9 @@ final class FormDao extends Dao{
 			FROM wp_ktn_forms WHERE id = {$id}";
 		return $this->db->get_row($query, ARRAY_A);
 	}
+    
+    public function save($formId, $formValues){
+        
+    }
 	
 }

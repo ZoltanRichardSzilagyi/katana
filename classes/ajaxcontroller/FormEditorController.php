@@ -4,11 +4,17 @@ namespace classes\ajaxcontroller;
 use classes\utils\ElementFactory;
 use classes\ajaxcontroller\AjaxController;
 
+use classes\dao\FormDao;
+
 class FormEditorController extends AjaxController{
 	
 	private $elementFactory;
 	
 	private $inputElementProperties;
+    
+    private $formElements;
+    
+    private $formDAO;
 				
 	public function getClassName(){
 		return get_class();
@@ -37,11 +43,7 @@ class FormEditorController extends AjaxController{
 		echo json_encode($retVal);
 		exit;
 	}
-	
-	public function saveForm(){
-		// TODO
-	}
-			
+				
 	private function exitAtEmptyInputProperties(){
 		if(!$this->isInputPropertiesSended()){
 			exit;
@@ -69,6 +71,27 @@ class FormEditorController extends AjaxController{
 	private function getElementFactoryInstance(){
 		$this->elementFactory = new ElementFactory();		
 	}
+    
+    public function saveForm(){
+        $this->setFormElementsData();
+        if(!$this->validateSaveFormData()){
+            // TODO error handling
+            die();
+        }
+        $this->formDAO = new FormDao();
+            
+    }
+    
+    private function setFormElementsData(){
+        if(isset($_POST['elements'])){
+            $this->formElements = $_POST['elements'];
+        }
+    }
+    
+    private function validateSaveFormData(){
+        return !empty($this->formElements);
+    }
+    
 	
 	
 }
