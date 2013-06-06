@@ -58,14 +58,11 @@ class FormEditorController extends AjaxController{
 		if(isset($_POST['inputElementProperties'])){
 			$this->inputElementProperties = $_POST['inputElementProperties'];
 		}
-		$this->normalizeClassName();
+        $this->inputElementProperties['className'] = $this->normalizeClassName($this->inputElementProperties['className']);
 	}
 	
-	private function normalizeClassName(){
-		$className = $this->inputElementProperties['className'];
-		$normalizedClassName = str_replace("\\\\", "\\", $className);
-		$this->inputElementProperties['className'] = $normalizedClassName;
-		
+	private function normalizeClassName($className){
+		return str_replace("\\\\", "\\", $className);		
 	}
 	
 	private function getElementFactoryInstance(){
@@ -78,6 +75,7 @@ class FormEditorController extends AjaxController{
             // TODO error handling
             die();
         }
+        $this->normalizeFormElementsClassName();
         $this->formDAO = new FormDao();
             
     }
@@ -90,6 +88,13 @@ class FormEditorController extends AjaxController{
     
     private function validateSaveFormData(){
         return !empty($this->formElements);
+    }
+    
+    private function normalizeFormElementsClassName(){
+        foreach($this->formElements as $key => $value){
+            $className = $value['className']; 
+            $this->formElements[$key]['className'] = $this->normalizeClassName($className);
+        };
     }
     
 	
