@@ -68,26 +68,25 @@
 		    elementNames.push(name);
 			this[name] = properties;
 		};
-		this.remove = function(){
-		    elementNames.pop(name);
+		this.remove = function(name){
+		    console.log(this[name]);
 		    this[name] = null;
+		    console.log(this[name]);
 		}			
 		this.get = function(name){
 			return this[name];
 		};
 		
 		this.getAll = function(){
-            var elements = new Array(),
-		      elementName,
-		      element,
-		      i;
-		  
-            for(i in elementNames){
-                elementName = elementNames[i];
-                element = this[elementName];		      
-                if(element != null){
-                    elements.push(element);
-                }  
+            var elements = new Array(), 
+                element,
+                i;
+		      
+            for(i in this){
+                var element = this[i];
+                if(typeof element === "object"){
+                    elements.push(element);    
+                }
             }
             return elements;
 		}
@@ -361,7 +360,7 @@
                 inputName = result.properties.name;             
                 
                 attachNewInput(inputWrapper, result, result.properties);
-                inputElements[inputOldName] = null;
+                inputElements.remove(inputOldName);
                 
                                 
                 inputElements[inputName] = result.properties;
@@ -371,7 +370,7 @@
             }
         },
                 
-        changeInputProperties = function(propertyWindow){
+        changeElementProperties = function(propertyWindow){
             
             var form = $(propertyWindow).find('form'),
             inputOldName = $(form).find('input[name=old-name]'),            
@@ -490,7 +489,7 @@
                         "Save": function(){
                             // TODO unbind when generating process is valid
                             elementNameInputField.unbind();
-                            changeInputProperties($(this));
+                            changeElementProperties($(this));
                         }                        
                     }
                 });
@@ -740,7 +739,8 @@
 		},
 		
 		saveForm = function(){
-		    var elements = inputElements.getAll();    
+		    var elements = inputElements.getAll();
+		    console.log(elements);    
 		};
 		
         this.init = function() {
@@ -752,7 +752,7 @@
                 setSampleInputsDescriptionButtonEvents();
                 bindFormAddEvent();
             });
-
+            
             bindFormSaveEvent();
         };		
 		
