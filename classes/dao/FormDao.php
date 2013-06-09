@@ -18,7 +18,7 @@ final class FormDao extends Dao{
 			$query = "SELECT name
 				FROM wp_ktn_forms WHERE id = {$id}";
 			
-			return $this->db->get_row($query, ARRAY_A);
+			return $this->db->get_row($query);
 		} catch(Exception $e){
 			return null;
 		}
