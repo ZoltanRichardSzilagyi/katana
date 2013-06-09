@@ -1,11 +1,16 @@
 <?php
 namespace classes\dao;
+
+use classes\utils\DB;
+
 abstract class Dao{
-    
+    		
+    /**
+	 * @var DB
+	 */
     protected $db;
 			
 	public function __construct(){
-		global $wpdb;
-		$this->db = $wpdb;
+		$this->db = new DB();
 	}
 }
