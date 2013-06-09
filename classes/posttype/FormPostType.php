@@ -1,6 +1,8 @@
 <?php
 namespace classes\posttype;
 
+namespace classes\posttype\CustomPostType;
+
 use classes\Katana;
 
 use classes\utils\LanguageUtils;
@@ -18,12 +20,7 @@ class FormPostType extends CustomPostType{
 	 * @var FormDao
 	 */
 	private $formDao;
-	
-	/**
-	 * @var ValueHolder
-	 */
-	private $templateValues;
-	
+
 	public function __construct__(){
 		parent::__construct();		
 	}
@@ -69,14 +66,7 @@ class FormPostType extends CustomPostType{
 	
 	public function formEditorMetabox($post){
 		$this->formDao = new FormDao();				
-		$form = $this->formDao->get($post->ID);
-		
-		// $elementFactory = new ElementFactory();
-		// $sampleInputs = $elementFactory->getSampleInputs();
-// 		
-		// $this->templateValues = new ValueHolder();
-		// $this->templateValues->add("sampleInputs", $sampleInputs);												
-		// TemplateUtils::fetchTemplate("formEditor", $this->templateValues);
+		$form = $this->formDao->get($post->ID);		
 		TemplateUtils::fetchTemplate("formEditor");
 	}	
 }

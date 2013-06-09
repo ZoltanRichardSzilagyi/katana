@@ -1,6 +1,8 @@
 <?php
 namespace classes\entity\form;
 
+use \Exception;
+
 class FormElement{
     
     private $page;
