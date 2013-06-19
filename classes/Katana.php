@@ -30,10 +30,10 @@ class Katana{
 	}
 	
 	private static function autoload($class){
-		if($class == 'TextInput'){
-			debug_print_backtrace();
-		}
-		if($class!="wp_atom_server" && $class!="WP_User_Search" && $class != "WP_Widget_Meta"){	
+		if($class!="wp_atom_server" && $class!="WP_User_Search" && $class != "WP_Widget_Meta"){
+		    if($class == "CustomPostType"){		        
+		        debug_print_backtrace();
+		    }	
 			require_once(Katana::$pluginDirRootPath . $class.".php");
 		}
 	}

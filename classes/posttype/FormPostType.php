@@ -1,7 +1,7 @@
 <?php
 namespace classes\posttype;
 
-namespace classes\posttype\CustomPostType;
+use classes\posttype\CustomPostType;
 
 use classes\Katana;
 
