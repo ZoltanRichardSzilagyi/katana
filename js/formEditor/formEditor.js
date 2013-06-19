@@ -1,7 +1,9 @@
 (function ($) {
 	"use strict";
+	
+	var form,
 
-	var Pages = function(){
+	Pages = function(){
 		var pagesNum = 1,
 		currentPage = 1;
 		
@@ -750,11 +752,24 @@
               //success: successCallback
             });         
     
-		};
+		},
 		
+		getFormData = function(){
+            $.ajax({
+              type: 'GET',
+              url: '/wp-admin/admin-ajax.php?action=Katana_getForm',
+              dataType : 'json',
+              success: function(){
+                  
+              }
+            });                                 		    
+		};
+        
         this.init = function() {
             setPagerButtonsClickEvent();
             addNewPageButtonEvent();
+            
+            getFormData();
             
             getSampleElements(function(result){
                 renderSampleElements(result);

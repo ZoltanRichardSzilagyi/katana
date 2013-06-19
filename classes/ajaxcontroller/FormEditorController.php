@@ -11,7 +11,7 @@ use classes\dao\FormDao;
 use classes\entity\form\Form;
 use classes\entity\form\FormElement;
 
-class FormEditorController extends AjaxController{
+final class FormEditorController extends AjaxController{
 	
 	private $elementFactory;
 	
@@ -28,9 +28,19 @@ class FormEditorController extends AjaxController{
 	}
 	
 	public function registerAjaxEvents(){
+	    $this->addAdminEvent("getForm");
 		$this->addAdminEvent("generateInput");
 		$this->addAdminEvent("saveForm");	
 	}
+    
+    public function getForm(){
+        // TODO get current post id
+        $formId = 1;        
+        $this->formDAO = new FormDao();
+        $form = $this->formDAO->get($formId);
+        echo json_encode($form);
+        die();
+    }
 	
 	public function generateInput(){
 		$this->exitAtEmptyInputProperties();
@@ -84,7 +94,8 @@ class FormEditorController extends AjaxController{
         }        
         $this->createFormElements();
         $this->formDAO = new FormDao();
-            
+        
+        die();
     }
     
     private function setFormElementsData(){
