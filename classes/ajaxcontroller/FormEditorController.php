@@ -94,7 +94,8 @@ final class FormEditorController extends AjaxController{
         }        
         $this->createFormElements();
         $this->formDAO = new FormDao();
-        
+        $this->formDAO->save($form);
+
         die();
     }
     

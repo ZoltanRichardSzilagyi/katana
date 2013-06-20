@@ -71,9 +71,7 @@
 			this[name] = properties;
 		};
 		this.remove = function(name){
-		    console.log(this[name]);
 		    this[name] = null;
-		    console.log(this[name]);
 		}			
 		this.get = function(name){
 			return this[name];
@@ -759,8 +757,8 @@
               type: 'GET',
               url: '/wp-admin/admin-ajax.php?action=Katana_getForm',
               dataType : 'json',
-              success: function(){
-                  
+              success: function(result){
+                  console.log(result);
               }
             });                                 		    
 		};

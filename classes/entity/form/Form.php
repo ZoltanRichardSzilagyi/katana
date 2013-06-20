@@ -2,14 +2,15 @@
 namespace classes\entity\form;
 
 use \ArrayObject;
+use \classes\utils\json\JSONSerializable;
 
-class Form{
+class Form implements JSONSerializable{
     
-    private $formId;
+    private $formId = null;
     
-    private $formElements;
+    private $formElements = null;
     
-    public function __construct($formDescriptor, ArrayObject $formElements){
+    public function __construct($formDescriptor, ArrayObject $formElements = null){
           $this->setFormId($formDescriptor);
         $this->formElements = $formElements;
     }
@@ -28,5 +29,11 @@ class Form{
     
     public function getFormElements(){
         return $this->formElements;
+    }
+    
+    public function toJSONSerialize(){
+        $toJSON = array();
+        $toJSON["formId"] = $this->formId;
+        // TODO serialize form elements
     }
 }
